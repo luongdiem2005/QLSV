@@ -4,7 +4,7 @@
 
    .login-wrapper {
     min-height: 100vh;
-    background: var(--light); 
+    background: #D9F9DF; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,7 +19,7 @@
     border-radius: 24px;
     width: 100%;
     max-width: 440px;
-    padding: 40px;
+    padding: 60px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     position: relative;
     z-index: 2;
@@ -27,33 +27,40 @@
   }
   
   .login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
   }
   
   .login-brand {
+    color: #4864FF;
+    font-size: 45px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: -20px;
   }
   
   .login-title {
     color: #1F2937;
-    font-size: 25px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
-  
+
   /* Form Controls */
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .form-label {
     display: block;
     color: #1F2937(255, 255, 255, 0.8);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 8px;
   }
@@ -65,7 +72,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 0 16px;
-    color: white;
+    color: #1F2937;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     transition: border-color 0.2s, background 0.2s;
@@ -74,7 +81,7 @@
   .form-input:focus {
     outline: none;
     border-color: var(--accent2);
-    background: rgba(255, 255, 255, 0.1);
+    background: #C4E2F5;
   }
   
   /* Options: Remember & Forgot password */
@@ -109,8 +116,8 @@
   .btn-submit {
     width: 100%;
     height: 48px;
-    background: var(--accent2);
-    color: white;
+    background: #C4E2F5;
+    color: #1F2937;
     border: none;
     border-radius: 10px;
     font-size: 16px;
@@ -120,24 +127,10 @@
   }
   
   .btn-submit:hover {
-    background: #3652f5;
+    background: #4864FF;
   }
   
   .btn-submit:active {
     transform: scale(0.98);
   }
   
-  /* Nút quay lại trang chủ */
-  .back-to-home {
-    display: block;
-    text-align: center;
-    margin-top: 24px;
-    font-size: 13.5px;
-    color: rgba(255, 255, 255, 0.4);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  
-  .back-to-home:hover {
-    color: white;
-  }

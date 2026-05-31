@@ -5,120 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quản lý đăng ký học phần và thu học phí</title>
 
+<script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/login.css"> 
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">
-    <div class="nav-logo-box">UIT</div>
-    <div class="nav-logo-text">
-      <div class="t1">Trường ĐH Công nghệ Thông tin</div>
-      <div class="t2">University of Information Technology</div>
-    </div>
-  </div>
 
-  <div class="nav-links">
-    <a href="pages/login.html" class="nav-cta">Đăng nhập</a>
-  </div>
-</nav>
+<main class="login-wrapper">
 
-<section class="hero" id="home">
-
-  <div class="hero-inner">
-
-    <div class="hero-badge">
-      <span></span>
-      Năm học 2025 – 2026 &nbsp;·&nbsp; Học kỳ 2
+  <div class="login-card">
+    
+    <div class="login-header">
+      <div class="login-title"> ĐẠI HỌC QUỐC GIA TP.HỒ CHÍ MINH <br> TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN </div>
+      <div class="login-brand"> EduFee</div>
     </div>
 
-    <h1>CỔNG ĐĂNG KÝ <br> VÀ THU HỌC PHÍ</h1>
+    <form action="#" method="POST">
+      
+      <div class="form-group">
+        <label class="form-label" for="username">Tên đăng nhập</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          class="form-input" 
+          required
+        >
+      </div>
 
-    <div class="hero-stats">
-      <div class="hero-stat-item">
-        <div class="num">12<span>k+</span></div>
-        <div class="lbl">SINH VIÊN</div>    
+      <div class="form-group">
+        <label class="form-label" for="password">Mật khẩu</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-input" 
+          required
+        >
       </div>
-      <div class="hero-stat-item hero-stat-border">
-        <div class="num">800<span>+</span></div>
-        <div class="lbl">GIẢNG VIÊN & CÁN BỘ</div>
+
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox" name="remember"> Ghi nhớ tôi
+        </label>
+        <a href="#" class="forgot-password">Quên mật khẩu?</a>
       </div>
-      <div class="hero-stat-item">
-        <div class="num">300<span>+</span></div>
-        <div class="lbl">HỌC PHẦN</div>
-      </div>
-    </div>
+
+      <button type="submit" class="btn-submit">Đăng nhập</button>
+
+    </form>
 
   </div>
-</section>
+</main>
 
-<section id="contact">
-  <div class="contact-container">
-    <div class="reveal">
-      <div class="section-tag">Thông tin Liên hệ</div>
-    </div>
-
-    <div class="contact-grid reveal">
-
-      <div class="contact-card">
-        <div class="cc-icon">🏢</div>
-        <h4>Phòng Đào tạo</h4>
-        <p>Tầng 1, Nhà A — UIT<br>Khu phố 6, P. Linh Trung, TP. Thủ Đức <br><a href="tel:02837252002">028 3725 2002</a></p>
-      </div>
-
-      <div class="contact-card">
-        <div class="cc-icon">✉️</div>
-        <h4>Email hỗ trợ</h4>
-        <p>Sinh viên: <a href="mailto:daotao@uit.edu.vn">daotao@uit.edu.vn</a><br>Kỹ thuật: <a href="mailto:support@uit.edu.vn">support@uit.edu.vn</a><br>Học phí: <a href="mailto:hocphi@uit.edu.vn">hocphi@uit.edu.vn</a></p>
-      </div>
-
-      <div class="contact-card">
-        <div class="cc-icon">🕐</div>
-        <h4>Giờ làm việc</h4>
-        <p>Thứ 2 – Thứ 6<br>07:30 – 11:30 &nbsp;|&nbsp; 13:30 – 17:00<br><span class="contact-note">Nghỉ Thứ 7, Chủ nhật & Ngày lễ</span></p>
-      </div>
-
-      <div class="contact-card">
-        <div class="cc-icon">❓</div>
-        <h4>Câu hỏi thường gặp</h4>
-        <p>Xem hướng dẫn sử dụng, câu hỏi thường gặp và tài liệu hỗ trợ tại<br><a href="#">portal.uit.edu.vn/help</a></p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="ft-logo">
-    <div class="ft-logo-box">UIT</div>
-    <p class="footer-copyright">© 2026 Trường Đại học Công nghệ Thông tin – ĐHQG TP.HCM</p>
-  </div>
-
-  <div class="ft-links">
-    <a href="#">Chính sách bảo mật</a>
-    <a href="#">Điều khoản sử dụng</a>
-    <a href="#contact">Liên hệ</a>
-  </div>
-</footer>
-
-
-<script>
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Navbar scroll effect
-  window.addEventListener('scroll', () => {
-    document.querySelector('nav').style.background = window.scrollY > 40
-      ? 'rgba(8,20,46,.98)'
-      : 'rgba(8,20,46,.92)';
-  });
-</script>
 
 </body>
 </html>
