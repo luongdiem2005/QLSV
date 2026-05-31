@@ -28,10 +28,11 @@
    }
    
    html { scroll-behavior: smooth; }
-   
+   body, input, button, select, textarea {
+    font-family: 'Roboto', sans-serif;
+   }
    body {
-     font-family: 'Roboto', sans-serif;
-     background: var(--light);
+     background: #D9F9DF;
      color: var(--text-dark);
      overflow-x: hidden;
    }
@@ -45,7 +46,7 @@
    
    .section-tag {
      display: inline-block;
-     background: #EEF0FF;
+     background: #D9F9DF;
      color: var(--accent);
      font-size: 19px;
      font-weight: 700;
@@ -99,25 +100,21 @@
    }
 
 
-/* Căn chỉnh khoảng cách cho item thống kê ở giữa */
 .hero-stat-border {
   border-left: 1px solid rgba(255, 255, 255, .1);
   border-right: 1px solid rgba(255, 255, 255, .1);
   padding: 0 40px;
 }
 
-/* Định dạng container của phần Contact */
 .contact-container {
   max-width: 1100px;
   margin: 0 auto;
 }
 
-/* Định dạng dòng ghi chú ngày nghỉ */
 .contact-note {
   color: rgba(255, 255, 255, .35);
 }
 
-/* Định dạng dòng bản quyền ở Footer */
 .footer-copyright {
   color: rgba(255, 255, 255, .35);
   font-size: 12px;
