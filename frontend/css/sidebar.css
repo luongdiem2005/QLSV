@@ -114,8 +114,9 @@
   transition: all 0.2s ease;
 }
 
-.menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+.menu-item:hover,.menu-item.active {
+  background-color: #4864FF;
+  color: white;
   cursor: pointer;
 }
 
