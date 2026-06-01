@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Sinh viên</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/button.css">
+    <link rel="stylesheet" href="../../css/sidebar.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/pdt_sv.css">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar-wrapper">
+        <div class="sidebar-brand-box">
+            <div class="brand-icon">
+                <i class="ti ti-school" aria-hidden="true"></i>
+            </div>
+            <span class="brand-name">EduFee</span>
+        </div>
+
+        <div class="sidebar-user-profile">
+            <div class="profile-avatar">B</div>
+            <div class="profile-info">
+                <div class="profile-name">Nguyễn Văn B</div>
+                <div class="profile-role">Phòng Đào tạo</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu sidebar-scroll">
+            <a href="#" class="menu-item">
+                <i class="ti ti-home" aria-hidden="true"></i>
+                Trang chủ
+            </a>
+            <a href="#" class="menu-item active">
+                <i class="ti ti-users" aria-hidden="true"></i>
+                Sinh viên
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-building-community" aria-hidden="true"></i>
+                Ngành học
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-book" aria-hidden="true"></i>
+                Môn học
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+                Đăng ký học phần
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="menu-item">
+                <i class="ti ti-lock" aria-hidden="true"></i>
+                Đổi mật khẩu
+            </a>
+            <a href="#" class="menu-item text-red">
+                <i class="ti ti-logout" aria-hidden="true"></i>
+                Đăng xuất
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content-area">
+        <main class="dashboard-main space-y-8">
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <p class="kpi-label">Tổng số sinh viên</p>
+                    <h2 class="kpi-value">12.580</h2>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-label">Đang học</p>
+                    <h2 class="kpi-value green">11.920</h2>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-label">Tạm ngừng học</p>
+                    <h2 class="kpi-value yellow">420</h2>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-label">Đã tốt nghiệp</p>
+                    <h2 class="kpi-value blue">240</h2>
+                </div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="filter-bar">
+                <div class="filter-inputs">
+                    <input type="text" class="filter-input" placeholder="Tìm kiếm MSSV hoặc họ tên">
+                    <select class="filter-select">
+                        <option>Ngành học</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Khóa học</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Trạng thái học tập</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-outline">Làm mới</button>
+                    <button class="btn btn-primary">
+                        <i class="ti ti-file-export"></i> Export Excel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Student Table -->
+            <div class="table-card">
+                <div class="table-header">Danh sách Sinh viên</div>
+                <div class="table-scroll">
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>MSSV</th>
+                                <th>Họ và tên</th>
+                                <th>Ngành học</th>
+                                <th>Khóa học</th>
+                                <th>Trạng thái học tập</th>
+                                <th>Đối tượng ưu tiên</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>20210001</td>
+                                <td>Nguyễn Văn An</td>
+                                <td>Công nghệ Thông tin</td>
+                                <td>K2021</td>
+                                <td><span class="badge badge-green">Đang học</span></td>
+                                <td>Không</td>
+                                <td>
+                                    <div class="action-group">
+                                        <button class="action-btn-icon" title="Xem"><i class="ti ti-eye"></i></button>
+                                        <button class="action-btn-icon" title="Khóa"><i class="ti ti-lock"></i></button>
+                                        <button class="action-btn-icon" title="Chỉnh sửa"><i class="ti ti-pencil"></i></button>
+                                        <button class="action-btn-icon" title="Lịch sử học tập"><i class="ti ti-book"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20210002</td>
+                                <td>Trần Thị Mai</td>
+                                <td>Hệ thống Thông tin</td>
+                                <td>K2021</td>
+                                <td><span class="badge badge-green">Đang học</span></td>
+                                <td>Con thương binh</td>
+                                <td>
+                                    <div class="action-group">
+                                        <button class="action-btn-icon" title="Xem"><i class="ti ti-eye"></i></button>
+                                        <button class="action-btn-icon" title="Khóa"><i class="ti ti-lock"></i></button>
+                                        <button class="action-btn-icon" title="Chỉnh sửa"><i class="ti ti-pencil"></i></button>
+                                        <button class="action-btn-icon" title="Lịch sử học tập"><i class="ti ti-book"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20200015</td>
+                                <td>Lê Quốc Huy</td>
+                                <td>Quản trị Kinh doanh</td>
+                                <td>K2020</td>
+                                <td><span class="badge badge-orange">Tạm ngừng học</span></td>
+                                <td>Không</td>
+                                <td>
+                                    <div class="action-group">
+                                        <button class="action-btn-icon" title="Xem"><i class="ti ti-eye"></i></button>
+                                        <button class="action-btn-icon" title="Khóa"><i class="ti ti-lock"></i></button>
+                                        <button class="action-btn-icon" title="Chỉnh sửa"><i class="ti ti-pencil"></i></button>
+                                        <button class="action-btn-icon" title="Lịch sử học tập"><i class="ti ti-book"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Overview + Activity -->
+            <div class="bottom-grid">
+
+                <!-- Student Overview -->
+                <div class="overview-card">
+                    <h2 class="panel-title">Tổng quan sinh viên</h2>
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <p class="overview-item-label">Theo ngành học</p>
+                            <h3 class="overview-item-value">35 ngành</h3>
+                        </div>
+                        <div class="overview-item">
+                            <p class="overview-item-label">Theo khóa học</p>
+                            <h3 class="overview-item-value">8 khóa</h3>
+                        </div>
+                        <div class="overview-item">
+                            <p class="overview-item-label">Diện ưu tiên</p>
+                            <h3 class="overview-item-value">1.250 SV</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Update Status Form -->
+            <div class="form-card">
+                <h2 class="panel-title">Cập nhật trạng thái sinh viên</h2>
+                <div class="form-grid">
+                    <input type="text" class="form-input" placeholder="MSSV">
+                    <input type="text" class="form-input" placeholder="Họ tên">
+                    <select class="form-select col-span-2">
+                        <option>Đang học</option>
+                        <option>Tạm ngừng học</option>
+                        <option>Đã tốt nghiệp</option>
+                        <option>Buộc thôi học</option>
+                    </select>
+                    <textarea rows="3" class="form-textarea col-span-2" placeholder="Ghi chú"></textarea>
+                </div>
+                <div class="form-footer">
+                    <button class="btn btn-outline">Hủy</button>
+                    <button class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</div>
+
+</body>
+</html>
