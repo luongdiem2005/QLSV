@@ -1,45 +1,73 @@
-/* Khung lớn bao quanh toàn bộ trang Dashboard */
+/* ===== LAYOUT ===== */
 .dashboard-layout {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  /* Khối nội dung chính nằm bên phải Sidebar */
+  display: flex;
+  min-height: 100vh;
+  background-color: #f1f5f9;
+}
+
+.main-content-area {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
   .main-content-area {
-    flex: 1;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    margin-left: 260px;
   }
-  
-  /* Khoảng trống bù lại cho Sidebar đang để vị trí fixed */
-  @media (min-width: 1024px) {
-    .main-content-area {
-      margin-left: 260px; /* Bằng đúng chiều rộng của Sidebar */
-    }
-  }
-  
-  /* Vùng chứa ruột nội dung bên trong Dashboard (Dưới Header) */
+}
+
+.dashboard-header {
+  height: 50px;
+  background-color: var(--primary-color);
+}
+
+.dashboard-main {
+  padding: 20px;
+  flex: 1;
+}
+
+@media (min-width: 768px) {
   .dashboard-main {
-    padding: 20px;
-    flex: 1;
+    padding: 32px;
   }
-  
-  @media (min-width: 768px) {
-    .dashboard-main {
-      padding: 32px;
-    }
-  }
-  
-  /* Tự động tạo khoảng cách dọc đều đặn giữa các section/card con bên trong */
-  .space-y-8 > * + * {
-    margin-top: 32px;
-  }
-  
-  .space-y-6 > * + * {
-    margin-top: 24px;
-  }
-  
-  .space-y-4 > * + * {
-    margin-top: 16px;
-  }
+}
+
+/* ===== SPACING ===== */
+.space-y-8 > * + * { margin-top: 32px; }
+.space-y-6 > * + * { margin-top: 24px; }
+.space-y-4 > * + * { margin-top: 16px; }
+
+/* ===== GRID ===== */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+/* ===== FLEX UTILS ===== */
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-3 { gap: 6px; }
