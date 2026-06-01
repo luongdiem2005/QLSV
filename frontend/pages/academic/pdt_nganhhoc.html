@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Ngành học - Hệ thống Đăng ký Học phần và Thu Học phí</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/button.css">
+    <link rel="stylesheet" href="../../css/sidebar.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/pdt_nganhhoc.css">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar-wrapper">
+        <div class="sidebar-brand-box">
+            <div class="brand-icon">
+                <i class="ti ti-school" aria-hidden="true"></i>
+            </div>
+            <span class="brand-name">EduFee</span>
+        </div>
+
+        <div class="sidebar-user-profile">
+            <div class="profile-avatar">B</div>
+            <div class="profile-info">
+                <div class="profile-name">Nguyễn Văn B</div>
+                <div class="profile-role">Phòng Đào tạo</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu sidebar-scroll">
+            <a href="#" class="menu-item">
+                <i class="ti ti-home" aria-hidden="true"></i>
+                Trang chủ
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-users" aria-hidden="true"></i>
+                Sinh viên
+            </a>
+            <a href="#" class="menu-item active">
+                <i class="ti ti-building-community" aria-hidden="true"></i>
+                Ngành học
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-book" aria-hidden="true"></i>
+                Môn học
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+                Đăng ký học phần
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="menu-item">
+                <i class="ti ti-lock" aria-hidden="true"></i>
+                Đổi mật khẩu
+            </a>
+            <a href="#" class="menu-item text-red">
+                <i class="ti ti-logout" aria-hidden="true"></i>
+                Đăng xuất
+            </a>
+        </div>
+    </aside>
+
+    <!-- PAGE WRAPPER (offset for fixed sidebar) -->
+    <div class="page-offset">
+
+        <!-- CONTENT -->
+        <main class="dashboard-main">
+
+            <!-- Filter -->
+            <div class="dashboard-card card-body">
+                <div class="filter-bar">
+
+                    <div class="filter-inputs">
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm mã ngành hoặc tên ngành"
+                            class="filter-input"
+                        >
+                        <select class="filter-select">
+                            <option>Khoa quản lý</option>
+                            <option>Khoa CNTT</option>
+                            <option>Khoa Kinh tế</option>
+                            <option>Khoa Ngoại ngữ</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>Trạng thái</option>
+                            <option>Đang hoạt động</option>
+                            <option>Ngừng tuyển sinh</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-primary">
+                            <i class="ti ti-plus" aria-hidden="true"></i>
+                            Thêm ngành học
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="ti ti-file-export" aria-hidden="true"></i>
+                            Export Excel
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="ti ti-refresh" aria-hidden="true"></i>
+                            Làm mới
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="dashboard-card">
+
+                <div class="card-header">
+                    <h2 class="card-title">Danh sách Ngành học</h2>
+                    <span class="card-count">35 ngành học</span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã ngành</th>
+                                <th>Tên ngành</th>
+                                <th>Khoa quản lý</th>
+                                <th>Ghi chú</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày cập nhật</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CNTT</td>
+                                <td>Công nghệ Thông tin</td>
+                                <td>Khoa Công nghệ Thông tin</td>
+                                <td>Đào tạo kỹ sư CNTT</td>
+                                <td><span class="badge badge-green">Đang hoạt động</span></td>
+                                <td>01/01/2026</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn-icon action-btn-view" title="Xem">
+                                            <i class="ti ti-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-edit" title="Sửa">
+                                            <i class="ti ti-pencil" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-delete" title="Xóa">
+                                            <i class="ti ti-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HTTT</td>
+                                <td>Hệ thống Thông tin</td>
+                                <td>Khoa Công nghệ Thông tin</td>
+                                <td>Đào tạo chuyên ngành phân tích hệ thống</td>
+                                <td><span class="badge badge-green">Đang hoạt động</span></td>
+                                <td>01/01/2026</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn-icon action-btn-view" title="Xem">
+                                            <i class="ti ti-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-edit" title="Sửa">
+                                            <i class="ti ti-pencil" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-delete" title="Xóa">
+                                            <i class="ti ti-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>QTKD</td>
+                                <td>Quản trị Kinh doanh</td>
+                                <td>Khoa Kinh tế</td>
+                                <td>Đào tạo cử nhân kinh tế</td>
+                                <td><span class="badge badge-green">Đang hoạt động</span></td>
+                                <td>01/01/2026</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn-icon action-btn-view" title="Xem">
+                                            <i class="ti ti-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-edit" title="Sửa">
+                                            <i class="ti ti-pencil" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="action-btn-icon action-btn-delete" title="Xóa">
+                                            <i class="ti ti-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Distribution by Faculty -->
+            <div class="dashboard-card card-body">
+
+                <h2 class="card-title" style="margin-bottom: 20px;">Phân bổ ngành học theo khoa</h2>
+
+                <div class="progress-list">
+                    <div class="progress-row">
+                        <div class="progress-meta">
+                            <span>Khoa Công nghệ Thông tin</span>
+                            <span>8 ngành</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <div class="progress-meta">
+                            <span>Khoa Kinh tế</span>
+                            <span>6 ngành</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <div class="progress-meta">
+                            <span>Khoa Điện - Điện tử</span>
+                            <span>5 ngành</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <div class="progress-meta">
+                            <span>Khoa Ngoại ngữ</span>
+                            <span>4 ngành</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: 55%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <div class="progress-meta">
+                            <span>Khoa Cơ khí</span>
+                            <span>3 ngành</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+</div>
+
+</body>
+</html>
