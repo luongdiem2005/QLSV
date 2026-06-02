@@ -1,0 +1,231 @@
+/* ─── THIẾT LẬP HỆ MÀU SẮC CHỦ ĐẠO ─── */
+:root {
+    --bg-sidebar: #161925;          /* Màu nền tối của thanh Sidebar */
+    --active-blue: #3b82f6;         /* Màu xanh sáng khi chọn menu */
+    --bg-main: #f3f4f6;             /* Màu xám nhạt nền web phía sau */
+    --white: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #4b5563;
+    --border-color: #e5e7eb;
+}
+
+/* Reset cấu hình mặc định trình duyệt */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* ─── THIẾT KẾ SIDEBAR ─── */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: var(--bg-sidebar);
+    color: var(--white);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    z-index: 100;
+}
+
+/* Khung chứa logo ở góc đen phía trên */
+.logo-container {
+    padding: 10px 24px 25px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.web-logo {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Danh sách Menu */
+.menu-list {
+    list-style: none;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.menu-icon {
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+/* Trạng thái hover và khi được chọn tô màu xanh */
+.menu-item.active a, 
+.menu-item a:hover {
+    background-color: var(--active-blue);
+    color: var(--white);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 0 14px;
+}
+
+.logout-btn {
+    display: block;
+    padding: 14px 18px;
+    color: #f3f4f6;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ─── THIẾT KẾ KHU VỰC NỘI DUNG CHÍNH (BÊN PHẢI) ─── */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Thanh Topbar phía trên */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Ô chữ nhật rỗng chứa Logo trường bên trái */
+.school-logo-box {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Các nút hình tròn cho thông báo, tin nhắn */
+.circle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.circle-btn:hover {
+    background-color: #d1d5db;
+}
+
+/* Ô chứa tên người dùng đăng nhập */
+.user-profile-box {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* ─── HỆ THỐNG GRID 4 Ô THỐNG KÊ SỐ LIỆU ─── */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: var(--white);
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.01);
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: #111827;
+}
+
+/* ─── KHỐI CHỨA 2 BẢNG BIỂU ĐỒ LỚN PHÍA DƯỚI ─── */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    flex: 1; /* Tự động co giãn lấp đầy không gian trống phía dưới */
+    min-height: 380px;
+}
+
+.chart-box {
+    background-color: var(--white);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.chart-placeholder-text {
+    font-size: 14px;
+    color: #9ca3af;
+    font-weight: 500;
+    border: 2px dashed #e5e7eb;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
