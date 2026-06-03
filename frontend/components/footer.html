@@ -1,1 +1,93 @@
+<footer class="app-shared-footer">
+    <div class="footer-container">
+        <div class="footer-left">
+            <span class="copyright-text">
+                &copy; <span id="footer-current-year">2026</span> 
+                <strong style="color: #2b6cb0;">EduFee Portal</strong>. 
+                Sản phẩm thuộc Đồ án Kỹ nghệ phần mềm VNU-HCM.
+            </span>
+        </div>
 
+        <div class="footer-right">
+            <div class="system-status-group">
+                <span class="status-indicator-item bg-blue-light">
+                    <i class="ti ti-git-branch"></i> v1.2.0-Stable
+                </span>
+                <span class="status-indicator-item bg-green-light">
+                    <i class="ti ti-cloud-computing"></i> Environment: Local Sandbox
+                </span>
+                <span class="status-indicator-item bg-orange-light" style="cursor: pointer;" onclick="alert('HỆ THỐNG TRỢ GIÚP EDUFEE\\n\\n- Hỗ trợ Kế hoạch Đào tạo: pdt@vnu.edu.vn\\n- Hỗ trợ Học phí & Chứng từ: ptc@vnu.edu.vn\\n\\nĐường dây nóng hoạt động từ 07:30 đến 17:00 hàng ngày.');">
+                    <i class="ti ti-help-hexagon"></i> Trợ giúp Kỹ thuật
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .app-shared-footer {
+        background-color: #ffffff;
+        border-top: 1px solid #e2e8f0;
+        padding: 12px 24px;
+        margin-top: auto; /* Ép footer luôn bám đáy nội dung main-wrapper */
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .copyright-text {
+        font-size: 13px;
+        color: #718096;
+    }
+    .system-status-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .status-indicator-item {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-family: monospace;
+    }
+    
+    /* Hệ màu sắc trực quan cho các thẻ chỉ số hạ tầng (Telemetry Palette) */
+    .bg-blue-light {
+        background-color: #ebf8ff;
+        color: #2b6cb0;
+        border: 1px solid #bee3f8;
+    }
+    .bg-green-light {
+        background-color: #f0fff4;
+        color: #38a169;
+        border: 1px solid #c6f6d5;
+    }
+    .bg-orange-light {
+        background-color: #fffaf0;
+        color: #dd6b20;
+        border: 1px solid #feebc8;
+    }
+    .bg-orange-light:hover {
+        background-color: #feebc8;
+    }
+</style>
+
+<script>
+    (function() {
+        // Cập nhật năm tự động thời gian thực
+        const yearSpan = document.getElementById('footer-current-year');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+    })();
+</script>

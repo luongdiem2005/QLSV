@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDashboardUser();
     initSemesterChart();
     initLogoutForm();
+    initSharedFooter(); // Đưa hàm nạp footer vào chu kỳ khởi chạy chuẩn
 });
 
 /**
@@ -116,5 +117,33 @@ function initLogoutForm() {
                 window.location.href = '../../index.html';
             }
         });
+    }
+}
+
+/**
+ * 4. Hàm tự động nạp linh hoạt cấu phần Footer dùng chung
+ */
+function initSharedFooter() {
+    const footerContainer = document.getElementById('shared-footer-container');
+    
+    if (footerContainer) {
+        fetch('../../components/footer.html')
+            .then(response => {
+                if (!response.ok) throw new Error('Không thể nạp file footer.html');
+                return response.text();
+            })
+            .then(data => {
+                // Nạp nội dung HTML vào container
+                footerContainer.innerHTML = data;
+                
+                // THAY THẾ EVAL(): Tự động tìm và cập nhật năm hiện tại nếu trong footer có thẻ id="current-year"
+                const yearDisplay = document.getElementById('current-year');
+                if (yearDisplay) {
+                    yearDisplay.textContent = new Date().getFullYear();
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi tích hợp hệ thống component:', error);
+            });
     }
 }
