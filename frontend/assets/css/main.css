@@ -1,0 +1,232 @@
+/* ==========================================================================
+   CSS RESET & VARIABLES (Cấu hình cơ bản và Biến màu hệ thống)
+   ========================================================================== */
+   :root {
+    /* Bộ bảng màu chuẩn cho thương hiệu Giáo dục/Công nghệ */
+    --primary-color: #3182ce;
+    --primary-hover: #2b6cb0;
+    --bg-main: #f7fafc;
+    --bg-sidebar: #1a202c;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    
+    /* Các màu trạng thái */
+    --color-blue: #4299e1;
+    --color-green: #48bb78;
+    --color-orange: #ed8936;
+    --color-red: #e53e3e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   APP LAYOUT STRUCTURE (Bố cục cấu trúc 2 khối)
+   ========================================================================== */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Thanh Sidebar bên trái cố định */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.sidebar-brand {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #2d3748;
+}
+
+.sidebar-brand i {
+    font-size: 28px;
+    color: var(--color-blue);
+}
+
+.sidebar-brand h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Khối thông tin người dùng trong Sidebar */
+.sidebar-user-info {
+    padding: 20px 24px;
+    background-color: #2d3748;
+    margin: 15px;
+    border-radius: 8px;
+}
+
+.sidebar-user-info .role-badge {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a0aec0;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.sidebar-user-info h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* Danh mục Menu điều hướng */
+.sidebar-menu {
+    flex: 1;
+    padding: 10px 15px;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 4px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: #a0aec0;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+    background-color: #2d3748;
+    color: #ffffff;
+}
+
+.sidebar-menu li.active a {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+/* Khối bao bọc bên phải (Bù lại 260px độ rộng của Sidebar cố định) */
+.main-wrapper {
+    flex: 1;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Ngăn chặn khối bị tràn khi co màn hình */
+}
+
+/* Thanh Header công cụ phía trên */
+.main-header {
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.header-title h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Nút bấm chứa Icon thông báo */
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.btn-icon .badge-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-red);
+    border-radius: 50%;
+}
+
+/* Nút Đăng xuất */
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #fff5f5;
+    border-color: #feb2b2;
+    color: var(--color-red);
+}
+
+/* Vùng nội dung chính (Main Content view) */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT (Điều khiển ẩn hiện trên Mobile)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%); /* Ẩn sidebar khỏi màn hình nhỏ */
+    }
+    .main-wrapper {
+        margin-left: 0;
+    }
+}

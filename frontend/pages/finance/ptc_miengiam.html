@@ -3,283 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chính sách Miễn giảm Học phí - Phân hệ Phòng Tài Chính</title>
+    <title>EduFee - Quản lý & Xét duyệt Miễn giảm học phí</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/layout.css">
-    
-    <style>
-        .split-container {
-            display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 20px;
-            align-items: start;
-        }
-        
-        /* Khối định nghĩa chính sách bên trái */
-        .form-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            position: sticky;
-            top: 20px;
-        }
-        .form-card h2 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* Khối danh sách sinh viên miễn giảm bên phải */
-        .list-card {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .search-toolbar {
-            background-color: #ffffff;
-            padding: 14px 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-        }
-        .search-box input {
-            padding-left: 36px;
-        }
-        
-        /* Cấu trúc bảng dữ liệu ưu đãi */
-        .table-container {
-            background-color: #ffffff;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-        .data-table thead {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .data-table th {
-            padding: 14px 18px;
-            font-weight: 600;
-            color: #495057;
-        }
-        .data-table tbody tr {
-            border-bottom: 1px solid var(--border-color);
-            transition: var(--transition-fast);
-        }
-        .data-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .data-table td {
-            padding: 14px 18px;
-            color: var(--text-main);
-            vertical-align: middle;
-        }
-        
-        /* Thẻ hiển thị tỷ lệ % ưu đãi miễn giảm */
-        .discount-badge {
-            display: inline-flex;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            background-color: #fff9db;
-            color: #f59e0b;
-        }
-        .discount-badge.full {
-            background-color: #e6fcf5;
-            color: #40c057;
-        }
-        
-        /* Nút hành động */
-        .actions-cell {
-            display: flex;
-            gap: 6px;
-        }
-        .btn-icon {
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            border-radius: 6px;
-            background: #f1f3f5;
-            border: none;
-            color: #495057;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-fast);
-        }
-        .btn-icon:hover { background-color: #dee2e6; color: var(--text-main); }
-        .btn-delete:hover { background-color: #ffe3e3; color: var(--error-color); }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
 
-    <div class="app-wrapper">
-        <aside class="app-sidebar">
-            <div class="sidebar-header">
-                <div class="btn btn-primary brand-icon" style="background-color: #40c057; box-shadow: 0 4px 12px rgba(64, 192, 87, 0.3);">
-                    <i class="ti ti-wallet"></i>
-                </div>
-                <div class="brand-title">
-                    <h2>EduFee</h2>
-                    <span style="color: #40c057;">Phòng Tài Chính</span>
-                </div>
+    <style>
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        .tab-item {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #718096;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .tab-item:hover {
+            background: #edf2f7;
+            color: #2d3748;
+        }
+        .tab-item.active {
+            background: #e6fffa;
+            color: #234e52;
+            font-weight: 600;
+            border: 1px solid #b2f5ea;
+        }
+        .btn-approve {
+            background-color: #38a169;
+            color: #ffffff;
+            border: 1px solid #38a169;
+        }
+        .btn-approve:hover {
+            background-color: #2f855a;
+        }
+        .btn-reject {
+            background-color: #e53e3e;
+            color: #ffffff;
+            border: 1px solid #e53e3e;
+        }
+        .btn-reject:hover {
+            background-color: #c53030;
+        }
+        .attachment-link {
+            color: #3182ce;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+        }
+        .attachment-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+        (function() {
+            const session = localStorage.getItem('edufee_session');
+            if (!session) {
+                alert('Vui lòng đăng nhập để truy cập hệ thống!');
+                window.location.href = '../../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            if (userData.role !== 'PTC') {
+                alert('Tài khoản của bạn không có quyền truy cập cổng Phòng Tài chính!');
+                window.location.href = '../../index.html';
+            }
+        })();
+    </script>
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-building-bank" style="color: #38a169;"></i>
+                <h2>EduFee Finance</h2>
             </div>
-            <ul class="sidebar-menu">
-                <li class="menu-item"><a href="ptc.html"><i class="ti ti-presentation-analytics"></i> Thống kê tài chính</a></li>
-                <li class="menu-item"><a href="ptc_hocphi.html"><i class="ti ti-receipt-2"></i> Quản lý Thu học phí</a></li>
-                <li class="menu-item"><a href="ptc_miengiam.html"><i class="ti ti-discount-2"></i> Chính sách Miễn giảm</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar" style="background-color: #e6fcf5; color: #40c057;">LTA</div>
-                    <div class="user-info">
-                        <span class="user-name">Lê Thị A</span>
-                        <span class="user-role">Kế toán trưởng</span>
-                    </div>
-                </div>
-                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            <div class="sidebar-user-info">
+                <p class="role-badge" style="background: rgba(56, 161, 105, 0.15); color: #48bb78;">Phòng Tài chính</p>
+                <h3 id="sidebar-user-name">Cán bộ Kế toán...</h3>
             </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="ptc.html">
+                            <i class="ti ti-chart-pie"></i>
+                            <span>Báo cáo Tổng quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ptc_hocphi.html">
+                            <i class="ti ti-coin"></i>
+                            <span>Định mức Học phí</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="ptc_miengiam.html">
+                            <i class="ti ti-shield-check"></i>
+                            <span>Xét duyệt Miễn giảm</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
-        <div class="app-main">
-            <header class="app-topbar">
-                <div class="topbar-title">
-                    <h1>Quản lý chính sách Miễn giảm học phí Sinh viên</h1>
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Thẩm định & Phê duyệt Chế độ Miễn giảm Học phí</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" aria-label="Thông báo">
+                        <i class="ti ti-bell"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
                 </div>
             </header>
 
-            <main class="app-content">
-                <div class="split-container">
-                    
-                    <div class="form-card">
-                        <h2><i class="ti ti-discount" style="color: #40c057;"></i> Áp Dụng Miễn Giảm</h2>
-                        <form id="discountForm" onsubmit="event.preventDefault();">
-                            <div class="form-group">
-                                <label class="form-label" for="studentId">Mã số sinh viên (MSSV)</label>
-                                <input type="text" id="studentId" class="form-control" placeholder="Ví dụ: 22011002" style="padding-left: 14px;">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="policySelect">Diện chính sách miễn giảm</label>
-                                <select id="policySelect" class="form-control select-control" style="padding-left: 14px;">
-                                    <option value="">-- Chọn diện chính sách --</option>
-                                    <option value="CON_TB">Con thương binh, liệt sĩ (Giảm 70%)</option>
-                                    <option value="VUNG_SAU">Sinh viên vùng sâu vùng xa (Giảm 50%)</option>
-                                    <option value="KHUYET_TAT">Sinh viên khuyết tật nặng (Miễn 100%)</option>
-                                    <option value="MO_COI">Sinh viên mồ côi cả cha lẫn mẹ (Giảm 70%)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="proofFile">Tập tin minh chứng (PDF/Ảnh)</label>
-                                <input type="file" id="proofFile" class="form-control" style="padding: 6px 12px; font-size: 13px;">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="background-color: #40c057; margin-top: 8px;">
-                                <i class="ti ti-circle-check"></i> Phê duyệt ưu đãi
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="list-card">
-                        <div class="search-toolbar">
-                            <div class="search-box">
-                                <i class="ti ti-search input-icon"></i>
-                                <input type="text" class="form-control" placeholder="Tìm kiếm sinh viên diện miễn giảm...">
-                            </div>
-                            <span style="font-size: 13px; color: var(--text-muted);">Học kỳ áp dụng: <strong style="color: var(--text-main);">HK1 / 2026</strong></span>
-                        </div>
-
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">STT</th>
-                                        <th>MSSV</th>
-                                        <th>Họ và Tên</th>
-                                        <th>Diện Ưu Đãi Miễn Giảm</th>
-                                        <th style="text-align: center;">Mức Giảm</th>
-                                        <th>Số Tiền Được Giảm</th>
-                                        <th style="text-align: center; width: 100px;">Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><strong>22011002</strong></td>
-                                        <td>Lê Thị Hoài An</td>
-                                        <td>Sinh viên vùng sâu vùng xa</td>
-                                        <td style="text-align: center;"><span class="discount-badge">50%</span></td>
-                                        <td style="color: #40c057; font-weight: 600;">- 4,200,000 đ</td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Xem file minh chứng"><i class="ti ti-eye"></i></button>
-                                                <button class="btn-icon btn-delete" title="Hủy áp dụng chính sách"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><strong>23022099</strong></td>
-                                        <td>Trần Hoàng Quốc Bảo</td>
-                                        <td>Con thương binh, liệt sĩ</td>
-                                        <td style="text-align: center;"><span class="discount-badge">70%</span></td>
-                                        <td style="color: #40c057; font-weight: 600;">- 6,090,000 đ</td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Xem file minh chứng"><i class="ti ti-eye"></i></button>
-                                                <button class="btn-icon btn-delete" title="Hủy áp dụng chính sách"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><strong>24011054</strong></td>
-                                        <td>Vũ Hoàng Long</td>
-                                        <td>Sinh viên khuyết tật nặng</td>
-                                        <td style="text-align: center;"><span class="discount-badge full">100%</span></td>
-                                        <td style="color: #40c057; font-weight: 600;">- 8,550,000 đ</td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Xem file minh chứng"><i class="ti ti-eye"></i></button>
-                                                <button class="btn-icon btn-delete" title="Hủy áp dụng chính sách"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+            <main class="main-content">
+                
+                <div class="filter-tabs">
+                    <div class="tab-item active" data-status="ALL">Tất cả đơn từ (<span id="cntAll">0</span>)</div>
+                    <div class="tab-item" data-status="PENDING">Chờ xét duyệt (<span id="cntPending">0</span>)</div>
+                    <div class="tab-item" data-status="APPROVED">Đã phê duyệt (<span id="cntApproved">0</span>)</div>
+                    <div class="tab-item" data-status="REJECTED">Đã từ chối (<span id="cntRejected">0</span>)</div>
                 </div>
+
+                <div class="table-toolbar" style="padding: 0; margin-bottom: 12px;">
+                    <div class="filter-group">
+                        <p style="color: #4a5568; font-size: 14px;">Cán bộ đối chiếu tệp minh chứng đính kèm của sinh viên trước khi đưa ra quyết định xác minh hạch toán công nợ.</p>
+                    </div>
+                </div>
+
+                <div class="table-container" style="margin-top: 0;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 110px;">Mã số SV</th>
+                                <th style="width: 180px;">Tên Sinh viên</th>
+                                <th style="width: 110px;">Lớp SH</th>
+                                <th>Diện Chính Sách Miễn Giảm</th>
+                                <th style="width: 130px;" class="text-center">Mức Khấu Trừ</th>
+                                <th style="width: 160px;">Hồ Sơ Minh Chứng</th>
+                                <th style="width: 150px;" class="text-center">Trạng Thái</th>
+                                <th style="width: 200px;" class="text-center">Hành Động Quyết Định</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exemptionsTableBody">
+                            </tbody>
+                    </table>
+                </div>
+
             </main>
         </div>
     </div>
 
-    <script src="../../js/navigation.js"></script>
+    <script src="../../assets/js/navigation.js"></script>
+    <script src="../../assets/js/pdt_dashboard.js"></script>
+    <script src="../../assets/js/ptc_miengiam.js"></script>
 </body>
 </html>

@@ -1,0 +1,116 @@
+/* ==========================================================================
+   FORM CONTROLS & INPUT GROUPS (Dùng chung cho toàn hệ thống)
+   ========================================================================== */
+
+/* Nhãn trường nhập liệu */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark, #2d3748);
+}
+
+/* Khối bao bọc ô nhập liệu và Icon đi kèm */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Cấu hình icon nằm bên trong ô nhập liệu */
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: #a0aec0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+/* Ô nhập liệu chuẩn */
+.input-group input {
+    width: 100%;
+    padding: 12px 16px 12px 42px; /* Thừa lề trái 42px để nhường chỗ cho icon */
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background-color: #f7fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    color: #2d3748;
+    transition: all 0.2s ease;
+}
+
+/* Nút ẩn/hiển thị mật khẩu nằm cuối ô input */
+.input-group .btn-toggle-pwd {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.input-group .btn-toggle-pwd:hover {
+    color: #4a5568;
+}
+
+/* Trạng thái tương tác (Focus State) - Rất quan trọng trong UI/UX */
+.input-group input:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #3182ce; /* Màu xanh thương hiệu chủ đạo */
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15); /* Hiệu ứng đổ bóng mờ xung quanh khi click */
+}
+
+/* Kích hoạt đổi màu icon tương ứng khi ô input được focus */
+.input-group input:focus ~ .input-icon {
+    color: #3182ce;
+}
+
+/* Nút bấm (Buttons Base) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #3182ce;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-1px); /* Hiệu ứng nhấc nhẹ nút lên khi đưa chuột vào */
+}
+
+.btn-primary:active {
+    background-color: #2c5282;
+    transform: translateY(0);
+}
+
+.btn-block {
+    width: 100%;
+}

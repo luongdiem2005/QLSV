@@ -3,296 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh mục Môn học - Phân hệ Phòng Đào Tạo</title>
+    <title>EduFee - Danh mục Môn học</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/layout.css">
-    
-    <style>
-        .split-container {
-            display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 20px;
-            align-items: start;
-        }
-        
-        /* Khối Form nhập liệu bên trái */
-        .form-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            position: sticky;
-            top: 20px;
-        }
-        .form-card h2 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* Khối danh sách bên phải */
-        .list-card {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .search-toolbar {
-            background-color: #ffffff;
-            padding: 14px 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-        }
-        .search-box input {
-            padding-left: 36px;
-        }
-        
-        /* Bảng dữ liệu */
-        .table-container {
-            background-color: #ffffff;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-        .data-table thead {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .data-table th {
-            padding: 14px 18px;
-            font-weight: 600;
-            color: #495057;
-        }
-        .data-table tbody tr {
-            border-bottom: 1px solid var(--border-color);
-            transition: var(--transition-fast);
-        }
-        .data-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .data-table td {
-            padding: 14px 18px;
-            color: var(--text-main);
-        }
-        
-        /* Badges phân loại môn học */
-        .badge {
-            display: inline-flex;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .badge-lt { background-color: #e7f5ff; color: var(--primary-color); }
-        .badge-th { background-color: #f3f0ff; color: #7c3aed; }
-        
-        /* Thao tác */
-        .actions-cell {
-            display: flex;
-            gap: 6px;
-        }
-        .btn-icon {
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            border-radius: 6px;
-            background: #f1f3f5;
-            border: none;
-            color: #495057;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-fast);
-        }
-        .btn-icon:hover { background-color: #dee2e6; color: var(--text-main); }
-        .btn-delete:hover { background-color: #ffe3e3; color: var(--error-color); }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
 
-    <div class="app-wrapper">
-        <aside class="app-sidebar">
-            <div class="sidebar-header">
-                <div class="btn btn-primary brand-icon"><i class="ti ti-school"></i></div>
-                <div class="brand-title">
-                    <h2>EduFee</h2>
-                    <span>Phòng Đào Tạo</span>
-                </div>
+    <script>
+        (function() {
+            const session = localStorage.getItem('edufee_session');
+            if (!session) {
+                alert('Vui lòng đăng nhập để truy cập hệ thống!');
+                window.location.href = '../../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            if (userData.role !== 'PDT') {
+                alert('Bạn không có quyền truy cập vào phân hệ này!');
+                window.location.href = '../../index.html';
+            }
+        })();
+    </script>
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee</h2>
             </div>
-            <ul class="sidebar-menu">
-                <li class="menu-item"><a href="pdt.html"><i class="ti ti-home"></i> Trang chủ tổng quan</a></li>
-                <li class="menu-item"><a href="pdt_sv.html"><i class="ti ti-users"></i> Quản lý Sinh viên</a></li>
-                <li class="menu-item"><a href="pdt_nganhhoc.html"><i class="ti ti-building-community"></i> Quản lý Ngành học</a></li>
-                <li class="menu-item"><a href="pdt_monhoc.html"><i class="ti ti-book"></i> Danh mục Môn học</a></li>
-                <li class="menu-item"><a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i> Đăng ký học phần</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar">NVB</div>
-                    <div class="user-info">
-                        <span class="user-name">Nguyễn Văn B</span>
-                        <span class="user-role">Cán bộ Đào tạo</span>
-                    </div>
-                </div>
-                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            <div class="sidebar-user-info">
+                <p class="role-badge">Phòng Đào tạo</p>
+                <h3 id="sidebar-username">Cán bộ PDT</h3>
             </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="pdt.html">
+                            <i class="ti ti-layout-dashboard"></i>
+                            <span>Tổng quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_sv.html">
+                            <i class="ti ti-users"></i>
+                            <span>Quản lý Sinh viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_nganhhoc.html">
+                            <i class="ti ti-building-community"></i>
+                            <span>Quản lý Ngành học</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="pdt_monhoc.html">
+                            <i class="ti ti-book"></i>
+                            <span>Danh mục Môn học</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_dkhp.html">
+                            <i class="ti ti-clipboard-list"></i>
+                            <span>Mở lớp Học phần</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
-        <div class="app-main">
-            <header class="app-topbar">
-                <div class="topbar-title">
-                    <h1>Quản lý Danh mục Môn học hệ thống</h1>
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Quản lý Danh mục Môn học</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" aria-label="Thông báo">
+                        <i class="ti ti-bell"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
                 </div>
             </header>
 
-            <main class="app-content">
-                <div class="split-container">
-                    
-                    <div class="form-card">
-                        <h2><i class="ti ti-book-plus" style="color: var(--primary-color);"></i> Thêm Môn Học Mới</h2>
-                        <form id="subjectForm" onsubmit="event.preventDefault();">
-                            <div class="form-group">
-                                <label class="form-label" for="subjectCode">Mã môn học</label>
-                                <input type="text" id="subjectCode" class="form-control" placeholder="Ví dụ: INT1301" style="padding-left: 14px;">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="subjectName">Tên môn học</label>
-                                <input type="text" id="subjectName" class="form-control" placeholder="Ví dụ: Nhập môn lập trình" style="padding-left: 14px;">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="creditsSelect">Số tín chỉ</label>
-                                <select id="creditsSelect" class="form-control select-control" style="padding-left: 14px;">
-                                    <option value="2">2 Tín chỉ</option>
-                                    <option value="3" selected>3 Tín chỉ</option>
-                                    <option value="4">4 Tín chỉ</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="subjectType">Loại môn học</label>
-                                <select id="subjectType" class="form-control select-control" style="padding-left: 14px;">
-                                    <option value="LT">Lý thuyết (Tính học phí tiêu chuẩn)</option>
-                                    <option value="TH">Thực hành (Hệ số học phí cao hơn)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="prerequisiteSelect">Môn học trước (Ràng buộc)</label>
-                                <select id="prerequisiteSelect" class="form-control select-control" style="padding-left: 14px;">
-                                    <option value="">-- Không có (Môn cơ sở) --</option>
-                                    <option value="INT1301">Nhập môn lập trình</option>
-                                    <option value="INT1302">Kỹ thuật lập trình</option>
-                                    <option value="MAT1101">Toán cao cấp A1</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">
-                                <i class="ti ti-plus"></i> Cập nhật danh mục
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="list-card">
-                        <div class="search-toolbar">
-                            <div class="search-box">
-                                <i class="ti ti-search input-icon"></i>
-                                <input type="text" class="form-control" placeholder="Tìm theo mã hoặc tên môn học...">
-                            </div>
-                            <select class="form-control select-control" style="width: 160px; padding-left: 14px;">
-                                <option value="">-- Tất cả loại --</option>
-                                <option value="LT">Lý thuyết</option>
-                                <option value="TH">Thực hành</option>
-                            </select>
+            <main class="main-content">
+                
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchSubject" placeholder="Tìm theo mã môn hoặc tên môn học...">
                         </div>
-
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">STT</th>
-                                        <th>Mã Môn</th>
-                                        <th>Tên Môn Học</th>
-                                        <th style="width: 80px;">Số TC</th>
-                                        <th>Loại Môn</th>
-                                        <th>Môn Học Trước</th>
-                                        <th style="text-align: center; width: 90px;">Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><strong>INT1301</strong></td>
-                                        <td>Nhập môn lập trình</td>
-                                        <td>3</td>
-                                        <td><span class="badge badge-lt">Lý thuyết</span></td>
-                                        <td style="color: var(--text-muted); font-style: italic;">Không có</td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Sửa môn học"><i class="ti ti-edit"></i></button>
-                                                <button class="btn-icon btn-delete" title="Xóa môn học"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><strong>INT1302</strong></td>
-                                        <td>Kỹ thuật lập trình</td>
-                                        <td>3</td>
-                                        <td><span class="badge badge-th">Thực hành</span></td>
-                                        <td><strong style="color: #495057;">INT1301</strong></td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Sửa môn học"><i class="ti ti-edit"></i></button>
-                                                <button class="btn-icon btn-delete" title="Xóa môn học"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><strong>INT1303</strong></td>
-                                        <td>Cấu trúc dữ liệu & Giải thuật</td>
-                                        <td>4</td>
-                                        <td><span class="badge badge-lt">Lý thuyết</span></td>
-                                        <td><strong style="color: #495057;">INT1302</strong></td>
-                                        <td style="text-align: center;">
-                                            <div class="actions-cell" style="justify-content: center;">
-                                                <button class="btn-icon" title="Sửa môn học"><i class="ti ti-edit"></i></button>
-                                                <button class="btn-icon btn-delete" title="Xóa môn học"><i class="ti ti-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <select id="filterType" class="form-select">
+                            <option value="">-- Tất cả loại môn --</option>
+                            <option value="Lý thuyết">Lý thuyết</option>
+                            <option value="Thực hành">Thực hành</option>
+                        </select>
                     </div>
+                    <button class="btn btn-primary" id="btnOpenAddModal">
+                        <i class="ti ti-book-upload"></i>
+                        <span>Thêm môn học mới</span>
+                    </button>
+                </div>
 
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">STT</th>
+                                <th style="width: 130px;">Mã Môn</th>
+                                <th>Tên Môn Học</th>
+                                <th style="width: 120px;" class="text-center">Số Tín Chỉ</th>
+                                <th style="width: 150px;">Loại Môn</th>
+                                <th>Môn Học Trước (Tiên quyết)</th>
+                                <th style="width: 120px;" class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjectTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td><strong>IT007</strong></td>
+                                <td>Hệ điều hành</td>
+                                <td class="text-center">4</td>
+                                <td>Lý thuyết</td>
+                                <td><span class="badge-info">Không có</span></td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-edit" title="Sửa"><i class="ti ti-edit"></i></button>
+                                        <button class="btn-action btn-delete" title="Xóa"><i class="ti ti-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-wrapper">
+                    <p class="pagination-info">Hiển thị dữ liệu danh mục môn học</p>
                 </div>
             </main>
         </div>
     </div>
 
-    <script src="../../js/navigation.js"></script>
+    <div id="subjectModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Thêm môn học mới</h3>
+                <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+            </div>
+            <form id="subjectForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subjectId">Mã Môn Học *</label>
+                            <input type="text" id="subjectId" name="subjectId" placeholder="Ví dụ: IT007" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectName">Tên Môn Học *</label>
+                            <input type="text" id="subjectName" name="subjectName" placeholder="Ví dụ: Hệ điều hành" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subjectCredits">Số Tín Chỉ *</label>
+                            <input type="number" id="subjectCredits" name="subjectCredits" min="1" max="10" placeholder="Ví dụ: 3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectType">Loại Môn Học *</label>
+                            <select id="subjectType" name="subjectType" required>
+                                <option value="Lý thuyết">Lý thuyết</option>
+                                <option value="Thực hành">Thực hành</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="subjectPrerequisite">Môn Học Trước (Điều kiện tiên quyết)</label>
+                            <select id="subjectPrerequisite" name="subjectPrerequisite">
+                                <option value="none">-- Không có môn học trước --</option>
+                                </select>
+                            <small style="color: #718096; margin-top: 4px; display: block;">
+                                Sinh viên bắt buộc phải hoàn thành môn học này trước khi đăng ký môn mới.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveSubject">Lưu môn học</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/navigation.js"></script>
+    <script src="../../assets/js/pdt_dashboard.js"></script>
+    <script src="../../assets/js/pdt_monhoc.js"></script>
 </body>
 </html>

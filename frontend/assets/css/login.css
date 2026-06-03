@@ -1,0 +1,178 @@
+/* ==========================================================================
+   LOGIN PAGE SPECIFIC STYLES
+   ========================================================================== */
+
+/* Định hình toàn bộ màn hình nền */
+.login-page {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #e6fffa 0%, #ebf8ff 100%); /* Nền chuyển màu nhẹ nhàng, dễ chịu */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Hộp container chính, thiết kế dạng "Split-screen" thu nhỏ mượt mà */
+.login-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    min-height: 520px;
+    overflow: hidden; /* Cắt góc bo tròn cho các thành phần con bên trong */
+}
+
+/* Khối thương hiệu bên trái (Hữu ích khi chấm điểm thẩm mỹ) */
+.login-brand {
+    background: linear-gradient(135deg, #2b6cb0 0%, #3182ce 100%);
+    color: #ffffff;
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.brand-logo {
+    width: 64px;
+    height: 64px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.login-brand h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+}
+
+.login-brand p {
+    font-size: 15px;
+    color: #ebf8ff;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    max-width: 260px;
+}
+
+.version-tag {
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #e2e8f0;
+}
+
+/* Khối form đăng nhập bên phải */
+.login-card {
+    padding: 40px;
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 8px 0;
+}
+
+.login-card .subtitle {
+    font-size: 14px;
+    color: #718096;
+    margin: 0 0 24px 0;
+}
+
+/* Căn chỉnh hàng "Ghi nhớ" và "Quên mật khẩu" */
+.login-actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+/* Tùy biến ô Checkbox xinh xắn hơn mặc định */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #4a5568;
+    user-select: none;
+}
+
+.forgot-password-link {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Kiểu dáng cho hộp thông báo lỗi động */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.alert-danger {
+    background-color: #fff5f5;
+    border: 1px solid #fed7d7;
+    color: #c53030;
+}
+
+/* Lớp ẩn bổ trợ điều khiển bằng JS */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tương thích thiết bị di động)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column; /* Chuyển dọc trên màn hình điện thoại */
+        max-width: 450px;
+    }
+    
+    .login-brand {
+        padding: 30px 20px;
+    }
+    
+    .login-brand p {
+        margin-bottom: 0;
+    }
+    
+    .login-card {
+        padding: 30px 20px;
+    }
+}
+/* Hiệu ứng rung khung báo lỗi (CSS Keyframes) */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}

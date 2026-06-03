@@ -3,161 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Điều phối Đăng ký học phần - Phân hệ Phòng Đào Tạo</title>
+    <title>EduFee - Mở lớp Học phần</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/layout.css">
-    
-    <style>
-        .toolbar-panel {
-            background-color: #ffffff;
-            padding: 16px 20px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .filter-inline {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        /* Cấu trúc Bảng danh sách môn mở */
-        .table-container {
-            background-color: #ffffff;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-        .data-table thead {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .data-table th {
-            padding: 14px 18px;
-            font-weight: 600;
-            color: #495057;
-        }
-        .data-table tbody tr {
-            border-bottom: 1px solid var(--border-color);
-            transition: var(--transition-fast);
-        }
-        .data-table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .data-table td {
-            padding: 14px 18px;
-            color: var(--text-main);
-            vertical-align: middle;
-        }
-        
-        /* Tiến trình lấp đầy lớp học (Progress) */
-        .progress-bar-wrapper {
-            width: 120px;
-        }
-        .progress-track {
-            width: 100%;
-            height: 6px;
-            background-color: #e9ecef;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 3px;
-        }
-        .progress-fill.full {
-            background-color: var(--error-color);
-        }
-        
-        /* Badge trạng thái Đóng/Mở cổng */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .status-open { background-color: #e6fcf5; color: var(--success-color); }
-        .status-closed { background-color: #fff5f5; color: var(--error-color); }
-        
-        /* Nút thao tác nhanh */
-        .btn-action-sm {
-            padding: 6px 12px;
-            font-size: 12.5px;
-            border-radius: var(--radius-sm);
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
 
-    <div class="app-wrapper">
-        <aside class="app-sidebar">
-            <div class="sidebar-header">
-                <div class="btn btn-primary brand-icon"><i class="ti ti-school"></i></div>
-                <div class="brand-title">
-                    <h2>EduFee</h2>
-                    <span>Phòng Đào Tạo</span>
-                </div>
+    <script>
+        (function() {
+            const session = localStorage.getItem('edufee_session');
+            if (!session) {
+                alert('Vui lòng đăng nhập để truy cập hệ thống!');
+                window.location.href = '../../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            if (userData.role !== 'PDT') {
+                alert('Bạn không có quyền truy cập vào phân hệ này!');
+                window.location.href = '../../index.html';
+            }
+        })();
+    </script>
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee</h2>
             </div>
-            <ul class="sidebar-menu">
-                <li class="menu-item"><a href="pdt.html"><i class="ti ti-home"></i> Trang chủ tổng quan</a></li>
-                <li class="menu-item"><a href="pdt_sv.html"><i class="ti ti-users"></i> Quản lý Sinh viên</a></li>
-                <li class="menu-item"><a href="pdt_nganhhoc.html"><i class="ti ti-building-community"></i> Quản lý Ngành học</a></li>
-                <li class="menu-item"><a href="pdt_monhoc.html"><i class="ti ti-book"></i> Danh mục Môn học</a></li>
-                <li class="menu-item"><a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i> Đăng ký học phần</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar">NVB</div>
-                    <div class="user-info">
-                        <span class="user-name">Nguyễn Văn B</span>
-                        <span class="user-role">Cán bộ Đào tạo</span>
-                    </div>
-                </div>
-                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            <div class="sidebar-user-info">
+                <p class="role-badge">Phòng Đào tạo</p>
+                <h3 id="sidebar-username">Cán bộ PDT</h3>
             </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="pdt.html">
+                            <i class="ti ti-layout-dashboard"></i>
+                            <span>Tổng quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_sv.html">
+                            <i class="ti ti-users"></i>
+                            <span>Quản lý Sinh viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_nganhhoc.html">
+                            <i class="ti ti-building-community"></i>
+                            <span>Quản lý Ngành học</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_monhoc.html">
+                            <i class="ti ti-book"></i>
+                            <span>Danh mục Môn học</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="pdt_dkhp.html">
+                            <i class="ti ti-clipboard-list"></i>
+                            <span>Mở lớp Học phần</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
-        <div class="app-main">
-            <header class="app-topbar">
-                <div class="topbar-title">
-                    <h1>Quản lý mở môn & Điều phối Đăng ký học phần</h1>
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Quản lý Mở lớp Đăng ký học phần</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" aria-label="Thông báo">
+                        <i class="ti ti-bell"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
                 </div>
             </header>
 
-            <main class="app-content">
-                <div class="toolbar-panel">
-                    <div class="filter-inline">
-                        <label class="form-label" for="semesterFilter" style="margin-bottom: 0; white-space: nowrap; font-weight: 600;">Học kỳ tác vụ:</label>
-                        <select id="semesterFilter" class="form-control select-control" style="width: 240px;">
-                            <option value="20261" selected>Học kỳ 1 - Năm học 2026-2027</option>
-                            <option value="20253">Học kỳ phụ - Năm học 2025-2026</option>
-                            <option value="20252">Học kỳ 2 - Năm học 2025-2026</option>
+            <main class="main-content">
+                
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchClassSubject" placeholder="Tìm theo mã lớp, mã môn...">
+                        </div>
+                        <select id="filterYear" class="form-select">
+                            <option value="2025-2026">Năm học 2025-2026</option>
+                            <option value="2026-2027" selected>Năm học 2026-2027</option>
+                        </select>
+                        <select id="filterSemester" class="form-select">
+                            <option value="">-- Tất cả HK --</option>
+                            <option value="HK1">Học kỳ 1</option>
+                            <option value="HK2">Học kỳ 2</option>
+                            <option value="HK3">Học kỳ 3 (Hè)</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-primary">
-                        <i class="ti ti-calendar-plus"></i> Mở môn học kỳ
+                    <button class="btn btn-primary" id="btnOpenAddModal">
+                        <i class="ti ti-square-rounded-plus"></i>
+                        <span>Mở lớp học phần mới</span>
                     </button>
                 </div>
 
@@ -166,86 +125,100 @@
                         <thead>
                             <tr>
                                 <th style="width: 60px;">STT</th>
-                                <th>Mã Môn</th>
-                                <th>Tên Môn Học Được Mở</th>
-                                <th style="width: 80px;">Số TC</th>
-                                <th>Sĩ số tối đa</th>
-                                <th>Hiện tại / Tiến trình</th>
-                                <th>Trạng thái cổng</th>
-                                <th style="text-align: center; width: 140px;">Tác vụ điều khiển</th>
+                                <th style="width: 140px;">Mã Lớp HP</th>
+                                <th style="width: 100px;">Học Kỳ</th>
+                                <th>Môn Học Học Phần</th>
+                                <th style="width: 100px;" class="text-center">Số TC</th>
+                                <th style="width: 150px;" class="text-center">Số Lượng Đăng Ký</th>
+                                <th style="width: 150px;" class="text-center">Trạng Thái Lớp</th>
+                                <th style="width: 120px;" class="text-center">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="classTableBody">
                             <tr>
                                 <td>1</td>
-                                <td><strong>INT1301</strong></td>
-                                <td>Nhập môn lập trình</td>
-                                <td>3</td>
-                                <td><strong>80</strong> sinh viên</td>
-                                <td>
-                                    <div class="progress-bar-wrapper">
-                                        <span style="font-size: 13px; font-weight: 500;">72 / 80</span>
-                                        <div class="progress-track">
-                                            <div class="progress-fill" style="width: 90%;"></div>
-                                        </div>
+                                <td><strong>SE104.O11</strong></td>
+                                <td>HK1 (26-27)</td>
+                                <td>Nhập môn Công nghệ phần mềm (SE104)</td>
+                                <td class="text-center">3</td>
+                                <td class="text-center">
+                                    <span class="badge-count"><strong>25</strong> / 50</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="status-indicator active">Đang mở ĐK</span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-edit" title="Sửa cấu hình"><i class="ti ti-edit"></i></button>
+                                        <button class="btn-action btn-delete" title="Hủy lớp"><i class="ti ti-trash"></i></button>
                                     </div>
-                                </td>
-                                <td><span class="status-badge status-open"><i class="ti ti-circle-check"></i> Đang mở</span></td>
-                                <td style="text-align: center;">
-                                    <button type="button" class="btn btn-action-sm" style="border: 1px solid var(--border-color); background: #ffffff; color: var(--error-color);">
-                                        <i class="ti ti-lock"></i> Khóa lại
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><strong>INT1302</strong></td>
-                                <td>Kỹ thuật lập trình</td>
-                                <td>3</td>
-                                <td><strong>60</strong> sinh viên</td>
-                                <td>
-                                    <div class="progress-bar-wrapper">
-                                        <span style="font-size: 13px; font-weight: 500; color: var(--error-color);">60 / 60 (Đầy)</span>
-                                        <div class="progress-track">
-                                            <div class="progress-fill full" style="width: 100%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-open"><i class="ti ti-circle-check"></i> Đang mở</span></td>
-                                <td style="text-align: center;">
-                                    <button type="button" class="btn btn-action-sm" style="border: 1px solid var(--border-color); background: #ffffff; color: var(--error-color);">
-                                        <i class="ti ti-lock"></i> Khóa lại
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><strong>INT1303</strong></td>
-                                <td>Cấu trúc dữ liệu & Giải thuật</td>
-                                <td>4</td>
-                                <td><strong>70</strong> sinh viên</td>
-                                <td>
-                                    <div class="progress-bar-wrapper">
-                                        <span style="font-size: 13px; font-weight: 500;">0 / 70</span>
-                                        <div class="progress-track">
-                                            <div class="progress-fill" style="width: 0%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-closed"><i class="ti ti-circle-x"></i> Đang đóng</span></td>
-                                <td style="text-align: center;">
-                                    <button type="button" class="btn btn-primary btn-action-sm">
-                                        <i class="ti ti-lock-open"></i> Mở cổng
-                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <div class="pagination-wrapper">
+                    <p class="pagination-info">Hiển thị danh sách lớp học phần mở theo điều kiện lọc</p>
+                </div>
             </main>
         </div>
     </div>
 
-    <script src="../../js/navigation.js"></script>
+    <div id="classModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Mở lớp học phần mới</h3>
+                <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+            </div>
+            <form id="classForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classYear">Năm Học *</label>
+                            <select id="classYear" name="classYear" required>
+                                <option value="2025-2026">2025-2026</option>
+                                <option value="2026-2027" selected>2026-2027</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="classSemester">Học Kỳ *</label>
+                            <select id="classSemester" name="classSemester" required>
+                                <option value="HK1">Học kỳ 1</option>
+                                <option value="HK2">Học kỳ 2</option>
+                                <option value="HK3">Học kỳ 3 (Hè)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classSubjectId">Môn Học Mở Lớp *</label>
+                            <select id="classSubjectId" name="classSubjectId" required>
+                                </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classId">Mã Lớp Học Phần *</label>
+                            <input type="text" id="classId" name="classId" placeholder="Ví dụ: SE104.O11" required>
+                            <small style="color: #718096; margin-top: 2px; display: block;">Quy tắc: [Mã môn].[Mã lớp]</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="classMaxStudents">Sĩ Số Tối Đa (Sinh viên) *</label>
+                            <input type="number" id="classMaxStudents" name="classMaxStudents" min="10" max="150" value="50" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveClass">Xác nhận mở lớp</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/navigation.js"></script>
+    <script src="../../assets/js/pdt_dashboard.js"></script>
+    <script src="../../assets/js/pdt_dkhp.js"></script>
 </body>
 </html>

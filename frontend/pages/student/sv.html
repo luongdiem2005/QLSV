@@ -3,190 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Sinh viên - EduFee</title>
+    <title>EduFee - Cổng Đăng ký học phần trực tuyến</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/layout.css">
-    
-    <style>
-        /* Khối thông tin sinh viên */
-        .student-profile-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            gap: 24px;
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css"> <style>
+        .student-profile-bar {
+            background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
             margin-bottom: 24px;
-        }
-        .student-avatar-lg {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background-color: #edf2ff;
-            color: #4c6ef5;
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #4c6ef5;
-        }
-        .profile-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px 24px;
-            flex-grow: 1;
+            gap: 16px;
         }
-        .profile-item {
-            font-size: 14px;
-            color: var(--text-muted);
+        .profile-item span {
+            display: block;
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 4px;
         }
         .profile-item strong {
-            color: var(--text-main);
-            display: block;
-            margin-top: 2px;
+            font-size: 15px;
+            color: #2d3748;
         }
-
-        /* Khối thông báo nhắc nhở */
-        .alert-panel {
-            background-color: #fff9db;
-            border: 1px solid #ffe066;
-            border-radius: var(--radius-md);
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #856404;
-            font-size: 14px;
-        }
-
-        /* Widgets số liệu cá nhân */
-        .widget-grid {
+        .register-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr;
+            gap: 24px;
         }
-        .widget-card {
+        .cart-section {
             background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             padding: 20px;
+            margin-top: 12px;
         }
-        .widget-card-header {
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .cart-header h3 {
+            font-size: 16px;
+            color: #2d3748;
             display: flex;
             align-items: center;
+            gap: 8px;
+        }
+        .summary-billing-card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
             justify-content: space-between;
-            margin-bottom: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .billing-info p {
+            margin: 4px 0;
+            color: #4a5568;
             font-size: 14px;
-            font-weight: 600;
-            color: #495057;
+        }
+        .billing-total {
+            font-size: 20px;
+            color: #3182ce;
+            font-weight: 700;
+        }
+        .btn-success {
+            background-color: #38a169;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #2f855a;
+        }
+        .badge-prereq {
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: inline-block;
+            margin-top: 4px;
         }
     </style>
-</head>
-<body>
 
-    <div class="app-wrapper">
-        <aside class="app-sidebar">
-            <div class="sidebar-header">
-                <div class="btn btn-primary brand-icon" style="background-color: #4c6ef5; box-shadow: 0 4px 12px rgba(76, 110, 245, 0.3);">
-                    <i class="ti ti-user-square-toggle"></i>
-                </div>
-                <div class="brand-title">
-                    <h2>EduFee</h2>
-                    <span style="color: #4c6ef5;">Portal Sinh Viên</span>
-                </div>
+    <script>
+        (function() {
+            const session = localStorage.getItem('edufee_session');
+            if (!session) {
+                alert('Vui lòng đăng nhập để truy cập hệ thống!');
+                window.location.href = '../../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            if (userData.role !== 'STUDENT') {
+                alert('Tài khoản của bạn không có quyền truy cập cổng Sinh viên!');
+                window.location.href = '../../index.html';
+            }
+        })();
+    </script>
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee Portal</h2>
             </div>
-            <ul class="sidebar-menu">
-                <li class="menu-item"><a href="sv.html"><i class="ti ti-layout-dashboard"></i> Trang chủ tổng quan</a></li>
-                <li class="menu-item"><a href="sv_dkhp.html"><i class="ti ti-edit-circle"></i> Đăng ký học phần</a></li>
-                <li class="menu-item"><a href="sv_hocphi.html"><i class="ti ti-credit-card"></i> Tra cứu học phí</a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar" style="background-color: #edf2ff; color: #4c6ef5;">ATT</div>
-                    <div class="user-info">
-                        <span class="user-name">Nguyễn Trần Anh Tuấn</span>
-                        <span class="user-role">MSSV: 22011001</span>
-                    </div>
-                </div>
-                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            <div class="sidebar-user-info">
+                <p class="role-badge" style="background: rgba(49, 130, 206, 0.2); color: #63b3ed;">Cổng Sinh viên</p>
+                <h3 id="sidebar-student-name">Sinh viên Loading...</h3>
             </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="sv.html">
+                            <i class="ti ti-edit-circle"></i>
+                            <span>Đăng ký học phần</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="sv_hocphi.html">
+                            <i class="ti ti-wallet"></i>
+                            <span>Tra cứu Học phí</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="sv_lsgd.html">
+                            <i class="ti ti-history"></i>
+                            <span>Lịch sử giao dịch</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
-        <div class="app-main">
-            <header class="app-topbar">
-                <div class="topbar-title">
-                    <h1>Xin chào, Nguyễn Trần Anh Tuấn! Chúc bạn một ngày học tập tốt lành.</h1>
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Đăng ký môn học trực tuyến</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" aria-label="Thông báo hệ thống">
+                        <i class="ti ti-bell"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
                 </div>
             </header>
 
-            <main class="app-content">
+            <main class="main-content">
                 
-                <div class="alert-panel">
-                    <i class="ti ti-bell-ringing" style="font-size: 20px; color: #f59e0b;"></i>
-                    <div>
-                        <strong>Thông báo quan trọng:</strong> Cổng Đăng ký học phần Học kỳ 1 (Năm học 2026-2027) đang mở. Hạn cuối đóng học phí đối soát là ngày <strong>15/07/2026</strong>. Vui lòng hoàn thành đúng hạn để tránh bị khóa quyền đăng ký thi.
+                <div class="student-profile-bar">
+                    <div class="profile-item">
+                        <span>Họ và tên sinh viên</span>
+                        <strong id="profName">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>Mã số sinh viên (MSSV)</span>
+                        <strong id="profId">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>Lớp sinh hoạt</span>
+                        <strong id="profClass">-</strong>
+                    </div>
+                    <div class="profile-item">
+                        <span>Ngành học đào tạo</span>
+                        <strong id="profMajor">-</strong>
                     </div>
                 </div>
 
-                <div class="student-profile-card">
-                    <div class="student-avatar-lg">NT</div>
-                    <div class="profile-grid">
-                        <div class="profile-item">Mã số sinh viên: <strong>22011001</strong></div>
-                        <div class="profile-item">Lớp sinh hoạt: <strong>CNTT22A</strong></div>
-                        <div class="profile-item">Ngành học: <strong>Công nghệ thông tin</strong></div>
-                        <div class="profile-item">Bậc đào tạo: <strong>Đại học chính quy</strong></div>
-                        <div class="profile-item">Khóa học: <strong>K22 (2022 - 2026)</strong></div>
-                        <div class="profile-item">Trạng thái học tập: <strong style="color: #40c057;">Đang học</strong></div>
-                    </div>
-                </div>
-
-                <div class="widget-grid">
+                <div class="register-grid">
                     
-                    <div class="widget-card" style="border-left: 4px solid #40c057;">
-                        <div class="widget-card-header">
-                            <span>Học phí Học kỳ hiện tại</span>
-                            <i class="ti ti-wallet" style="color: #40c057; font-size: 20px;"></i>
-                        </div>
-                        <div style="margin-top: 8px;">
-                            <span style="font-size: 13px; color: var(--text-muted);">Tổng nghĩa vụ phát sinh:</span>
-                            <h3 style="font-size: 22px; font-weight: 700; color: var(--text-main); margin: 4px 0;">8,700,000 đ</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-color);">
-                                <span style="color: #40c057; font-weight: 500;"><i class="ti ti-circle-check"></i> Đã nộp: 8,700,000 đ</span>
-                                <span style="color: var(--text-muted);">Còn nợ: 0 đ</span>
+                    <div class="available-section">
+                        <div class="table-toolbar" style="margin-bottom: 12px; padding: 0;">
+                            <div class="filter-group">
+                                <h2 style="font-size: 16px; color: #2d3748; font-weight: 600;">Lớp học phần mở trong học kỳ</h2>
+                                <div class="search-box" style="width: 280px;">
+                                    <i class="ti ti-search"></i>
+                                    <input type="text" id="searchClass" placeholder="Tìm nhanh theo mã lớp, tên môn...">
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 130px;">Mã Lớp HP</th>
+                                        <th>Tên Môn Học Học Phần</th>
+                                        <th style="width: 80px;" class="text-center">Số TC</th>
+                                        <th style="width: 100px;">Loại môn</th>
+                                        <th>Môn học tiên quyết</th>
+                                        <th style="width: 120px;" class="text-center">Sĩ số lớp</th>
+                                        <th style="width: 120px;" class="text-center">Chọn đăng ký</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="availableClassTableBody">
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <div class="widget-card" style="border-left: 4px solid #4c6ef5;">
-                        <div class="widget-card-header">
-                            <span>Tiến độ tích lũy chương trình</span>
-                            <i class="ti ti-school" style="color: #4c6ef5; font-size: 20px;"></i>
+                    <div class="cart-section">
+                        <div class="cart-header">
+                            <h3>
+                                <i class="ti ti-checkbox" style="color: #38a169; font-size: 20px;"></i>
+                                Danh sách các lớp học phần đã chọn đăng ký thành công
+                            </h3>
+                            <span class="badge-count" id="cartCountBadge" style="background:#e2e8f0; color:#4a5568; font-family: monospace; font-weight: bold; padding: 4px 8px; border-radius: 4px;">Đã chọn: 0 môn</span>
                         </div>
-                        <div style="margin-top: 8px;">
-                            <span style="font-size: 13px; color: var(--text-muted);">Số tín chỉ đã đạt:</span>
-                            <h3 style="font-size: 22px; font-weight: 700; color: var(--text-main); margin: 4px 0;">78 / 132 TC</h3>
-                            <div style="width: 100%; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; margin-top: 10px;">
-                                <div style="width: 59%; height: 100%; background: #4c6ef5;"></div>
+
+                        <div class="table-container" style="box-shadow: none; border: 1px solid #edf2f7;">
+                            <table class="data-table" style="background: #fafafa;">
+                                <thead style="background: #edf2f7;">
+                                    <tr>
+                                        <th style="width: 60px;">STT</th>
+                                        <th style="width: 140px;">Mã Lớp HP</th>
+                                        <th>Tên Môn Học</th>
+                                        <th style="width: 100px;" class="text-center">Số Tín Chỉ</th>
+                                        <th style="width: 130px;">Loại môn</th>
+                                        <th style="width: 160px;" class="text-right">Học phí tạm tính</th>
+                                        <th style="width: 100px;" class="text-center">Xóa bỏ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="selectedClassTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center" style="color: #a0aec0; padding: 24px; font-style: italic;">
+                                            Chưa có môn học nào được đăng ký trong học kỳ này.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="summary-billing-card">
+                            <div class="billing-info">
+                                <p>Tổng số tín chỉ đăng ký: <strong id="totalCreditsOut" style="color: #2d3748;">0</strong> tín chỉ</p>
+                                <p>Định mức học phí hệ thống: <span style="font-size: 13px; color: #718096;">Lý thuyết: 450.000đ/TC | Thực hành: 550.000đ/TC</span></p>
+                            </div>
+                            <div class="billing-action" style="display: flex; align-items: center; gap: 20px;">
+                                <div>
+                                    <span style="font-size: 12px; color: #718096; display: block; text-align: right;">Học phí tạm tính tổng cộng</span>
+                                    <span class="billing-total" id="totalTuitionOut">0 VNĐ</span>
+                                </div>
+                                <button class="btn btn-success" id="btnSubmitRegistration" style="height: 44px; padding: 0 20px;">
+                                    <i class="ti ti-cloud-upload"></i>
+                                    <span>Ghi nhận đăng ký</span>
+                                </button>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
-
             </main>
         </div>
     </div>
 
-    <script src="../../js/navigation.js"></script>
+    <script src="../../assets/js/navigation.js"></script>
+    <script src="../../assets/js/pdt_dashboard.js"></script> <script src="../../assets/js/sv.js"></script>
 </body>
 </html>
