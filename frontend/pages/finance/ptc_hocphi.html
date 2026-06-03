@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thu học phí - Phân hệ Phòng Tài Chính</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    
+    <style>
+        .table-toolbar {
+            background-color: #ffffff;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            position: relative;
+            width: 260px;
+        }
+        .search-box input {
+            padding-left: 36px;
+        }
+        
+        /* Cấu trúc Bảng công nợ học phí */
+        .table-container {
+            background-color: #ffffff;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+            min-width: 1000px; /* Đảm bảo bảng rộng rãi, hiển thị đủ cấu trúc bóc tách tín chỉ */
+        }
+        .data-table thead {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table th {
+            padding: 14px 16px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .data-table td {
+            padding: 14px 16px;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        
+        /* Nhãn trạng thái đóng tiền */
+        .status-badge {
+            display: inline-flex;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-paid { background-color: #e6fcf5; color: #40c057; }
+        .status-partial { background-color: #fff9db; color: #f59e0b; }
+        .status-unpaid { background-color: #fff5f5; color: var(--error-color); }
+        
+        /* Nút tác vụ thu tiền nhanh */
+        .btn-collect {
+            background-color: #40c057;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12.5px;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition-fast);
+        }
+        .btn-collect:hover {
+            background-color: #37b24d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="btn btn-primary brand-icon" style="background-color: #40c057; box-shadow: 0 4px 12px rgba(64, 192, 87, 0.3);">
+                    <i class="ti ti-wallet"></i>
+                </div>
+                <div class="brand-title">
+                    <h2>EduFee</h2>
+                    <span style="color: #40c057;">Phòng Tài Chính</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a href="ptc.html"><i class="ti ti-presentation-analytics"></i> Thống kê tài chính</a></li>
+                <li class="menu-item"><a href="ptc_hocphi.html"><i class="ti ti-receipt-2"></i> Quản lý Thu học phí</a></li>
+                <li class="menu-item"><a href="ptc_miengiam.html"><i class="ti ti-discount-2"></i> Chính sách Miễn giảm</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" style="background-color: #e6fcf5; color: #40c057;">LTA</div>
+                    <div class="user-info">
+                        <span class="user-name">Lê Thị A</span>
+                        <span class="user-role">Kế toán trưởng</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="topbar-title">
+                    <h1>Danh sách công nợ và Đối soát thu học phí Sinh viên</h1>
+                </div>
+            </header>
+
+            <main class="app-content">
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="ti ti-search input-icon"></i>
+                            <input type="text" class="form-control" placeholder="Nhập MSSV hoặc họ tên...">
+                        </div>
+                        <select class="form-control select-control" style="width: 160px; padding-left: 14px;">
+                            <option value="">-- Tất cả trạng thái --</option>
+                            <option value="PAID">Đã nộp đủ</option>
+                            <option value="PARTIAL">Còn nợ một phần</option>
+                            <option value="UNPAID">Chưa đóng tiền</option>
+                        </select>
+                        <select class="form-control select-control" style="width: 150px; padding-left: 14px;">
+                            <option value="20261">Học kỳ 1 / 2026</option>
+                            <option value="20252">Học kỳ 2 / 2025</option>
+                        </select>
+                    </div>
+                    
+                    <div style="font-size: 13px; color: var(--text-muted); background: #f8f9fa; padding: 8px 14px; border-radius: 6px; border: 1px dashed var(--border-color);">
+                        Đơn giá quy định: <strong style="color: var(--text-main);">450k/TC Lý thuyết</strong> | <strong style="color: var(--text-main);">550k/TC Thực hành</strong>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">STT</th>
+                                <th>MSSV</th>
+                                <th>Họ và Tên</th>
+                                <th>Lớp học</th>
+                                <th style="text-align: center;">Số TC (LT/TH)</th>
+                                <th>Tổng Học Phí</th>
+                                <th>Đã Thanh Toán</th>
+                                <th>Còn Nợ</th>
+                                <th>Trạng thái</th>
+                                <th style="text-align: center; width: 130px;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>22011001</strong></td>
+                                <td>Nguyễn Trần Anh Tuấn</td>
+                                <td>CNTT22A</td>
+                                <td style="text-align: center;">12 LT / 6 TH</td>
+                                <td><strong>8,700,000 đ</strong></td>
+                                <td style="color: #40c057; font-weight: 500;">8,700,000 đ</td>
+                                <td style="color: var(--text-muted);">0 đ</td>
+                                <td><span class="status-badge status-paid">Đã nộp đủ</span></td>
+                                <td style="text-align: center;">
+                                    <span style="font-size: 12px; color: var(--text-muted); font-style: italic;">Hoàn thành</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>22011002</strong></td>
+                                <td>Lê Thị Hoài An</td>
+                                <td>CNTT22B</td>
+                                <td style="text-align: center;">15 LT / 3 TH</td>
+                                <td><strong>8,400,000 đ</strong></td>
+                                <td style="color: #40c057; font-weight: 500;">4,000,000 đ</td>
+                                <td style="color: var(--error-color); font-weight: 600;">4,400,000 đ</td>
+                                <td><span class="status-badge status-partial">Còn nợ một phần</span></td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn-collect"><i class="ti ti-cash"></i> Thu tiền</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>23022045</strong></td>
+                                <td>Phạm Minh Hoàng</td>
+                                <td>KTVT23A</td>
+                                <td style="text-align: center;">18 LT / 0 TH</td>
+                                <td><strong>8,100,000 đ</strong></td>
+                                <td style="color: #40c057; font-weight: 500;">0 đ</td>
+                                <td style="color: var(--error-color); font-weight: 600;">8,100,000 đ</td>
+                                <td><span class="status-badge status-unpaid">Chưa đóng</span></td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn-collect"><i class="ti ti-cash"></i> Thu tiền</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../../js/navigation.js"></script>
+</body>
+</html>
