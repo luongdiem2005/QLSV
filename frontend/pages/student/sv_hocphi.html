@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu Học phí & Biên lai - Portal Sinh viên</title>
+    
+    <!-- Google Fonts & Thư viện Icons chính thức -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    
+    <!-- Hệ thống Stylesheet đồng bộ -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    
+    <!-- CSS phục vụ riêng giao diện tra cứu biên lai công nợ sinh viên -->
+    <style>
+        /* Khối hóa đơn tổng hợp */
+        .invoice-summary-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            position: relative;
+        }
+        .invoice-status-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .stamp-paid { background-color: #e6fcf5; color: #40c057; border: 1px solid #c3fae8; }
+        .stamp-unpaid { background-color: #fff5f5; color: var(--error-color); border: 1px solid #ffe3e3; }
+
+        .summary-item-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+        
+        /* Bảng chi tiết môn học tính phí */
+        .table-container {
+            background-color: #ffffff;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        .data-table thead {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table th {
+            padding: 14px 18px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table td {
+            padding: 14px 18px;
+            color: var(--text-main);
+        }
+        
+        /* Badge phân loại tín chỉ */
+        .type-badge {
+            display: inline-flex;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .type-lt { background-color: #edf2ff; color: #4c6ef5; }
+        .type-th { background-color: #f3f0ff; color: #7c3aed; }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- ==========================================
+             1. THANH SIDEBAR ĐIỀU HƯỚNG (PORTAL SINH VIÊN)
+             ========================================== -->
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="btn btn-primary brand-icon" style="background-color: #4c6ef5; box-shadow: 0 4px 12px rgba(76, 110, 245, 0.3);">
+                    <i class="ti ti-user-square-toggle"></i>
+                </div>
+                <div class="brand-title">
+                    <h2>EduFee</h2>
+                    <span style="color: #4c6ef5;">Portal Sinh Viên</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a href="sv.html"><i class="ti ti-layout-dashboard"></i> Trang chủ tổng quan</a></li>
+                <li class="menu-item"><a href="sv_dkhp.html"><i class="ti ti-edit-circle"></i> Đăng ký học phần</a></li>
+                <li class="menu-item"><a href="sv_hocphi.html"><i class="ti ti-credit-card"></i> Tra cứu học phí</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" style="background-color: #edf2ff; color: #4c6ef5;">ATT</div>
+                    <div class="user-info">
+                        <span class="user-name">Nguyễn Trần Anh Tuấn</span>
+                        <span class="user-role">MSSV: 22011001</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+             2. KHU VỰC CHỨA NỘI DUNG CHÍNH
+             ========================================== -->
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="topbar-title">
+                    <h1>Tra cứu Tình trạng Học phí Sinh viên</h1>
+                </div>
+            </header>
+
+            <main class="app-content">
+                
+                <!-- BỘ LỌC CHỌN HỌC KỲ TRA CỨU BIÊN LAI -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <label class="form-label" for="semesterSelect" style="margin-bottom: 0; font-weight: 600; white-space: nowrap;">Học kỳ biên lai:</label>
+                    <select id="semesterSelect" class="form-control select-control" style="width: 240px; padding-left: 14px;">
+                        <option value="20261" selected>Học kỳ 1 - Năm học 2026-2027</option>
+                        <option value="20252">Học kỳ 2 - Năm học 2025-2026</option>
+                        <option value="20251">Học kỳ 1 - Năm học 2025-2026</option>
+                    </select>
+                </div>
+
+                <!-- TÓM TẮT NGHĨA VỤ BIÊN LAI (INVOICE SUMMARY) -->
+                <div class="invoice-summary-card">
+                    <!-- Con dấu trạng thái hóa đơn -->
+                    <div class="invoice-status-stamp stamp-paid">
+                        <i class="ti ti-circle-check"></i> Đã hoàn thành nộp phí
+                    </div>
+                    
+                    <div>
+                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Học phí gốc phát sinh</span>
+                        <div class="summary-item-amount">8,700,000 đ</div>
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Khấu trừ miễn giảm</span>
+                        <div class="summary-item-amount" style="color: #f59e0b;">0 đ</div>
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Số tiền đã thanh toán</span>
+                        <div class="summary-item-amount" style="color: #40c057;">8,700,000 đ</div>
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Số tiền còn nợ lại</span>
+                        <div class="summary-item-amount" style="color: var(--text-muted);">0 đ</div>
+                    </div>
+                </div>
+
+                <!-- BẢNG LIỆK KÊ CHI TIẾT CƠ SỞ TÍNH TOÁN (HỢP PHÁP HÓA NGHIỆP VỤ) -->
+                <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i class="ti ti-file-text" style="color: #4c6ef5;"></i> Bảng kê chi tiết các học phần tính phí trong học kỳ
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">STT</th>
+                                <th>Mã Môn</th>
+                                <th>Tên Lớp Học Phần Đăng Ký</th>
+                                <th style="text-align: center;">Số Tín Chỉ</th>
+                                <th>Phân Loại Môn</th>
+                                <th>Đơn Giá Áp Dụng</th>
+                                <th style="text-align: right;">Thành Tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>INT1301</strong></td>
+                                <td>Nhập môn lập trình (Lớp 01)</td>
+                                <td style="text-align: center;">3</td>
+                                <td><span class="type-badge type-lt">Lý thuyết</span></td>
+                                <td>450,000 đ / TC</td>
+                                <td style="text-align: right; font-weight: 500;">1,350,000 đ</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>INT1302</strong></td>
+                                <td>Kỹ thuật lập trình (Lớp 02)</td>
+                                <td style="text-align: center;">3</td>
+                                <td><span class="type-badge type-th">Thực hành</span></td>
+                                <td>550,000 đ / TC</td>
+                                <td style="text-align: right; font-weight: 500;">1,650,000 đ</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>INT1305</strong></td>
+                                <td>Cơ sở dữ liệu (Lớp 01)</td>
+                                <td style="text-align: center;">3</td>
+                                <td><span class="type-badge type-lt">Lý thuyết</span></td>
+                                <td>450,000 đ / TC</td>
+                                <td style="text-align: right; font-weight: 500;">1,350,000 đ</td>
+                            </tr>
+                            <!-- Dòng tính tổng phụ -->
+                            <tr style="background-color: #fcfcfd; font-weight: 600;">
+                                <td colspan="3" style="text-align: right; color: var(--text-muted);">Tổng cộng khối lượng học tập kỳ này:</td>
+                                <td style="text-align: center; color: #4c6ef5;">9 Tín chỉ</td>
+                                <td colspan="2"></td>
+                                <td style="text-align: right; color: var(--primary-color); font-size: 15px;">4,350,000 đ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Nhúng Script điều hướng tự động toàn hệ thống -->
+    <script src="../../js/navigation.js"></script>
+</body>
+</html>

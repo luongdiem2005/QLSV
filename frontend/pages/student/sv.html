@@ -3,289 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduFee - Hệ thống đăng ký học phần</title>
+    <title>Portal Sinh viên - EduFee</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/sv.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    
+    <style>
+        /* Khối thông tin sinh viên */
+        .student-profile-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        .student-avatar-lg {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: #edf2ff;
+            color: #4c6ef5;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #4c6ef5;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px 24px;
+            flex-grow: 1;
+        }
+        .profile-item {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .profile-item strong {
+            color: var(--text-main);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Khối thông báo nhắc nhở */
+        .alert-panel {
+            background-color: #fff9db;
+            border: 1px solid #ffe066;
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        /* Widgets số liệu cá nhân */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .widget-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+        .widget-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+    </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-top">
-            <div class="logo-area">
-                <div class="logo-box">EduFee</div>
-                <div class="logo-text">
-                    <span class="t1">Hệ thống đăng ký học phần</span>
+    <div class="app-wrapper">
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="btn btn-primary brand-icon" style="background-color: #4c6ef5; box-shadow: 0 4px 12px rgba(76, 110, 245, 0.3);">
+                    <i class="ti ti-user-square-toggle"></i>
+                </div>
+                <div class="brand-title">
+                    <h2>EduFee</h2>
+                    <span style="color: #4c6ef5;">Portal Sinh Viên</span>
                 </div>
             </div>
-            <ul class="menu-list">
-                <li class="menu-item active" data-tab="tab-hoso"><a href="#hoso">👤 Hồ sơ cá nhân</a></li>
-                <li class="menu-item" data-tab="tab-dangky"><a href="#dangky">📝 Đăng ký học phần</a></li>
-                <li class="menu-item" data-tab="tab-chuongtrinh"><a href="#chuongtrinh">📚 Chương trình học</a></li>
-                <li class="menu-item" data-tab="tab-hocphi"><a href="#hocphi">💰 Học phí</a></li>
-                <li class="menu-item" data-tab="tab-lichsu"><a href="#lichsu">⏱️ Lịch sử đăng ký</a></li>
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a href="sv.html"><i class="ti ti-layout-dashboard"></i> Trang chủ tổng quan</a></li>
+                <li class="menu-item"><a href="sv_dkhp.html"><i class="ti ti-edit-circle"></i> Đăng ký học phần</a></li>
+                <li class="menu-item"><a href="sv_hocphi.html"><i class="ti ti-credit-card"></i> Tra cứu học phí</a></li>
             </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" style="background-color: #edf2ff; color: #4c6ef5;">ATT</div>
+                    <div class="user-info">
+                        <span class="user-name">Nguyễn Trần Anh Tuấn</span>
+                        <span class="user-role">MSSV: 22011001</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="topbar-title">
+                    <h1>Xin chào, Nguyễn Trần Anh Tuấn! Chúc bạn một ngày học tập tốt lành.</h1>
+                </div>
+            </header>
+
+            <main class="app-content">
+                
+                <div class="alert-panel">
+                    <i class="ti ti-bell-ringing" style="font-size: 20px; color: #f59e0b;"></i>
+                    <div>
+                        <strong>Thông báo quan trọng:</strong> Cổng Đăng ký học phần Học kỳ 1 (Năm học 2026-2027) đang mở. Hạn cuối đóng học phí đối soát là ngày <strong>15/07/2026</strong>. Vui lòng hoàn thành đúng hạn để tránh bị khóa quyền đăng ký thi.
+                    </div>
+                </div>
+
+                <div class="student-profile-card">
+                    <div class="student-avatar-lg">NT</div>
+                    <div class="profile-grid">
+                        <div class="profile-item">Mã số sinh viên: <strong>22011001</strong></div>
+                        <div class="profile-item">Lớp sinh hoạt: <strong>CNTT22A</strong></div>
+                        <div class="profile-item">Ngành học: <strong>Công nghệ thông tin</strong></div>
+                        <div class="profile-item">Bậc đào tạo: <strong>Đại học chính quy</strong></div>
+                        <div class="profile-item">Khóa học: <strong>K22 (2022 - 2026)</strong></div>
+                        <div class="profile-item">Trạng thái học tập: <strong style="color: #40c057;">Đang học</strong></div>
+                    </div>
+                </div>
+
+                <div class="widget-grid">
+                    
+                    <div class="widget-card" style="border-left: 4px solid #40c057;">
+                        <div class="widget-card-header">
+                            <span>Học phí Học kỳ hiện tại</span>
+                            <i class="ti ti-wallet" style="color: #40c057; font-size: 20px;"></i>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 13px; color: var(--text-muted);">Tổng nghĩa vụ phát sinh:</span>
+                            <h3 style="font-size: 22px; font-weight: 700; color: var(--text-main); margin: 4px 0;">8,700,000 đ</h3>
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-color);">
+                                <span style="color: #40c057; font-weight: 500;"><i class="ti ti-circle-check"></i> Đã nộp: 8,700,000 đ</span>
+                                <span style="color: var(--text-muted);">Còn nợ: 0 đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" style="border-left: 4px solid #4c6ef5;">
+                        <div class="widget-card-header">
+                            <span>Tiến độ tích lũy chương trình</span>
+                            <i class="ti ti-school" style="color: #4c6ef5; font-size: 20px;"></i>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 13px; color: var(--text-muted);">Số tín chỉ đã đạt:</span>
+                            <h3 style="font-size: 22px; font-weight: 700; color: var(--text-main); margin: 4px 0;">78 / 132 TC</h3>
+                            <div style="width: 100%; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; margin-top: 10px;">
+                                <div style="width: 59%; height: 100%; background: #4c6ef5;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
         </div>
-        <a href="#" class="logout-btn">🚪 Đăng xuất</a>
-    </aside>
+    </div>
 
-    <main class="main-content">
-        
-        <header class="topbar">
-            <div id="breadcrumb" class="breadcrumb">Trang chủ / Hồ sơ cá nhân</div>
-            <div class="user-meta">
-                <span class="icon-notification">🔔</span>
-                <span class="icon-message">✉️</span>
-                <span class="user-name-top" id="db-topbar-name">Nguyễn Văn A</span>
-            </div>
-        </header>
-
-        <section id="tab-hoso" class="tab-panel active">
-            <div class="page-header">
-                <h2>Hồ sơ sinh viên</h2>
-                <p>Thông tin cá nhân và tiến trình học tập tổng quan</p>
-            </div>
-
-            <div class="profile-summary-card">
-                <div class="profile-avatar-area">
-                    <div class="avatar-circle" id="db-avatar-placeholder">NA</div>
-                    <div class="summary-info">
-                        <h3 id="db-summary-name">Nguyễn Văn A</h3>
-                        <p><strong>MSSV:</strong> <span id="db-summary-mssv">22520001</span></p>
-                        <p><strong>Email:</strong> <span id="db-summary-email">22520001@gm.uit.edu.vn</span></p>
-                    </div>
-                </div>
-                <button class="btn-primary">Chỉnh sửa hồ sơ</button>
-            </div>
-
-            <div class="stats-grid-4">
-                <div class="stat-card">
-                    <div><div class="lbl">Tín chỉ tích lũy</div><div class="val" id="db-stat-tctl">95</div></div><span>📚</span>
-                </div>
-                <div class="stat-card">
-                    <div><div class="lbl">GPA Tích lũy</div><div class="val" id="db-stat-gpa">3.42</div></div><span>🎓</span>
-                </div>
-                <div class="stat-card">
-                    <div><div class="lbl">Tín chỉ còn lại</div><div class="val" id="db-stat-tccl">35</div></div><span>📋</span>
-                </div>
-                <div class="stat-card">
-                    <div><div class="lbl">Tình trạng</div><div style="margin-top:5px;"><span class="badge status-active" id="db-stat-tinhtrang">Đang học</span></div></div><span>✅</span>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <div class="section-title">Thông tin chi tiết học tập</div>
-                <div class="info-grid-2">
-                    <div class="info-item"><span class="info-lbl">Khoa</span><span class="info-val" id="db-detail-khoa">Khoa KH&KT Thông tin</span></div>
-                    <div class="info-item"><span class="info-lbl">Ngành</span><span class="info-val" id="db-detail-nganh">Công nghệ Thông tin</span></div>
-                    <div class="info-item"><span class="info-lbl">Lớp sinh hoạt</span><span class="info-val" id="db-detail-lop">CNNB2022</span></div>
-                    <div class="info-item"><span class="info-lbl">Khóa học</span><span class="info-val" id="db-detail-khoahoc">2022 - 2026</span></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-dangky" class="tab-panel">
-            <div class="page-header">
-                <h2>Đăng ký học phần</h2>
-                <p>Chọn các lớp học phần mở trong học kỳ hiện tại</p>
-            </div>
-
-            <div class="alert-banner">
-                <div>
-                    <strong>Học kỳ 2 — Năm học 2025 - 2026</strong> &nbsp;•&nbsp; 
-                    Thời gian: <span id="db-dk-thoigian">01/06/2026 đến 15/06/2026</span>
-                </div>
-                <span class="badge status-active">Đang mở đăng ký</span>
-            </div>
-
-            <div class="stats-grid-4" style="margin-top: 20px;">
-                <div class="stat-card"><div><div class="lbl">Số môn đã chọn</div><div class="val" id="db-dk-selected-count">0</div></div></div>
-                <div class="stat-card"><div><div class="lbl">Tổng số tín chỉ</div><div class="val" id="db-dk-total-tc">0</div></div></div>
-                <div class="stat-card"><div><div class="lbl">Học phí dự kiến</div><div class="val text-blue" id="db-dk-estimated-fee">0 VND</div></div></div>
-                <div class="stat-card"><div><div class="lbl">Giới hạn tín chỉ</div><div class="val" id="db-dk-max-tc">24</div></div></div>
-            </div>
-
-            <div class="info-section" style="margin-top: 25px;">
-                <div class="section-title">Danh sách học phần mở đăng ký</div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã môn</th>
-                                <th>Tên môn học</th>
-                                <th>Số TC</th>
-                                <th>Giảng viên</th>
-                                <th>Còn trống</th>
-                                <th>Lịch học</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="db-list-mon-mo">
-                            <tr>
-                                <td>IS405</td>
-                                <td>Phân tích & Thiết kế hệ thống thông tin</td>
-                                <td>4</td>
-                                <td>Nguyễn Văn B</td>
-                                <td>15/60</td>
-                                <td>Thứ 2 (Tiết 1-3)</td>
-                                <td><button class="btn-sm btn-blue">Chọn lớp</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-chuongtrinh" class="tab-panel">
-            <div class="page-header">
-                <h2>Chương trình đào tạo</h2>
-                <p>Theo dõi cấu trúc khung đào tạo toàn khóa học</p>
-            </div>
-
-            <div class="info-section">
-                <div class="section-title">Tiến độ hoàn thành chương trình</div>
-                <div class="progress-container">
-                    <div class="progress-bar-wrapper">
-                        <div class="progress-bar-fill" style="width: 73%;"></div>
-                    </div>
-                    <span class="progress-text"><strong>73%</strong> (95/130 Tín chỉ)</span>
-                </div>
-            </div>
-
-            <div class="info-section" style="margin-top: 25px;">
-                <div class="section-title">Khung chương trình chi tiết</div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã môn</th>
-                                <th>Tên học phần</th>
-                                <th>Số TC</th>
-                                <th>Học kỳ đề xuất</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody id="db-list-khung-chuong-trinh">
-                            <tr>
-                                <td>IT001</td>
-                                <td>Nhập môn Công nghệ thông tin</td>
-                                <td>3</td>
-                                <td>HK1</td>
-                                <td><span class="badge status-active">Đã hoàn thành</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-hocphi" class="tab-panel">
-            <div class="page-header">
-                <h2>Theo dõi và Thanh toán Học phí</h2>
-                <p>Chi tiết công nợ hóa đơn học phí theo từng học kỳ</p>
-            </div>
-
-            <div class="stats-grid-3">
-                <div class="stat-card bill-total">
-                    <div><div class="lbl">Tổng học phí phải đóng</div><div class="val" id="db-hp-tong">18.000.000 VND</div></div>
-                </div>
-                <div class="stat-card bill-paid">
-                    <div><div class="lbl">Đã thanh toán</div><div class="val text-green" id="db-hp-dadong">12.000.000 VND</div></div>
-                </div>
-                <div class="stat-card bill-debt">
-                    <div><div class="lbl">Còn nợ cần đóng</div><div class="val text-red" id="db-hp-conno">6.000.000 VND</div></div>
-                </div>
-            </div>
-
-            <div class="info-section" style="margin-top: 25px;">
-                <div class="section-title">Chi tiết các khoản thu học phần</div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã môn</th>
-                                <th>Tên môn</th>
-                                <th>Số TC</th>
-                                <th>Đơn giá / TC</th>
-                                <th>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody id="db-list-billing-details">
-                            <tr>
-                                <td>IS405</td>
-                                <td>Phân tích và thiết kế HTTT</td>
-                                <td>4</td>
-                                <td>750.000 VND</td>
-                                <td>3.000.000 VND</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="btn-primary" style="background-color: #2563eb;">💳 Thanh toán ngay</button>
-                    <button class="btn-primary" style="background-color: #64748b;">📄 Xuất file PDF</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-lichsu" class="tab-panel">
-            <div class="page-header">
-                <h2>Lịch sử đăng ký học phần</h2>
-                <p>Xem lại danh sách tất cả học phần đã từng đăng ký thành công qua các kỳ</p>
-            </div>
-
-            <div class="info-section">
-                <div class="section-title">Nhật ký đăng ký hệ thống</div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Học kỳ</th>
-                                <th>Mã môn</th>
-                                <th>Tên môn</th>
-                                <th>Số TC</th>
-                                <th>Ngày đăng ký</th>
-                                <th>Trạng thái đăng ký</th>
-                            </tr>
-                        </thead>
-                        <tbody id="db-list-history-logs">
-                            <tr>
-                                <td>HK1 - 2025-2026</td>
-                                <td>SE104</td>
-                                <td>Nhập môn Công nghệ phần mềm</td>
-                                <td>3</td>
-                                <td>12/09/2025 09:15</td>
-                                <td><span class="badge status-active">Thành công</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <script>
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                // Xóa trạng thái active cũ của menu sidebar
-                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                // Thêm active cho menu vừa click
-                this.classList.add('active');
-
-                // Lấy tên panel tương ứng
-                const targetTab = this.getAttribute('data-tab');
-
-                // Ẩn toàn bộ các panel nội dung bên phải
-                document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-                // Hiển thị đúng panel được chọn
-                document.getElementById(targetTab).classList.add('active');
-
-                // Đổi text thanh điều hướng nhanh (Breadcrumb)
-                const tabText = this.innerText;
-                document.getElementById('breadcrumb').innerText = `Trang chủ / ${tabText.substring(2)}`;
-            });
-        });
-    </script>
+    <script src="../../js/navigation.js"></script>
 </body>
 </html>
