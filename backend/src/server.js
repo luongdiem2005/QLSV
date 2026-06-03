@@ -25,6 +25,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/registrations', registrationRoutes);
 // Kịch bản kiểm tra sức khỏe hệ thống (Health Check Endpoint)
+
+// Khai báo Global Error Middleware sau cùng
+const errorHandler = require('./middlewares/errorMiddleware');
+app.use(errorHandler);
+
 app.get('/', (req, res) => {
     res.status(200).send(`<h2 style="color: #38a169; font-family: sans-serif; text-align: center; margin-top: 50px;">EduFee Backend Server v1.0.0 đang hoạt động ổn định!</h2>`);
 });
