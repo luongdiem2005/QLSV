@@ -1,217 +1,251 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Đăng ký học phần - EduFee</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điều phối Đăng ký học phần - Phân hệ Phòng Đào Tạo</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/layout.css">
-    <link rel="stylesheet" href="../../css/button.css">
-    <link rel="stylesheet" href="../../css/sidebar.css">
-    <link rel="stylesheet" href="../../css/dashboard.css">
-    <link rel="stylesheet" href="../../css/table.css">
-    <link rel="stylesheet" href="../../css/form.css">
-    <link rel="stylesheet" href="../../css/components.css">
     
-    <link rel="stylesheet" href="../../css/pdt_dkhp.css">
-</head>
-<body class="dashboard-body">
-    <div class="dashboard-layout">
+    <style>
+        .toolbar-panel {
+            background-color: #ffffff;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .filter-inline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
         
-        <aside class="sidebar-wrapper">
-            <div class="sidebar-brand-box">
-                <div class="brand-icon">
-                    <i class="ti ti-school" aria-hidden="true"></i>
+        /* Cấu trúc Bảng danh sách môn mở */
+        .table-container {
+            background-color: #ffffff;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        .data-table thead {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table th {
+            padding: 14px 18px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .data-table td {
+            padding: 14px 18px;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        
+        /* Tiến trình lấp đầy lớp học (Progress) */
+        .progress-bar-wrapper {
+            width: 120px;
+        }
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        .progress-fill.full {
+            background-color: var(--error-color);
+        }
+        
+        /* Badge trạng thái Đóng/Mở cổng */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-open { background-color: #e6fcf5; color: var(--success-color); }
+        .status-closed { background-color: #fff5f5; color: var(--error-color); }
+        
+        /* Nút thao tác nhanh */
+        .btn-action-sm {
+            padding: 6px 12px;
+            font-size: 12.5px;
+            border-radius: var(--radius-sm);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="btn btn-primary brand-icon"><i class="ti ti-school"></i></div>
+                <div class="brand-title">
+                    <h2>EduFee</h2>
+                    <span>Phòng Đào Tạo</span>
                 </div>
-                <span class="brand-name">EduFee</span>
             </div>
-            
-            <div class="sidebar-user-profile">
-                <div class="profile-avatar">B</div>
-                <div class="profile-info">
-                    <div class="profile-name">Nguyễn Văn B</div>
-                    <div class="profile-role">Phòng Đào tạo</div>
-                </div>
-            </div>
-            
-            <nav class="sidebar-menu sidebar-scroll">
-                <a href="pdt.html" class="menu-item">
-                    <i class="ti ti-home" aria-hidden="true"></i> Trang chủ
-                </a>
-                <a href="pdt_sv.html" class="menu-item">
-                    <i class="ti ti-users" aria-hidden="true"></i> Sinh viên
-                </a>
-                <a href="pdt_nganhhoc.html" class="menu-item">
-                    <i class="ti ti-building-community" aria-hidden="true"></i> Ngành học
-                </a>
-                <a href="pdt_monhoc.html" class="menu-item">
-                    <i class="ti ti-book" aria-hidden="true"></i> Môn học
-                </a>
-                <a href="pdt_dkhp.html" class="menu-item active">
-                    <i class="ti ti-clipboard-list" aria-hidden="true"></i> Đăng ký học phần
-                </a>
-            </nav>
-            
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a href="pdt.html"><i class="ti ti-home"></i> Trang chủ tổng quan</a></li>
+                <li class="menu-item"><a href="pdt_sv.html"><i class="ti ti-users"></i> Quản lý Sinh viên</a></li>
+                <li class="menu-item"><a href="pdt_nganhhoc.html"><i class="ti ti-building-community"></i> Quản lý Ngành học</a></li>
+                <li class="menu-item"><a href="pdt_monhoc.html"><i class="ti ti-book"></i> Danh mục Môn học</a></li>
+                <li class="menu-item"><a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i> Đăng ký học phần</a></li>
+            </ul>
             <div class="sidebar-footer">
-                <a href="#" class="menu-item">
-                    <i class="ti ti-lock" aria-hidden="true"></i> Đổi mật khẩu
-                </a>
-                <a href="../../index.html" class="menu-item text-red">
-                    <i class="ti ti-logout" aria-hidden="true"></i> Đăng xuất
-                </a>
+                <div class="user-profile">
+                    <div class="user-avatar">NVB</div>
+                    <div class="user-info">
+                        <span class="user-name">Nguyễn Văn B</span>
+                        <span class="user-role">Cán bộ Đào tạo</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-logout" id="btnLogout"><i class="ti ti-logout"></i> Đăng xuất</button>
             </div>
         </aside>
 
-        <div class="main-content-area">
-            <main class="dashboard-main space-y-8">
-                
-                <div class="page-header flex-between">
-                    <div>
-                        <h1 class="page-title">Quản lý Đăng ký Học phần</h1>
-                        <p class="text-muted">Hệ thống mở lớp, cấu hình thời gian và phê duyệt đăng ký của sinh viên</p>
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="topbar-title">
+                    <h1>Quản lý mở môn & Điều phối Đăng ký học phần</h1>
+                </div>
+            </header>
+
+            <main class="app-content">
+                <div class="toolbar-panel">
+                    <div class="filter-inline">
+                        <label class="form-label" for="semesterFilter" style="margin-bottom: 0; white-space: nowrap; font-weight: 600;">Học kỳ tác vụ:</label>
+                        <select id="semesterFilter" class="form-control select-control" style="width: 240px;">
+                            <option value="20261" selected>Học kỳ 1 - Năm học 2026-2027</option>
+                            <option value="20253">Học kỳ phụ - Năm học 2025-2026</option>
+                            <option value="20252">Học kỳ 2 - Năm học 2025-2026</option>
+                        </select>
                     </div>
-                    <button class="btn btn-primary">
-                        <i class="ti ti-plus"></i> Mở đợt đăng ký mới
+                    <button type="button" class="btn btn-primary">
+                        <i class="ti ti-calendar-plus"></i> Mở môn học kỳ
                     </button>
                 </div>
 
-                <div class="dkhp-status-grid">
-                    <div class="dkhp-card flex-column gap-2">
-                        <p class="metric-label text-muted">Tổng số phiếu đăng ký</p>
-                        <h3 class="metric-value text-dark">5,280</h3>
-                        <p class="text-sm text-green"><i class="ti ti-trending-up"></i> +12% so với học kỳ trước</p>
-                    </div>
-                    <div class="dkhp-card flex-column gap-2">
-                        <p class="metric-label text-muted">Học phần đang mở</p>
-                        <h3 class="metric-value text-blue">142</h3>
-                        <p class="text-sm text-muted">Học kỳ 1 (2026 - 2027)</p>
-                    </div>
-                    <div class="dkhp-card flex-column gap-2">
-                        <p class="metric-label text-muted">Yêu cầu chờ duyệt</p>
-                        <h3 class="metric-value text-orange">28</h3>
-                        <p class="text-sm text-orange">Cần xử lý ngay</p>
-                    </div>
-                </div>
-
-                <div class="filter-section filter-bar">
-                    <div class="filter-inputs">
-                        <input type="text" class="filter-input" placeholder="Tìm tên môn học, mã lớp...">
-                        <select class="filter-select">
-                            <option value="">-- Tất cả học kỳ --</option>
-                            <option value="hk1-2026" selected>HK1 / Năm học 2026</option>
-                        </select>
-                        <select class="filter-select">
-                            <option value="">-- Trạng thái lớp --</option>
-                            <option value="open">Đang mở đăng ký</option>
-                            <option value="closed">Đã khóa</option>
-                        </select>
-                    </div>
-                    <div class="filter-actions">
-                        <button class="btn btn-outline">Tìm kiếm</button>
-                    </div>
-                </div>
-
-                <div class="dashboard-card table-card">
-                    <div class="table-header flex-between">
-                        <h2 class="panel-title">Danh sách đợt đăng ký & Lớp học phần</h2>
-                        <span class="card-count text-sm text-muted">Hiển thị 1-10 trên 5,280 bản ghi</span>
-                    </div>
-                    
-                    <div class="table-wrapper table-scroll">
-                        <table class="student-table">
-                            <thead>
-                                <tr>
-                                    <th>Mã lớp HP</th>
-                                    <th>Tên môn học / Học phần</th>
-                                    <th>Số tín chỉ</th>
-                                    <th>Giới hạn SV</th>
-                                    <th>Đã đăng ký</th>
-                                    <th>Trạng thái đợt</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="font-bold text-dark">INT1302</td>
-                                    <td>Cơ sở dữ liệu nâng cao</td>
-                                    <td>3</td>
-                                    <td>80</td>
-                                    <td>
-                                        <div class="status-indicator">
-                                            <span class="font-medium text-dark">72</span>
-                                            <span class="text-muted text-xs">/ 80</span>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">STT</th>
+                                <th>Mã Môn</th>
+                                <th>Tên Môn Học Được Mở</th>
+                                <th style="width: 80px;">Số TC</th>
+                                <th>Sĩ số tối đa</th>
+                                <th>Hiện tại / Tiến trình</th>
+                                <th>Trạng thái cổng</th>
+                                <th style="text-align: center; width: 140px;">Tác vụ điều khiển</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>INT1301</strong></td>
+                                <td>Nhập môn lập trình</td>
+                                <td>3</td>
+                                <td><strong>80</strong> sinh viên</td>
+                                <td>
+                                    <div class="progress-bar-wrapper">
+                                        <span style="font-size: 13px; font-weight: 500;">72 / 80</span>
+                                        <div class="progress-track">
+                                            <div class="progress-fill" style="width: 90%;"></div>
                                         </div>
-                                    </td>
-                                    <td><span class="badge badge-green">Đang mở</span></td>
-                                    <td>
-                                        <div class="action-btns">
-                                            <button class="action-btn-icon" title="Xem chi tiết"><i class="ti ti-eye"></i></button>
-                                            <button class="action-btn-icon" title="Chỉnh sửa"><i class="ti ti-pencil"></i></button>
-                                            <button class="action-btn-icon text-red" title="Khóa đợt đăng ký"><i class="ti ti-lock"></i></button>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-open"><i class="ti ti-circle-check"></i> Đang mở</span></td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn btn-action-sm" style="border: 1px solid var(--border-color); background: #ffffff; color: var(--error-color);">
+                                        <i class="ti ti-lock"></i> Khóa lại
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>INT1302</strong></td>
+                                <td>Kỹ thuật lập trình</td>
+                                <td>3</td>
+                                <td><strong>60</strong> sinh viên</td>
+                                <td>
+                                    <div class="progress-bar-wrapper">
+                                        <span style="font-size: 13px; font-weight: 500; color: var(--error-color);">60 / 60 (Đầy)</span>
+                                        <div class="progress-track">
+                                            <div class="progress-fill full" style="width: 100%;"></div>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-bold text-dark">SME2101</td>
-                                    <td>Quản trị học đại cương</td>
-                                    <td>2</td>
-                                    <td>120</td>
-                                    <td>
-                                        <div class="status-indicator">
-                                            <span class="font-medium text-dark">120</span>
-                                            <span class="text-muted text-xs">/ 120</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-open"><i class="ti ti-circle-check"></i> Đang mở</span></td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn btn-action-sm" style="border: 1px solid var(--border-color); background: #ffffff; color: var(--error-color);">
+                                        <i class="ti ti-lock"></i> Khóa lại
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>INT1303</strong></td>
+                                <td>Cấu trúc dữ liệu & Giải thuật</td>
+                                <td>4</td>
+                                <td><strong>70</strong> sinh viên</td>
+                                <td>
+                                    <div class="progress-bar-wrapper">
+                                        <span style="font-size: 13px; font-weight: 500;">0 / 70</span>
+                                        <div class="progress-track">
+                                            <div class="progress-fill" style="width: 0%;"></div>
                                         </div>
-                                    </td>
-                                    <td><span class="badge badge-closed">Đã đầy (Khóa)</span></td>
-                                    <td>
-                                        <div class="action-btns">
-                                            <button class="action-btn-icon" title="Xem chi tiết"><i class="ti ti-eye"></i></button>
-                                            <button class="action-btn-icon" title="Chỉnh sửa"><i class="ti ti-pencil"></i></button>
-                                            <button class="action-btn-icon" title="Mở lại đợt"><i class="ti ti-refresh"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="pagination-wrapper">
-                        <p class="text-sm text-muted">Trang 1 / 528</p>
-                        <div class="flex gap-2">
-                            <button class="btn btn-outline text-xs" disabled>Trước</button>
-                            <button class="btn btn-primary text-xs">1</button>
-                            <button class="btn btn-outline text-xs">2</button>
-                            <button class="btn btn-outline text-xs">3</button>
-                            <button class="btn btn-outline text-xs">Sau</button>
-                        </div>
-                    </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-closed"><i class="ti ti-circle-x"></i> Đang đóng</span></td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn btn-primary btn-action-sm">
+                                        <i class="ti ti-lock-open"></i> Mở cổng
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="dashboard-card recent-activities">
-                    <h3 class="panel-title mb-4">Hoạt động điều phối gần đây</h3>
-                    <div class="flex-column">
-                        <div class="activity-item">
-                            <span class="text-dark font-medium">Mở danh sách đăng ký học phần bổ sung HK1</span>
-                            <span class="text-muted text-sm">08:30 Hôm nay</span>
-                        </div>
-                        <div class="activity-item">
-                            <span class="text-dark font-medium">Khóa đợt đăng ký tự động lớp HP - INT1302 (Đạt giới hạn)</span>
-                            <span class="text-muted text-sm">Yesterday</span>
-                        </div>
-                    </div>
-                </div>
-
             </main>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="../../js/navigation.js"></script>
 </body>
 </html>
