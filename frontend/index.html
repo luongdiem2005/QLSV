@@ -3,47 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - EduFee</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Đăng nhập hệ thống - Quản lý Đăng ký môn học & Học phí</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/button.css">
-    <link rel="stylesheet" href="css/form.css">
 </head>
 <body>
-    <main class="login-wrapper">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-title">
-                    ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH <br>
-                    <strong>TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN</strong>
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-brand">
+                <div class="brand-icon">
+                    <i class="ti ti-school"></i>
                 </div>
-                <div class="login-brand">EduFee</div>
+                <h1>HỆ THỐNG QUẢN LÝ</h1>
+                <p>Đăng ký môn học & Thu học phí</p>
+            </div>
+
+            <div class="login-card">
+                <h2>Đăng Nhập</h2>
+                <p class="subtitle">Vui lòng nhập thông tin tài khoản được cấp</p>
+
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <i class="ti ti-alert-circle"></i>
+                    <span id="errorText">Tên đăng nhập hoặc mật khẩu không chính xác!</span>
+                </div>
+
+                <form id="loginForm" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="username">Tên đăng nhập</label>
+                        <div class="input-wrapper">
+                            <i class="ti ti-user input-icon"></i>
+                            <input type="text" id="username" class="form-control" placeholder="Mã số hoặc tên tài khoản" required autocomplete="username">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="ti ti-lock input-icon"></i>
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-password" id="btnTogglePassword" title="Hiện mật khẩu">
+                                <i class="ti ti-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="userRole">Vai trò đăng nhập</label>
+                        <div class="input-wrapper">
+                            <i class="ti ti-user-check input-icon"></i>
+                            <select id="userRole" class="form-control select-control">
+                                <option value="academic">Phòng Đào tạo (PDT)</option>
+                                <option value="finance">Phòng Tài chính (PTC)</option>
+                                <option value="student">Sinh viên (Bổ sung mới)</option>
+                                <option value="admin">Quản trị viên (Admin)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Ghi nhớ đăng nhập</span>
+                        </label>
+                        <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="btnLogin">
+                        <span>Đăng Nhập</span>
+                        <i class="ti ti-arrow-right"></i>
+                    </button>
+                </form>
             </div>
             
-            <form action="pages/academic/pdt.html" method="POST">
-                <div class="form-group">
-                    <label class="form-label" for="username">Tên đăng nhập</label>
-                    <input type="text" id="username" name="username" class="form-input" placeholder="Nhập mã đăng nhập" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Nhập mật khẩu" required>
-                </div>
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember"> Ghi nhớ tôi
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                </div>
-                <button type="submit" class="btn">Đăng nhập</button>
-            </form>
+            <div class="login-footer">
+                <p>&copy; 2026 Đồ án Nhập môn Công nghệ Phần mềm. All rights reserved.</p>
+            </div>
         </div>
-    </main>
+    </div>
+
+    <script src="js/login.js"></script>
 </body>
 </html>

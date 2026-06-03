@@ -1,115 +1,65 @@
-   @import url('./layout.css');
-   @import url('./sidebar.css');
-   @import url('./button.css');
-   @import url('./form.css');
-   @import url('./table.css');
-   
-   :root {
-     --bg-color: #D9F9DF;
-     --primary-color: #08142E;   
-     --text-content: #1F2937;
-     --text-on-box:  #FFFFFF;
-     --box-bg:       #4864FF;
-     --text-dark:    #1F2937; 
-     --main-font: 'Inter', sans-serif;
-   }
-   
-   *, *::before, *::after {
-     box-sizing: border-box;
-     margin: 0;
-     padding: 0;
-   }
-   
-   html { scroll-behavior: smooth; }
+/* ==========================================================================
+   CSS DÙNG CHUNG TOÀN HỆ THỐNG (MAIN.CSS)
+   ========================================================================== */
 
-   body {
-     font-family: var(--main-font);
-     background: #D9F9DF;
-     color: var(--text-dark);
-     overflow-x: hidden;
-   }
+/* 1. Định nghĩa các biến toàn cục (Design Tokens) */
+:root {
+  --primary-color: #228be6;       /* Xanh dương chủ đạo */
+  --primary-hover: #1c7ed6;       /* Xanh dương khi hover */
+  --text-main: #212529;           /* Chữ đậm chính */
+  --text-muted: #868e96;          /* Chữ nhạt/chú thích */
+  --bg-system: #f8f9fa;           /* Nền hệ thống */
+  --bg-card: #ffffff;             /* Nền khối trắng */
+  --border-color: #dee2e6;        /* Màu đường viền */
+  --error-color: #fa5252;         /* Màu thông báo lỗi */
+  --error-bg: #ffe3e3;            /* Nền thông báo lỗi */
+  --success-color: #40c057;       /* Màu thành công */
+  --radius-md: 8px;               /* Bo góc vừa */
+  --radius-sm: 4px;               /* Bo góc nhỏ */
+  --transition-fast: all 0.2s ease;
+  --font-family: 'Inter', sans-serif;
+}
 
-   a {
-    text-decoration: none; 
-    color: inherit;
-   }
+/* 2. Thiết lập cơ bản & Reset lỗi box-sizing cũ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Sửa lỗi viết sai box-shadow ở bản cũ */
+}
 
-   ul {
-    list-style: none;
-   }
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-system);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-   
-   h1, h2, h3, h4 {
-     font-family: 'Roboto', sans-serif;
-   }
-   
-   .main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: var(--primary-color);
-    color: var(--text-on-box);
-   }
+/* 3. Thành phần nút bấm dùng chung (Component Buttons) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
 
-   .main-footer {
-    text-align: center;
-    padding: 40px;
-    background-color: var(--primary-color);
-    color: var(--text-on-box);
-   }
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
 
-   section { padding: 90px 30px; }
-   
-   .section-tag {
-     display: inline-block;
-     background: #D9F9DF;
-     color: var(--accent);
-     font-size: 19px;
-     font-weight: 700;
-     padding: 5px 14px;
-     border-radius: 999px;
-     letter-spacing: .06em;
-     text-transform: uppercase;
-     margin-bottom: 16px;
-   }
-   
-   .section-h {
-     font-size: clamp(26px, 3.5vw, 38px);
-     font-weight: 800;
-     color: #0f172a;
-     line-height: 1.7;
-     margin-bottom: 10px;
-   }
-   
-   .section-sub {
-     font-size: 16px;
-     color: #1F2937;
-     line-height: 1.7;
-     max-width: 520px;
-   }
-   
-   @keyframes fadeUp {
-     from { opacity: 0; transform: translateY(24px); }
-     to   { opacity: 1; transform: translateY(0); }
-   }
-   
-   @keyframes pulse {
-     0%, 100% { opacity: 1; }
-     50%       { opacity: .3; }
-   }
-   
-   .reveal {
-     opacity: 0;
-     transform: translateY(28px);
-     transition: opacity .55s ease, transform .55s ease;
-   }
-   .reveal.visible {
-     opacity: 1;
-     transform: translateY(0);
-   }
-   
-   @media (max-width: 768px) {
-     section { padding: 64px 20px; }
-   }
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
 
+.btn-block {
+  width: 100%;
+}
