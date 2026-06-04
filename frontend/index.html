@@ -24,29 +24,29 @@
             </div>
             <h1>EduFee</h1>
             <p>Hệ thống Quản lý Đăng ký Môn học và Thu Học phí</p>
-            <span class="version-tag">Phiên bản 1.0 (Đồ án NMCNPM)</span>
+            <span class="name-tag">Trường Đại học Công nghệ Thông tin</span>
         </div>
 
         <div class="login-card">
             <h2>Chào mừng trở lại!</h2>
-            <p class="subtitle">Vui lòng đăng nhập tài khoản được cấp để tiếp tục</p>
+            <p class="subtitle">Vui lòng đăng nhập tài khoản để tiếp tục</p>
 
             <div id="error-message" class="alert alert-danger hidden" role="alert">
                 <i class="ti ti-alert-circle"></i>
-                <span class="error-text">Tên đăng nhập hoặc mật khẩu không chính xác.</span>
+                <span class="error-text">Tên đăng nhập hoặc mật khẩu không chính xác!</span>
             </div>
 
             <form id="loginForm" novalidate>
                 
                 <div class="form-group">
-                    <label for="username">Tên đăng nhập / Mã số</label>
+                    <label for="username">Tên truy cập</label>
                     <div class="input-group">
                         <span class="input-icon"><i class="ti ti-user"></i></span>
                         <input 
                             type="text" 
                             id="username" 
                             name="username" 
-                            placeholder="Nhập MSSV hoặc mã nhân viên..." 
+                            placeholder="" 
                             required
                         >
                     </div>
@@ -60,7 +60,7 @@
                             type="password" 
                             id="password" 
                             name="password" 
-                            placeholder="••••••••" 
+                            placeholder="" 
                             required
                         >
                         <button type="button" id="togglePassword" class="btn-toggle-pwd" aria-label="Hiển thị mật khẩu">
@@ -69,11 +69,11 @@
                     </div>
                 </div>
 
-                <div class="form-actions-row">
+                <div class="login-actions-row">
                     <label class="checkbox-container">
                         <input type="checkbox" id="rememberMe">
                         <span class="checkmark"></span>
-                        Ghi nhớ đăng nhập
+                        Ghi nhớ tôi
                     </label>
                     <a href="#" class="forgot-password-link">Quên mật khẩu?</a>
                 </div>

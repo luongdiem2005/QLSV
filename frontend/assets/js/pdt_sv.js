@@ -8,9 +8,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. KHO DỮ LIỆU GIẢ LẬP BAN ĐẦU (Mock Database State)
     let students = [
-        { id: '20260101', name: 'Nguyễn Văn A', dob: '2005-04-15', gender: 'Nam', class: 'CNTT01', major: 'Công nghệ thông tin' },
-        { id: '20260102', name: 'Trần Thị B', dob: '2005-08-22', gender: 'Nữ', class: 'KTPM01', major: 'Kỹ thuật phần mềm' },
-        { id: '20260103', name: 'Lê Hoàng C', dob: '2005-11-02', gender: 'Nam', class: 'KHMT01', major: 'Khoa học máy tính' }
+        { id: '23520001', name: 'Nguyễn Văn A', dob: '2005-04-15', gender: 'Nam', class: 'CNNB2023', major: 'Công nghệ thông tin Việt-Nhật' },
+        { id: '22520002', name: 'Trần Thị B', dob: '2004-08-22', gender: 'Nữ', class: 'KTPM2022', major: 'Kỹ thuật phần mềm' },
+        { id: '25520003', name: 'Lê Hoàng C', dob: '2007-11-02', gender: 'Nam', class: 'KHMT2025', major: 'Khoa học máy tính' }
     ];
 
     // Trạng thái hiện tại của Form: 'add' (Thêm mới) hoặc 'edit' (Chỉnh sửa)

@@ -1,6 +1,6 @@
 /**
  * ==========================================================================
- * CONTROLLER XỬ LÝ LOGIC MÀN HÌNH DASHBOARD PHÒNG ĐÀO TẠ
+ * CONTROLLER XỬ LÝ LOGIC MÀN HÌNH DASHBOARD PHÒNG ĐÀO TẠO
  * Môn học: Nhập môn Công nghệ phần mềm
  * ==========================================================================
  */

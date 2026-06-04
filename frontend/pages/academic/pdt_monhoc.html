@@ -40,7 +40,7 @@
             </div>
             <div class="sidebar-user-info">
                 <p class="role-badge">Phòng Đào tạo</p>
-                <h3 id="sidebar-username">Cán bộ PDT</h3>
+                <h3 class="sidebar-username">Nguyễn Văn A</h3>
             </div>
             <nav class="sidebar-menu">
                 <ul>
@@ -84,10 +84,10 @@
                     <h1>Quản lý Danh mục Môn học</h1>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-icon" aria-label="Thông báo">
+                    <!-- <button class="btn-icon" aria-label="Thông báo">
                         <i class="ti ti-bell"></i>
                         <span class="badge-dot"></span>
-                    </button>
+                    </button> -->
                     <button id="btnLogout" class="btn-logout">
                         <i class="ti ti-logout"></i>
                         <span>Đăng xuất</span>
@@ -124,7 +124,7 @@
                                 <th>Tên Môn Học</th>
                                 <th style="width: 120px;" class="text-center">Số Tín Chỉ</th>
                                 <th style="width: 150px;">Loại Môn</th>
-                                <th>Môn Học Trước (Tiên quyết)</th>
+                                <th>Môn Học Trước</th>
                                 <th style="width: 120px;" class="text-center">Thao tác</th>
                             </tr>
                         </thead>
@@ -181,6 +181,7 @@
                         <div class="form-group">
                             <label for="subjectType">Loại Môn Học *</label>
                             <select id="subjectType" name="subjectType" required>
+                                <option value="">-- Chọn Loại Môn Học --</option>
                                 <option value="Lý thuyết">Lý thuyết</option>
                                 <option value="Thực hành">Thực hành</option>
                             </select>
@@ -188,12 +189,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="subjectPrerequisite">Môn Học Trước (Điều kiện tiên quyết)</label>
+                            <label for="subjectPrerequisite">Môn Học Trước</label>
                             <select id="subjectPrerequisite" name="subjectPrerequisite">
                                 <option value="none">-- Không có môn học trước --</option>
                                 </select>
                             <small style="color: #718096; margin-top: 4px; display: block;">
-                                Sinh viên bắt buộc phải hoàn thành môn học này trước khi đăng ký môn mới.
+                                Sinh viên bắt buộc phải hoàn thành môn học này trước khi đăng ký môn học mới.
                             </small>
                         </div>
                     </div>
@@ -206,7 +207,6 @@
         </div>
     </div>
 
-    <script src="../../assets/js/navigation.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_monhoc.js"></script>
 </body>

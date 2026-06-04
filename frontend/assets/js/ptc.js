@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. KHO DỮ LIỆU GIẢ LẬP DANH SÁCH SINH VIÊN TOÀN TRƯỜNG ĐỂ LẬP SỔ CÁI
     // Hệ thống sẽ lấy dữ liệu thực tế của Sinh viên An từ localStorage nếu có, ngược lại dùng dữ liệu mồi
     let masterStudentsDebtList = [
-        { id: 'SV20260001', name: 'Nguyễn Văn An', className: 'KHMT2023', discountRate: 0.30, dynamicLoad: true },
-        { id: 'SV20260002', name: 'Trần Minh Tâm', className: 'ANNT2024', discountRate: 0.50, fixedGross: 5500000, fixedPaid: 2750000 }, // Giảm 50%, đã nộp đủ
-        { id: 'SV20260003', name: 'Lê Hoàng Yến', className: 'CNPM2023', discountRate: 0.00, fixedGross: 4800000, fixedPaid: 0 },       // Không giảm, còn nợ 100%
-        { id: 'SV20260004', name: 'Phạm Đức Long', className: 'HTTT2025', discountRate: 1.00, fixedGross: 3900000, fixedPaid: 0 }        // Miễn giảm 100% chính sách
+        { id: '20260001', name: 'Nguyễn Văn An', className: 'KHMT2023', discountRate: 0.30, dynamicLoad: true },
+        { id: '20260002', name: 'Trần Minh Tâm', className: 'ANNT2024', discountRate: 0.50, fixedGross: 5500000, fixedPaid: 2750000 }, // Giảm 50%, đã nộp đủ
+        { id: '20260003', name: 'Lê Hoàng Yến', className: 'CNPM2023', discountRate: 0.00, fixedGross: 4800000, fixedPaid: 0 },       // Không giảm, còn nợ 100%
+        { id: '20260004', name: 'Phạm Đức Long', className: 'HTTT2025', discountRate: 1.00, fixedGross: 3900000, fixedPaid: 0 }        // Miễn giảm 100% chính sách
     ];
 
     // 3. KHAI BÁO THÀNH PHẦN DOM

@@ -40,7 +40,7 @@
             </div>
             <div class="sidebar-user-info">
                 <p class="role-badge">Phòng Đào tạo</p>
-                <h3 id="sidebar-username">Cán bộ PDT</h3>
+                <h3 class="sidebar-username">Nguyễn Văn A</h3>
             </div>
             <nav class="sidebar-menu">
                 <ul>
@@ -84,10 +84,10 @@
                     <h1>Quản lý Hồ sơ Sinh viên</h1>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-icon" aria-label="Thông báo">
+                    <!-- <button class="btn-icon" aria-label="Thông báo">
                         <i class="ti ti-bell"></i>
                         <span class="badge-dot"></span>
-                    </button>
+                    </button> -->
                     <button id="btnLogout" class="btn-logout">
                         <i class="ti ti-logout"></i>
                         <span>Đăng xuất</span>
@@ -101,13 +101,13 @@
                     <div class="filter-group">
                         <div class="search-box">
                             <i class="ti ti-search"></i>
-                            <input type="text" id="searchStudent" placeholder="Tìm theo MSSV hoặc họ tên...">
+                            <input type="text" id="searchStudent" placeholder="Tìm theo MSSV hoặc Họ tên...">
                         </div>
                         <select id="filterClass" class="form-select">
                             <option value="">-- Tất cả Lớp --</option>
-                            <option value="CNTT01">CNTT01</option>
-                            <option value="KHMT01">KHMT01</option>
-                            <option value="KTPM01">KTPM01</option>
+                            <option value="CNNB2023">CNNB2023</option>
+                            <option value="KHMT2022">KHMT2022</option>
+                            <option value="KTPM2025">KTPM2025</option>
                         </select>
                     </div>
                     <button class="btn btn-primary" id="btnOpenAddModal">
@@ -133,12 +133,12 @@
                         <tbody id="studentTableBody">
                             <tr>
                                 <td>1</td>
-                                <td><strong>20260101</strong></td>
+                                <td><strong>23520001</strong></td>
                                 <td>Nguyễn Văn A</td>
                                 <td>15/04/2005</td>
                                 <td>Nam</td>
-                                <td>CNTT01</td>
-                                <td>Công nghệ thông tin</td>
+                                <td>CNNB2023</td>
+                                <td>Công nghệ thông tin Việt-Nhật</td>
                                 <td class="text-center">
                                     <div class="action-buttons">
                                         <button class="btn-action btn-edit" title="Sửa thông tin"><i class="ti ti-edit"></i></button>
@@ -174,11 +174,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="studentId">Mã số sinh viên (MSSV) *</label>
-                            <input type="text" id="studentId" name="studentId" placeholder="Ví dụ: 20260101" required>
+                            <input type="text" id="studentId" name="studentId" placeholder="Ví dụ: 21520001" required>
                         </div>
                         <div class="form-group">
                             <label for="studentName">Họ và Tên *</label>
-                            <input type="text" id="studentName" name="studentName" placeholder="Nhập họ và tên đầy đủ..." required>
+                            <input type="text" id="studentName" name="studentName" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -189,6 +189,7 @@
                         <div class="form-group">
                             <label for="studentGender">Giới tính *</label>
                             <select id="studentGender" name="studentGender" required>
+                                <option value="">-- Chọn giới tính --</option>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
@@ -197,14 +198,16 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="studentClass">Lớp sinh hoạt *</label>
-                            <input type="text" id="studentClass" name="studentClass" placeholder="Ví dụ: CNTT01" required>
+                            <input type="text" id="studentClass" name="studentClass" placeholder="Ví dụ: KHDL2021" required>
                         </div>
                         <div class="form-group">
                             <label for="studentMajor">Ngành học *</label>
                             <select id="studentMajor" name="studentMajor" required>
+                                <option value="">-- Chọn ngành học --</option>
                                 <option value="Công nghệ thông tin">Công nghệ thông tin</option>
                                 <option value="Khoa học máy tính">Khoa học máy tính</option>
                                 <option value="Kỹ thuật phần mềm">Kỹ thuật phần mềm</option>
+                                <option value="Kỹ thuật phần mềm">Khoa học dữ liệu</option>
                             </select>
                         </div>
                     </div>
@@ -217,7 +220,6 @@
         </div>
     </div>
 
-    <script src="../../assets/js/navigation.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_sv.js"></script>
 </body>

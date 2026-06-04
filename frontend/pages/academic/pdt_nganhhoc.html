@@ -40,7 +40,7 @@
             </div>
             <div class="sidebar-user-info">
                 <p class="role-badge">Phòng Đào tạo</p>
-                <h3 id="sidebar-username">Cán bộ PDT</h3>
+                <h3 class="sidebar-username">Nguyễn Văn A</h3>
             </div>
             <nav class="sidebar-menu">
                 <ul>
@@ -84,10 +84,10 @@
                     <h1>Quản lý Danh mục Ngành học</h1>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-icon" aria-label="Thông báo">
+                    <!-- <button class="btn-icon" aria-label="Thông báo">
                         <i class="ti ti-bell"></i>
                         <span class="badge-dot"></span>
-                    </button>
+                    </button> -->
                     <button id="btnLogout" class="btn-logout">
                         <i class="ti ti-logout"></i>
                         <span>Đăng xuất</span>
@@ -118,7 +118,7 @@
                                 <th style="width: 150px;">Mã Ngành</th>
                                 <th>Tên Ngành Học</th>
                                 <th>Khoa Quản Lý</th>
-                                <th style="width: 180px;" class="text-center">Số Tín Chỉ Tối Thiểu</th>
+                                <th style="width: 180px;" class="text-center">Số Tín Chỉ Tích Lũy Tối Thiểu</th>
                                 <th style="width: 120px;" class="text-center">Thao tác</th>
                             </tr>
                         </thead>
@@ -127,8 +127,8 @@
                                 <td>1</td>
                                 <td><strong>CNTT</strong></td>
                                 <td>Công nghệ thông tin</td>
-                                <td>Khoa Máy tính</td>
-                                <td class="text-center">135</td>
+                                <td>Khoa Khoa học và Kỹ thuật thông tin</td>
+                                <td class="text-center">125</td>
                                 <td class="text-center">
                                     <div class="action-buttons">
                                         <button class="btn-action btn-edit" title="Sửa"><i class="ti ti-edit"></i></button>
@@ -163,13 +163,13 @@
                         </div>
                         <div class="form-group">
                             <label for="majorName">Tên Ngành Học *</label>
-                            <input type="text" id="majorName" name="majorName" placeholder="Ví dụ: Kỹ thuật phần mềm" required>
+                            <input type="text" id="majorName" name="majorName" placeholder="Ví dụ: Công nghệ thông tin" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="majorDepartment">Khoa Quản Lý *</label>
-                            <input type="text" id="majorDepartment" name="majorDepartment" placeholder="Ví dụ: Khoa Khoa học Máy tính" required>
+                            <input type="text" id="majorDepartment" name="majorDepartment" placeholder="Ví dụ: Khoa Khoa học và Kỹ thuật thông tin" required>
                         </div>
                         <div class="form-group">
                             <label for="majorCredits">Số Tín Chỉ Tối Thiểu *</label>
@@ -185,7 +185,6 @@
         </div>
     </div>
 
-    <script src="../../assets/js/navigation.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_nganhhoc.js"></script>
 </body>
