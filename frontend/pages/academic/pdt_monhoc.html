@@ -175,8 +175,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="subjectCredits">Số Tín Chỉ *</label>
-                            <input type="number" id="subjectCredits" name="subjectCredits" min="1" max="10" placeholder="Ví dụ: 3" required>
+                            <label for="subjectLessons">Số Tiết Học *</label>
+                            <input type="number" id="subjectLessons" name="subjectLessons"
+                                min="15" max="300" placeholder="Ví dụ: 45" required>
+                            <small style="color: #718096; margin-top: 4px; display: block;">
+                                Dùng để tự động tính số tín chỉ theo loại môn.
+                            </small>
                         </div>
                         <div class="form-group">
                             <label for="subjectType">Loại Môn Học *</label>
@@ -185,6 +189,17 @@
                                 <option value="Lý thuyết">Lý thuyết</option>
                                 <option value="Thực hành">Thực hành</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Số Tín Chỉ (Tự động tính)</label>
+                            <input type="number" id="subjectCredits" name="subjectCredits"
+                                readonly
+                                style="background-color: #edf2f7; cursor: not-allowed; font-weight: 600; color: #2b6cb0;">
+                            <small style="color: #718096; margin-top: 4px; display: block;">
+                                LT: số tiết / 15 &nbsp;|&nbsp; TH: số tiết / 30
+                            </small>
                         </div>
                     </div>
                     <div class="form-row">

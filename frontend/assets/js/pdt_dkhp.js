@@ -295,14 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
     filterAndRenderData(); // Chạy bộ lọc lần đầu để nạp dữ liệu theo năm học đang chọn mặc định
 });
 // Thêm đoạn này vào hàm khởi chạy DOMContentLoaded của các trang để nạp Footer tự động
-const footerContainer = document.getElementById('shared-footer-container');
-if (footerContainer) {
-    fetch('../../components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerContainer.innerHTML = data;
-            // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
-            const script = footerContainer.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
-}
+// const footerContainer = document.getElementById('shared-footer-container');
+// if (footerContainer) {
+//     fetch('../../components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             footerContainer.innerHTML = data;
+//             // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
+//             const script = footerContainer.querySelector('script');
+//             if (script) eval(script.innerHTML);
+//         });
+// }

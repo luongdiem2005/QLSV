@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const MOCK_USERS = {
         'pdt': { password: '123', role: 'PDT', redirect: 'pages/academic/pdt.html' },
         'ptc': { password: '123', role: 'PTC', redirect: 'pages/finance/ptc.html' },
-        'student': { password: '123', role: 'SV', redirect: 'pages/student/sv.html' },
+        'sv': { password: '123', role: 'SV', redirect: 'pages/student/sv.html' },
         'admin': { password: '123', role: 'ADMIN', redirect: 'pages/admin/admin.html' }
     };
 

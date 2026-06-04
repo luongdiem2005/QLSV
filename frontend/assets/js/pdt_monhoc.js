@@ -40,6 +40,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchSubjectInput = document.getElementById('searchSubject');
     const filterTypeSelect = document.getElementById('filterType');
 
+    const inputSubjectLessons = document.getElementById('subjectLessons');
+
+    // Hàm tự động tính số tín chỉ
+    function autoCalculateCredits() {
+        const lessons = parseInt(inputSubjectLessons.value, 10);
+        const type = inputSubjectType.value;
+
+        if (!lessons || !type) {
+            inputSubjectCredits.value = '';
+            return;
+        }
+
+        let credits = 0;
+        if (type === 'Lý thuyết') {
+            credits = Math.floor(lessons / 15);
+        } else if (type === 'Thực hành') {
+            credits = Math.floor(lessons / 30);
+        }
+
+        inputSubjectCredits.value = credits > 0 ? credits : '';
+    }
+
+    // Gắn sự kiện tự động tính khi người dùng thay đổi số tiết hoặc loại môn
+    if (inputSubjectLessons) inputSubjectLessons.addEventListener('input', autoCalculateCredits);
+    if (inputSubjectType) inputSubjectType.addEventListener('change', autoCalculateCredits);
+
     // 3. HÀM ĐỔ DỮ LIỆU ĐỘNG VÀO DROPDOWN MÔN HỌC TRƯỚC (Dynamic Prerequisite Dropdown)
     function populatePrerequisiteDropdown(excludeSubjectId = null) {
         // Giữ lại option mặc định đầu tiên
@@ -136,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 editingSubjectId = subjectId;
                 inputSubjectId.value = target.id;
                 inputSubjectName.value = target.name;
+                inputSubjectLessons.value = target.lessons || '';
                 inputSubjectCredits.value = target.credits;
                 inputSubjectType.value = target.type;
                 selectSubjectPrerequisite.value = target.prerequisite;
@@ -195,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Thu thập và làm sạch chuỗi nhập liệu
             const id = inputSubjectId.value.trim().toUpperCase();
             const name = inputSubjectName.value.trim();
+            const lessons = parseInt(inputSubjectLessons.value, 10);
             const credits = parseInt(inputSubjectCredits.value, 10);
             const type = inputSubjectType.value;
             const prerequisite = selectSubjectPrerequisite.value;
@@ -202,6 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- KIỂM TRA RÀNG BUỘC NGHIỆP VỤ (Validation Rules) ---
             if (!id || !name || isNaN(credits)) {
                 alert('Vui lòng nhập đầy đủ các thông tin có dấu sao bắt buộc (*).');
+                return;
+            }
+
+            if (!credits || credits <= 0) {
+                alert('Số tín chỉ không hợp lệ. Vui lòng kiểm tra lại số tiết và loại môn.');
                 return;
             }
 
@@ -220,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                subjects.push({ id, name, credits, type, prerequisite });
+                subjects.push({ id, name, lessons, credits, type, prerequisite });
                 alert('Thêm môn học vào danh mục đào tạo thành công!');
             } else if (formMode === 'edit') {
                 const index = subjects.findIndex(s => s.id === editingSubjectId);
@@ -258,14 +291,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTable(subjects);
 });
 // Thêm đoạn này vào hàm khởi chạy DOMContentLoaded của các trang để nạp Footer tự động
-const footerContainer = document.getElementById('shared-footer-container');
-if (footerContainer) {
-    fetch('../../components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerContainer.innerHTML = data;
-            // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
-            const script = footerContainer.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
-}
+// const footerContainer = document.getElementById('shared-footer-container');
+// if (footerContainer) {
+//     fetch('../../components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             footerContainer.innerHTML = data;
+//             // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
+//             const script = footerContainer.querySelector('script');
+//             if (script) eval(script.innerHTML);
+//         });
+// }

@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Định danh thông tin cán bộ tài chính hiển thị lên sidebar
     const financeStaff = { name: 'Trần Thị Thu Kế' };
-    const sidebarUserName = document.getElementById('sidebar-user-name');
+    const sidebarUserName = document.getElementById('sidebar-username');
     if (sidebarUserName) sidebarUserName.textContent = financeStaff.name;
 
     // 1. KHO DỮ LIỆU MẪU SỔ THEO DÕI ĐƠN TỪ CHÍNH SÁCH (Exemption Records Store)
@@ -214,14 +214,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderExemptionsGrid();
 });
 // Thêm đoạn này vào hàm khởi chạy DOMContentLoaded của các trang để nạp Footer tự động
-const footerContainer = document.getElementById('shared-footer-container');
-if (footerContainer) {
-    fetch('../../components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerContainer.innerHTML = data;
-            // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
-            const script = footerContainer.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
-}
+// const footerContainer = document.getElementById('shared-footer-container');
+// if (footerContainer) {
+//     fetch('../../components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             footerContainer.innerHTML = data;
+//             // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
+//             const script = footerContainer.querySelector('script');
+//             if (script) eval(script.innerHTML);
+//         });
+// }

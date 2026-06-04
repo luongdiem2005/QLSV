@@ -7,10 +7,15 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. ĐỊNH MỨC HỌC PHÍ QUY ĐỊNH (Business Rules Configuration)
-    const TUITION_RATES = {
-        'Lý thuyết': 450000,  // Đơn giá: 450.000 VNĐ / 1 Tín chỉ
-        'Thực hành': 550000   // Đơn giá: 550.000 VNĐ / 1 Tín chỉ
-    };
+    // Đọc đơn giá từ cấu hình PTC, fallback về giá mặc định nếu chưa cấu hình
+    function getTuitionRates() {
+    const stored = localStorage.getItem('edufee_global_tuition_rates');
+    if (stored) {
+        return JSON.parse(stored);
+    }
+    return { 'Lý thuyết': 27000, 'Thực hành': 37000 };
+}
+const TUITION_RATES = getTuitionRates();
 
     // 2. KHO DỮ LIỆU GIẢ LẬP DANH MỤC MÔN HỌC (Đồng bộ từ phân hệ PDT)
     const subjectsRepository = [
@@ -60,6 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('profId').textContent = currentStudent.id;
         document.getElementById('profClass').textContent = currentStudent.className;
         document.getElementById('profMajor').textContent = currentStudent.major;
+
+        // Cập nhật hiển thị đơn giá theo cấu hình PTC
+        const rateDisplay = document.getElementById('tuitionRateDisplay');
+        if (rateDisplay) {
+            const lt = (TUITION_RATES['Lý thuyết'] || 0).toLocaleString('vi-VN');
+            const th = (TUITION_RATES['Thực hành'] || 0).toLocaleString('vi-VN');
+            rateDisplay.textContent = `Lý thuyết: ${lt}đ/TC | Thực hành: ${th}đ/TC`;
+        }
     }
 
     // 7. HIỂN THỊ DANH SÁCH LỚP HỌC PHẦN ĐANG MỞ (Render Available Classes)
@@ -294,14 +307,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSelectedCart();
 });
 // Thêm đoạn này vào hàm khởi chạy DOMContentLoaded của các trang để nạp Footer tự động
-const footerContainer = document.getElementById('shared-footer-container');
-if (footerContainer) {
-    fetch('../../components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerContainer.innerHTML = data;
-            // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
-            const script = footerContainer.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
-}
+// const footerContainer = document.getElementById('shared-footer-container');
+// if (footerContainer) {
+//     fetch('../../components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             footerContainer.innerHTML = data;
+//             // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
+//             const script = footerContainer.querySelector('script');
+//             if (script) eval(script.innerHTML);
+//         });
+// }

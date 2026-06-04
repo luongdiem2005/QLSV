@@ -7,10 +7,15 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. CẤU HÌNH ĐƠN GIÁ HỌC PHÍ (Business Configuration)
-    const TUITION_RATES = {
-        'Lý thuyết': 450000,
-        'Thực hành': 550000
-    };
+    // Đọc đơn giá từ cấu hình PTC, fallback về giá mặc định nếu chưa cấu hình
+    function getTuitionRates() {
+    const stored = localStorage.getItem('edufee_global_tuition_rates');
+    if (stored) {
+        return JSON.parse(stored);
+    }
+    return { 'Lý thuyết': 27000, 'Thực hành': 37000 };
+}
+const TUITION_RATES = getTuitionRates();
 
     // 2. THÔNG TIN SINH VIÊN & CHÍNH SÁCH MIỄN GIẢM (Policy Configuration)
     // Giả lập: Sinh viên Nguyễn Văn An thuộc diện con thương binh, được giảm 30% học phí
@@ -224,14 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateAndRenderInvoice();
 });
 // Thêm đoạn này vào hàm khởi chạy DOMContentLoaded của các trang để nạp Footer tự động
-const footerContainer = document.getElementById('shared-footer-container');
-if (footerContainer) {
-    fetch('../../components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerContainer.innerHTML = data;
-            // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
-            const script = footerContainer.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
-}
+// const footerContainer = document.getElementById('shared-footer-container');
+// if (footerContainer) {
+//     fetch('../../components/footer.html')
+//         .then(response => response.text())
+//         .then(data => {
+//             footerContainer.innerHTML = data;
+//             // Thực thi lại đoạn script tính năm bên trong file footer vừa nạp
+//             const script = footerContainer.querySelector('script');
+//             if (script) eval(script.innerHTML);
+//         });
+// }

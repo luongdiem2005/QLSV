@@ -6,6 +6,7 @@ const pool = require('./config/db.js');
 const authRoutes = require('./routes/authRoutes.js');
 const studentRoutes = require('./routes/studentRoutes.js');
 const registrationRoutes = require('./routes/registrationRoutes');
+const financeRoutes = require('./routes/financeRoutes');
 // 1. Khởi tạo thực thể Server Express
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ pool.query('SELECT 1')
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/finance',       financeRoutes);
 // Kịch bản kiểm tra sức khỏe hệ thống (Health Check Endpoint)
 
 // Khai báo Global Error Middleware sau cùng
