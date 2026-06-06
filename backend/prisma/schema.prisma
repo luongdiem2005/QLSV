@@ -1,4 +1,9 @@
-// ============ datasource & generator (khai báo 1 lần cho cả schema) ============
+// ============================================================================
+//  EduFee - Prisma Schema (MySQL)
+//  Hệ thống quản lý đăng ký môn học & thu học phí
+//  Gồm 17 model + 1 enum, ghép từ 6 nhóm đã thiết kế ở BƯỚC 3.
+// ============================================================================
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,7 +20,7 @@ model TINH {
   MaTinh  String @id @db.VarChar(10)
   TenTinh String @unique @db.VarChar(100)
 
-  xaList XA[] // 1 tỉnh có nhiều xã
+  xaList XA[]
 }
 
 /// Danh mục xã/phường, gắn với 1 tỉnh
@@ -27,19 +32,19 @@ model XA {
   GhiChu        String? @db.VarChar(255)
 
   tinh         TINH       @relation(fields: [MaTinh], references: [MaTinh])
-  sinhVienList SINHVIEN[] // thêm ở Nhóm có SINHVIEN
+  sinhVienList SINHVIEN[]
 
-  @@unique([MaTinh, TenXa]) // chống trùng tên xã trong cùng tỉnh
+  @@unique([MaTinh, TenXa])
 }
 
 /// Đối tượng ưu tiên & tỷ lệ miễn giảm (QĐ2)
 model DOITUONGUUTIEN {
   MaDoiTuong   String  @id @db.VarChar(10)
   TenDoiTuong  String  @unique @db.VarChar(100)
-  TyLeMienGiam Decimal @db.Decimal(5, 2) // 0..100, kiểm tra ở service
+  TyLeMienGiam Decimal @db.Decimal(5, 2)
   GhiChu       String? @db.VarChar(255)
 
-  sinhVienList SINHVIEN[] // thêm ở Nhóm có SINHVIEN
+  sinhVienList SINHVIEN[]
 }
 
 /// Khoa
@@ -49,8 +54,8 @@ model KHOA {
   VanPhongKhoa String? @db.VarChar(150)
   GhiChu       String? @db.VarChar(255)
 
-  nganhList  NGANH[] // 1 khoa có nhiều ngành (QĐ4)
-  monHocList MONHOC[] // thêm ở nhóm Môn học
+  nganhList  NGANH[]
+  monHocList MONHOC[]
 }
 
 /// Ngành học, thuộc 1 khoa
@@ -61,8 +66,8 @@ model NGANH {
   GhiChu   String? @db.VarChar(255)
 
   khoa            KHOA             @relation(fields: [MaKhoa], references: [MaKhoa])
-  sinhVienList    SINHVIEN[] // thêm ở nhóm SINHVIEN
-  chuongTrinhList CHUONGTRINHHOC[] // thêm ở nhóm Chương trình
+  sinhVienList    SINHVIEN[]
+  chuongTrinhList CHUONGTRINHHOC[]
 }
 
 // ===================== NHÓM 2: MÔN HỌC =====================
@@ -71,33 +76,31 @@ model NGANH {
 model LOAIMONHOC {
   MaLoaiMonHoc    String  @id @db.VarChar(10)
   TenLoaiMonHoc   String  @unique @db.VarChar(50)
-  SoTietMotTinChi Int // LT=15, TH=30
-  SoTienMotTinChi Decimal @db.Decimal(12, 2) // đơn giá / tín chỉ
+  SoTietMotTinChi Int
+  SoTienMotTinChi Decimal @db.Decimal(12, 2)
 
-  monHocList MONHOC[] // 1 loại áp dụng cho nhiều môn
+  monHocList MONHOC[]
 }
 
-/// Môn học. Số tín chỉ = SoTiet / SoTietMotTinChi -> KHÔNG lưu cột, tính ở service
+/// Môn học. Số tín chỉ = SoTiet / SoTietMotTinChi -> tính ở service, KHÔNG lưu cột
 model MONHOC {
   MaMonHoc     String @id @db.VarChar(10)
   TenMonHoc    String @unique @db.VarChar(150)
   MaKhoa       String @db.VarChar(10)
   MaLoaiMonHoc String @db.VarChar(10)
-  SoTiet       Int // > 0, kiểm tra ở service
+  SoTiet       Int
 
   khoa       KHOA       @relation(fields: [MaKhoa], references: [MaKhoa])
   loaiMonHoc LOAIMONHOC @relation(fields: [MaLoaiMonHoc], references: [MaLoaiMonHoc])
 
-  // Quan hệ n-n tự thân (môn tiên quyết) qua bảng nối CT_MONHOCTRUOC:
-  monHocTruocList   CT_MONHOCTRUOC[] @relation("MonHocChinh") // các môn tiên quyết CỦA môn này
-  laMonTruocCuaList CT_MONHOCTRUOC[] @relation("MonHocTruoc") // môn này LÀ tiên quyết của môn khác
-
-  chuongTrinhList CHUONGTRINHHOC[] // môn này nằm trong những chương trình nào
-  monHocMoList    MONHOCMO[] // thêm ở Nhóm Học kỳ/Mở môn
-  ctPhieuDKList   CT_PHIEUDK[] // thêm ở Nhóm Đăng ký/Học phí
+  monHocTruocList   CT_MONHOCTRUOC[] @relation("MonHocChinh")
+  laMonTruocCuaList CT_MONHOCTRUOC[] @relation("MonHocTruoc")
+  chuongTrinhList   CHUONGTRINHHOC[]
+  monHocMoList      MONHOCMO[]
+  ctPhieuDKList     CT_PHIEUDK[]
 }
 
-/// Bảng nối môn tiên quyết: (MaMonHoc, MaMonHocTruoc) đều trỏ về MONHOC
+/// Bảng nối môn tiên quyết (n-n tự thân của MONHOC)
 model CT_MONHOCTRUOC {
   MaMonHoc      String @db.VarChar(10)
   MaMonHocTruoc String @db.VarChar(10)
@@ -105,7 +108,7 @@ model CT_MONHOCTRUOC {
   monHoc      MONHOC @relation("MonHocChinh", fields: [MaMonHoc], references: [MaMonHoc])
   monHocTruoc MONHOC @relation("MonHocTruoc", fields: [MaMonHocTruoc], references: [MaMonHoc])
 
-  @@id([MaMonHoc, MaMonHocTruoc]) // PK kép, chống khai báo trùng cặp tiên quyết
+  @@id([MaMonHoc, MaMonHocTruoc])
 }
 
 /// Khung chương trình học: ngành học môn nào ở học kỳ thứ mấy
@@ -119,17 +122,17 @@ model CHUONGTRINHHOC {
   nganh  NGANH  @relation(fields: [MaNganh], references: [MaNganh])
   monHoc MONHOC @relation(fields: [MaMonHoc], references: [MaMonHoc])
 
-  @@id([MaNganh, MaMonHoc]) // PK kép
+  @@id([MaNganh, MaMonHoc])
 }
 
 // ===================== NHÓM 3: NGƯỜI DÙNG & SINH VIÊN =====================
 
-/// Vai trò người dùng — role enum đơn giản (đã chốt thay cho bảng phân quyền động)
+/// Vai trò người dùng - role enum đơn giản
 enum VaiTro {
   ADMIN
-  PDT // Phòng Đào tạo
-  PTC // Phòng Tài chính
-  SV // Sinh viên
+  PDT
+  PTC
+  SV
 }
 
 /// Hồ sơ sinh viên (BM7)
@@ -148,37 +151,37 @@ model SINHVIEN {
   xa              XA?             @relation(fields: [MaXa], references: [MaXa])
   nganh           NGANH           @relation(fields: [MaNganh], references: [MaNganh])
   doiTuong        DOITUONGUUTIEN? @relation(fields: [MaDoiTuong], references: [MaDoiTuong])
-  nguoiDung       NGUOIDUNG? // mỗi SV có tối đa 1 tài khoản đăng nhập
-  phieuDangKyList PHIEUDANGKY[] // thêm ở Nhóm 5
+  nguoiDung       NGUOIDUNG?
+  phieuDangKyList PHIEUDANGKY[]
 }
 
-/// Tài khoản đăng nhập (gồm cả SV). Mật khẩu lưu HASH bcrypt, không lưu plaintext
+/// Tài khoản đăng nhập (gồm cả SV). MatKhau lưu HASH bcrypt.
 model NGUOIDUNG {
   TenDangNhap  String  @id @db.VarChar(50)
   MatKhau      String  @db.VarChar(255)
   VaiTro       VaiTro
   HoTen        String? @db.VarChar(100)
-  MaSoSinhVien String? @unique @db.VarChar(15) // chỉ có khi VaiTro = SV
-  TrangThai    Boolean @default(true) // true = đang hoạt động, false = bị khóa
+  MaSoSinhVien String? @unique @db.VarChar(15)
+  TrangThai    Boolean @default(true)
 
   sinhVien SINHVIEN? @relation(fields: [MaSoSinhVien], references: [MaSoSinhVien])
 }
 
 // ===================== NHÓM 4: HỌC KỲ & MỞ MÔN =====================
 
-/// Học kỳ năm học (BM8). HanDongHocPhi phục vụ QĐ10 (kiểm tra hạn đóng)
+/// Học kỳ năm học (BM8)
 model HOCKYNAMHOC {
   MaHKNH        String   @id @db.VarChar(15)
-  HocKy         String   @db.VarChar(20) // HK1 / HK2 / HK hè
+  HocKy         String   @db.VarChar(20)
   NgayBatDau    DateTime
   NgayKetThuc   DateTime
   HanDongHocPhi DateTime
 
-  monHocMoList    MONHOCMO[] // các môn được mở trong học kỳ này
-  phieuDangKyList PHIEUDANGKY[] // thêm ở Nhóm 5
+  monHocMoList    MONHOCMO[]
+  phieuDangKyList PHIEUDANGKY[]
 }
 
-/// Môn được mở trong một học kỳ (BM8) + sĩ số lớp (khớp pdt_dkhp.js)
+/// Môn được mở trong một học kỳ + sĩ số
 model MONHOCMO {
   MaMonHocMo  String @id @db.VarChar(15)
   MaHKNH      String @db.VarChar(15)
@@ -189,34 +192,33 @@ model MONHOCMO {
   hocKyNamHoc HOCKYNAMHOC @relation(fields: [MaHKNH], references: [MaHKNH])
   monHoc      MONHOC      @relation(fields: [MaMonHoc], references: [MaMonHoc])
 
-  @@unique([MaHKNH, MaMonHoc]) // không mở trùng một môn trong cùng học kỳ
+  @@unique([MaHKNH, MaMonHoc])
 }
 
 // ===================== NHÓM 5: ĐĂNG KÝ & HỌC PHÍ =====================
 
-/// Phiếu đăng ký học phần của 1 SV trong 1 học kỳ (BM9).
-/// Toàn bộ cột tiền do SERVICE tính, client KHÔNG gửi lên.
+/// Phiếu đăng ký học phần của 1 SV trong 1 học kỳ (BM9)
 model PHIEUDANGKY {
   MaPhieu          String   @id @db.VarChar(15)
   MaSoSinhVien     String   @db.VarChar(15)
   MaHKNH           String   @db.VarChar(15)
   NgayLapPhieu     DateTime @default(now())
-  TongTienDK       Decimal  @default(0) @db.Decimal(12, 2) // tổng tiền các môn đăng ký
-  TienMienGiam     Decimal  @default(0) @db.Decimal(12, 2) // = TongTienDK * tỷ lệ ưu tiên
-  TongTienPhaiDong Decimal  @default(0) @db.Decimal(12, 2) // = TongTienDK - TienMienGiam
+  TongTienDK       Decimal  @default(0) @db.Decimal(12, 2)
+  TienMienGiam     Decimal  @default(0) @db.Decimal(12, 2)
+  TongTienPhaiDong Decimal  @default(0) @db.Decimal(12, 2)
   SoTienDaDong     Decimal  @default(0) @db.Decimal(12, 2)
-  SoTienConLai     Decimal  @default(0) @db.Decimal(12, 2) // = TongTienPhaiDong - SoTienDaDong
+  SoTienConLai     Decimal  @default(0) @db.Decimal(12, 2)
 
   sinhVien      SINHVIEN         @relation(fields: [MaSoSinhVien], references: [MaSoSinhVien])
   hocKyNamHoc   HOCKYNAMHOC      @relation(fields: [MaHKNH], references: [MaHKNH])
-  ctPhieuDKList CT_PHIEUDK[] // chi tiết các môn trong phiếu
-  phieuThuList  PHIEUTHUHOCPHI[] // các lần đóng tiền
+  ctPhieuDKList CT_PHIEUDK[]
+  phieuThuList  PHIEUTHUHOCPHI[]
 
-  @@unique([MaSoSinhVien, MaHKNH]) // mỗi SV chỉ 1 phiếu / học kỳ
-  @@index([MaHKNH]) // phục vụ báo cáo nợ HP theo học kỳ (BM12)
+  @@unique([MaSoSinhVien, MaHKNH])
+  @@index([MaHKNH])
 }
 
-/// Chi tiết phiếu đăng ký: các môn SV đã đăng ký (n-n PHIEUDANGKY × MONHOC)
+/// Chi tiết phiếu đăng ký (n-n PHIEUDANGKY × MONHOC)
 model CT_PHIEUDK {
   MaPhieuDK String @db.VarChar(15)
   MaMonHoc  String @db.VarChar(10)
@@ -224,15 +226,15 @@ model CT_PHIEUDK {
   phieuDangKy PHIEUDANGKY @relation(fields: [MaPhieuDK], references: [MaPhieu])
   monHoc      MONHOC      @relation(fields: [MaMonHoc], references: [MaMonHoc])
 
-  @@id([MaPhieuDK, MaMonHoc]) // PK kép -> chống đăng ký TRÙNG môn trong 1 phiếu
+  @@id([MaPhieuDK, MaMonHoc])
 }
 
-/// Phiếu thu học phí - mỗi lần SV đóng tiền (cho phép nhiều lần, QĐ10)
+/// Phiếu thu học phí - mỗi lần đóng tiền (QĐ10)
 model PHIEUTHUHOCPHI {
   MaPhieuThu   String   @id @db.VarChar(15)
   MaPhieuDK    String   @db.VarChar(15)
   NgayLapPhieu DateTime @default(now())
-  SoTienThu    Decimal  @db.Decimal(12, 2) // > 0, và <= SoTienConLai (kiểm ở service)
+  SoTienThu    Decimal  @db.Decimal(12, 2)
 
   phieuDangKy PHIEUDANGKY @relation(fields: [MaPhieuDK], references: [MaPhieu])
 
@@ -241,8 +243,7 @@ model PHIEUTHUHOCPHI {
 
 // ===================== NHÓM 6: THAM SỐ HỆ THỐNG =====================
 
-/// Lưu các quy định thay đổi được (QĐ13): tỷ lệ miễn giảm min/max, hạn đóng,
-/// số lần đóng tối đa, đơn giá mặc định... Mỗi tham số là 1 cặp (tên, giá trị).
+/// Lưu các quy định thay đổi được (QĐ13) dạng key-value
 model THAMSO {
   TenThamSo String @id @db.VarChar(50)
   GiaTri    String @db.VarChar(255)

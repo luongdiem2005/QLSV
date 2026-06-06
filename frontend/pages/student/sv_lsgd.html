@@ -75,22 +75,9 @@
             pointer-events: none;
         }
     </style>
-
-    <script>
-        (function() {
-            const session = localStorage.getItem('edufee_session');
-            if (!session) {
-                alert('Vui lòng đăng nhập để truy cập hệ thống!');
-                window.location.href = '../../index.html';
-                return;
-            }
-            const userData = JSON.parse(session);
-            if (userData.role !== 'SV') {
-                alert('Bạn không có quyền truy cập vào cổng sinh viên!');
-                window.location.href = '../../index.html';
-            }
-        })();
-    </script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/sv_lsgd.js"></script>
 </head>
 <body class="dashboard-page">
 
