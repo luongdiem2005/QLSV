@@ -23,7 +23,7 @@ Các chức năng chính:
 | 23520415 | Trần Thanh Hà |
 | 23520585 | Lại Thị Thu Hương |
 ---
-git
+
 ## Công nghệ sử dụng
 
 ### Frontend
