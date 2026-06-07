@@ -58,6 +58,7 @@ exports.list = async ({ maPhieuDK, maSoSinhVien, maHKNH }, currentUser) => {
       phieuDangKy: {
         select: {
           MaPhieu: true, MaSoSinhVien: true, MaHKNH: true,
+          TongTienDK: true, TienMienGiam: true, TongTienPhaiDong: true,
           sinhVien: { select: { HoTen: true } },
         },
       },

@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (inDoiTuong) inDoiTuong.innerHTML = '<option value="">-- Không ưu tiên --</option>' +
       doiTuongList.map(d => `<option value="${d.MaDoiTuong}">${d.TenDoiTuong} (${Number(d.TyLeMienGiam)}%)</option>`).join('');
 
-    if (inXa) inXa.innerHTML = '<option value="">-- Chọn xã/phường --</option>' +
+    if (inXa) inXa.innerHTML = '<option value="">-- Chọn --</option>' +
       xaList.map(x => `<option value="${x.MaXa}">${x.TenXa}${x.tinh ? ' - ' + x.tinh.TenTinh : ''}</option>`).join('');
 
     if (inStatus && !inStatus.options.length) {
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       TinhTrang: inStatus ? inStatus.value || 'Đang học' : 'Đang học',
     };
     if (!payload.HoTen || !payload.MaNganh || (mode === 'add' && !payload.MaSoSinhVien)) {
-      alert('Vui lòng nhập MSSV, Họ tên và chọn Ngành.');
+      alert('Vui lòng nhập thông tin gắn dấu *.');
       return;
     }
     try {

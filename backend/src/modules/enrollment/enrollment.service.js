@@ -93,14 +93,20 @@ exports.getOne = async (maPhieu, currentUser) => {
     throw new ApiError(403, 'Bạn chỉ được xem phiếu đăng ký của mình.', 'FORBIDDEN');
   }
 
-  // Đính số tín chỉ mỗi môn cho frontend hiển thị
-  const monHocList = phieu.ctPhieuDKList.map((ct) => ({
-    MaMonHoc: ct.monHoc.MaMonHoc,
-    TenMonHoc: ct.monHoc.TenMonHoc,
-    SoTiet: ct.monHoc.SoTiet,
-    LoaiMon: ct.monHoc.loaiMonHoc.TenLoaiMonHoc,
-    SoTinChi: tinhTinChi(ct.monHoc.SoTiet, ct.monHoc.loaiMonHoc.SoTietMotTinChi),
-  }));
+  // Đính số tín chỉ + đơn giá + thành tiền mỗi môn cho frontend hiển thị
+  const monHocList = phieu.ctPhieuDKList.map((ct) => {
+    const soTinChi = tinhTinChi(ct.monHoc.SoTiet, ct.monHoc.loaiMonHoc.SoTietMotTinChi);
+    const donGia = Number(ct.monHoc.loaiMonHoc.SoTienMotTinChi);
+    return {
+      MaMonHoc: ct.monHoc.MaMonHoc,
+      TenMonHoc: ct.monHoc.TenMonHoc,
+      SoTiet: ct.monHoc.SoTiet,
+      LoaiMon: ct.monHoc.loaiMonHoc.TenLoaiMonHoc,
+      SoTinChi: soTinChi,
+      DonGiaTinChi: donGia,
+      ThanhTien: soTinChi * donGia,
+    };
+  });
 
   const { ctPhieuDKList, ...rest } = phieu;
   return { ...rest, monHocList };
