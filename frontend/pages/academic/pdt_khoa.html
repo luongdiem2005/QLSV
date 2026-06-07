@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduFee - Quản lý Khoa</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+</head>
+
+<body class="dashboard-page">
+
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="ti ti-school"></i>
+            <h2>EduFee</h2>
+        </div>
+
+        <div class="sidebar-user-info">
+            <p class="role-badge">Phòng Đào tạo</p>
+            <h3 class="sidebar-username">Nguyễn Văn A</h3>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="pdt.html">
+                        <i class="ti ti-layout-dashboard"></i>
+                        <span>Tổng quan</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pdt_sv.html">
+                        <i class="ti ti-users"></i>
+                        <span>Quản lý Sinh viên</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pdt_nganhhoc.html">
+                        <i class="ti ti-building-community"></i>
+                        <span>Quản lý Ngành học</span>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="pdt_khoa.html">
+                        <i class="ti ti-school"></i>
+                        <span>Quản lý Khoa</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pdt_monhoc.html">
+                        <i class="ti ti-book"></i>
+                        <span>Danh mục Môn học</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pdt_dkhp.html">
+                        <i class="ti ti-clipboard-list"></i>
+                        <span>Mở lớp Học phần</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-wrapper">
+
+        <header class="main-header">
+            <div class="header-title">
+                <h1>Quản lý Danh mục Khoa</h1>
+            </div>
+
+            <div class="header-actions">
+                <button id="btnLogout" class="btn-logout">
+                    <i class="ti ti-logout"></i>
+                    <span>Đăng xuất</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <!-- Toolbar -->
+            <div class="table-toolbar">
+
+                <div class="filter-group">
+
+                    <div class="search-box">
+                        <i class="ti ti-search"></i>
+                        <input
+                            type="text"
+                            id="searchFaculty"
+                            placeholder="Tìm theo mã hoặc tên khoa..."
+                        >
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    id="btnOpenAddModal"
+                >
+                    <i class="ti ti-square-plus"></i>
+                    <span>Thêm khoa mới</span>
+                </button>
+
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th style="width:80px;">STT</th>
+                            <th style="width:180px;">Mã Khoa</th>
+                            <th>Tên Khoa</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="facultyTableBody">
+
+                        <!-- Render bằng JS -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="pagination-wrapper">
+                <p class="pagination-info">
+                    Hiển thị dữ liệu khoa
+                </p>
+            </div>
+
+            <div id="shared-footer-container"></div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div id="facultyModal" class="modal-overlay hidden">
+    <div class="modal-card">
+
+        <div class="modal-header">
+            <h3 id="modalTitle">Thêm khoa mới</h3>
+
+            <button class="btn-close-modal" id="btnCloseModal">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+
+        <form id="facultyForm" novalidate>
+
+            <div class="modal-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="facultyId">
+                            Mã Khoa *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="facultyId"
+                            name="facultyId"
+                            placeholder="Ví dụ: CNTT"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="facultyName">
+                            Tên Khoa *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="facultyName"
+                            name="facultyName"
+                            placeholder="Ví dụ: Khoa Công nghệ thông tin"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group" style="flex:1;">
+                        <label for="facultyDescription">
+                            Mô Tả
+                        </label>
+
+                        <textarea
+                            id="facultyDescription"
+                            name="facultyDescription"
+                            rows="3"
+                            placeholder="Nhập mô tả khoa (nếu có)..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelModal"
+                >
+                    Hủy
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Lưu
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="../../../js/api.js"></script>
+<script src="../../../js/auth-guard.js"></script>
+<script src="../../../js/pdt_khoa.js"></script>
+<script src="../../assets/js/pdt_dashboard.js"></script>
+
+</body>
+</html>
