@@ -39,8 +39,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ---------- Đổ dropdown danh mục ----------
   async function loadDanhMuc() {
-    [nganhList, doiTuongList, xaList] = await Promise.all([
-      EduFeeAPI.get('/nganh').catch(() => []),
+    // Ngành là BẮT BUỘC khi thêm SV -> nếu lỗi phải báo, không nuốt im lặng.
+    try {
+      nganhList = await EduFeeAPI.get('/nganh');
+    } catch (e) {
+      nganhList = [];
+      alert('Không tải được danh sách Ngành: ' + e.message);
+    }
+    // Hai mục này không bắt buộc -> lỗi thì bỏ qua.
+    [doiTuongList, xaList] = await Promise.all([
       EduFeeAPI.get('/doi-tuong-uu-tien').catch(() => []),
       EduFeeAPI.get('/xa').catch(() => []),
     ]);
@@ -57,6 +64,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (inStatus && !inStatus.options.length) {
       inStatus.innerHTML = ['Đang học', 'Bảo lưu', 'Thôi học'].map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    // Không có Ngành nào -> không thể thêm SV (MaNganh bắt buộc). Báo để xử lý.
+    if (!nganhList.length) {
+      alert('Chưa có Ngành học nào trong hệ thống. Hãy tạo Ngành ở trang "Ngành học" trước khi thêm sinh viên.');
     }
   }
 
