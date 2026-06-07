@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(authenticate);
 
 // Thu tiền: Phòng Tài chính và Phòng Đào tạo (theo bảng phân quyền đề tài)
-router.post('/', authorize('PTC', 'PDT'), ctrl.create);
+router.post('/', authorize('PTC', 'PDT', 'SV'), ctrl.create);
 
 // Xem: PTC/PDT tất cả, SV chỉ của mình
 router.get('/', authorize('PTC', 'PDT', 'SV'), ctrl.list);
