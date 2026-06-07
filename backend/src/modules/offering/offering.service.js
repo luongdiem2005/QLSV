@@ -10,7 +10,7 @@ const includeQuanHe = {
       MaMonHoc: true,
       TenMonHoc: true,
       SoTiet: true,
-      loaiMonHoc: { select: { TenLoaiMonHoc: true, SoTietMotTinChi: true } },
+      loaiMonHoc: { select: { MaLoaiMonHoc: true, TenLoaiMonHoc: true, SoTietMotTinChi: true, SoTienMotTinChi: true } },
     },
   },
   hocKyNamHoc: { select: { MaHKNH: true, HocKy: true } },

@@ -1,57 +1,40 @@
-/* EduFee - ĐỐI TƯỢNG ƯU TIÊN / MIỄN GIẢM. Map tới DOITUONGUUTIEN. Ghi: ADMIN/PDT/PTC. */
-document.addEventListener('DOMContentLoaded', async () => {
+/* EduFee - DANH SÁCH SINH VIÊN ĐƯỢC XÉT MIỄN GIẢM (theo đối tượng ưu tiên).
+ * Lấy /students, lọc những SV có đối tượng ưu tiên (MaDoiTuong). 8 cột khớp HTML. */
+ document.addEventListener('DOMContentLoaded', async () => {
   await EduFeeGuard.protect(['PTC', 'PDT', 'ADMIN']);
-
   const tbody = document.getElementById('exemptionsTableBody');
   const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  let list = [];
+  let rows = [];
 
   async function load() {
-    list = await EduFeeAPI.get('/doi-tuong-uu-tien');
-    setText('cntAll', list.length);
-    setText('cntApproved', list.length);
+    const res = await EduFeeAPI.get('/students?limit=500');
+    const all = res.items || res;
+    rows = all.filter((sv) => sv.MaDoiTuong && sv.doiTuong);
+    setText('cntAll', rows.length);
+    setText('cntApproved', rows.length);
     setText('cntPending', 0);
     setText('cntRejected', 0);
+    render();
+  }
+
+  function render() {
     tbody.innerHTML = '';
-    if (!list.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="padding:20px;color:#718096;">Chưa có đối tượng ưu tiên.</td></tr>';
-      return;
-    }
-    list.forEach((d, i) => {
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding:20px;color:#718096;">Chưa có sinh viên nào thuộc diện miễn giảm.</td></tr>';
+    } else rows.forEach((sv) => {
+      const dt = sv.doiTuong || {};
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${i + 1}</td><td>${d.MaDoiTuong}</td><td>${d.TenDoiTuong}</td>
-        <td>${Number(d.TyLeMienGiam)}%</td>
-        <td class="text-center"><div class="action-buttons">
-          <button class="btn-action btn-edit" data-id="${d.MaDoiTuong}"><i class="ti ti-edit"></i></button>
-          <button class="btn-action btn-delete" data-id="${d.MaDoiTuong}"><i class="ti ti-trash"></i></button>
-        </div></td>`;
+      tr.innerHTML = `<td><strong>${sv.MaSoSinhVien}</strong></td><td>${sv.HoTen}</td>
+        <td>${sv.nganh ? sv.nganh.TenNganh : '—'}</td>
+        <td>${dt.TenDoiTuong || ''}</td>
+        <td class="text-center">${Number(dt.TyLeMienGiam || 0)}%</td>
+        <td class="text-center">—</td>
+        <td class="text-center"><span style="color:#38a169;">Đã áp dụng</span></td>
+        <td class="text-center">—</td>`;
       tbody.appendChild(tr);
     });
-    tbody.querySelectorAll('.btn-edit').forEach((b) => b.addEventListener('click', () => editDt(b.dataset.id)));
-    tbody.querySelectorAll('.btn-delete').forEach((b) => b.addEventListener('click', () => delDt(b.dataset.id)));
     if (window.EduFeeExcel) EduFeeExcel.mountTableButton({ table: '.data-table', filename: 'DanhSachMienGiam', label: 'Xuất Excel' });
   }
-
-  async function editDt(id) {
-    const d = list.find((x) => x.MaDoiTuong === id); if (!d) return;
-    const ten = prompt('Tên đối tượng:', d.TenDoiTuong); if (ten === null) return;
-    const ty = prompt('Tỷ lệ miễn giảm (0-100):', String(d.TyLeMienGiam)); if (ty === null) return;
-    try { await EduFeeAPI.put('/doi-tuong-uu-tien/' + id, { TenDoiTuong: ten, TyLeMienGiam: Number(ty), GhiChu: d.GhiChu }); load(); }
-    catch (e) { alert(e.message); }
-  }
-  async function delDt(id) {
-    if (!confirm('Xóa đối tượng ' + id + '?')) return;
-    try { await EduFeeAPI.del('/doi-tuong-uu-tien/' + id); load(); } catch (e) { alert(e.message); }
-  }
-
-  const btnAdd = document.getElementById('btnAddExemption');
-  if (btnAdd) btnAdd.addEventListener('click', async () => {
-    const ma = prompt('Mã đối tượng:'); if (!ma) return;
-    const ten = prompt('Tên đối tượng:'); if (!ten) return;
-    const ty = prompt('Tỷ lệ miễn giảm (0-100):', '0'); if (ty === null) return;
-    try { await EduFeeAPI.post('/doi-tuong-uu-tien', { MaDoiTuong: ma, TenDoiTuong: ten, TyLeMienGiam: Number(ty) }); load(); }
-    catch (e) { alert(e.message); }
-  });
 
   await load();
 });

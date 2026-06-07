@@ -19,12 +19,13 @@
       loaiList.map((l) => `<option value="${l.MaLoaiMonHoc}">${l.TenLoaiMonHoc}</option>`).join('');
     tbody.innerHTML = '';
     if (!loaiList.length) {
-      tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="padding:20px;color:#718096;">Chưa có loại môn.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="padding:20px;color:#718096;">Chưa có loại môn.</td></tr>';
       return;
     }
     loaiList.forEach((l, i) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${i + 1}</td><td>${l.TenLoaiMonHoc}</td><td>${fmt(l.SoTienMotTinChi)}</td>
+      tr.innerHTML = `<td>${i + 1}</td><td>${l.TenLoaiMonHoc}</td><td class="text-right">${fmt(l.SoTienMotTinChi)}</td>
+        <td class="text-center">—</td>
         <td class="text-center"><button class="btn-action btn-edit" data-id="${l.MaLoaiMonHoc}"><i class="ti ti-edit"></i></button></td>`;
       tbody.appendChild(tr);
     });

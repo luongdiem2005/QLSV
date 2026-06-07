@@ -1,30 +1,27 @@
-/* EduFee - ĐĂNG KÝ HỌC PHẦN (SV, nối API). Thay frontend/js/sv.js.
- * Cần chọn học kỳ: file dùng học kỳ mới nhất từ /api/semesters. Nếu HTML có
- * <select id="termSelect"> thì sẽ dùng để chọn học kỳ. */
+/* EduFee - HỌC PHÍ SINH VIÊN: chi tiết phiếu đăng ký 1 học kỳ + đóng học phí. */
 document.addEventListener('DOMContentLoaded', async () => {
   const me = await EduFeeGuard.protect(['SV']);
   if (!me) return;
 
-  const availBody = document.getElementById('availableClassTableBody');
-  const selBody = document.getElementById('selectedClassTableBody');
-  const cartBadge = document.getElementById('cartCountBadge');
-  const totalCredits = document.getElementById('totalCreditsOut');
-  const totalTuition = document.getElementById('totalTuitionOut');
-  const search = document.getElementById('searchClass');
-  const btnSubmit = document.getElementById('btnSubmitRegistration');
-  const termSelect = document.getElementById('termSelect'); // tùy chọn
+  const $ = (id) => document.getElementById(id);
+  const tbody = $('tuitionDetailTableBody');
+  const sumTotal = $('sumTotal'), sumDiscount = $('sumDiscount'), sumPaid = $('sumPaid'), sumDebt = $('sumDebt');
+  const badge = $('paymentStatusBadge');
+  const lblPolicyName = $('lblPolicyName'), lblPolicyRate = $('lblPolicyRate');
+  const invoiceId = $('invoiceIdOut'), invoiceDate = $('invoiceDateOut');
+  const btnPay = $('btnExecutePayment');
+  const termSelect = $('selectTuitionTerm');
+  const fmt = (n) => Number(n || 0).toLocaleString('vi-VN') + 'đ';
+  const setText = (id, v) => { const el = $(id); if (el) el.textContent = v; };
+  setText('sidebar-student-name', me.HoTen || me.TenDangNhap);
 
-  // Thông tin SV bên hồ sơ
-  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-
-  let maHKNH = null, offerings = [], phieu = null;
-  const fmt = n => Number(n).toLocaleString('vi-VN') + 'đ';
+  let maHKNH = null, phieu = null, offerings = [];
 
   async function initTerm() {
     const hks = await EduFeeAPI.get('/semesters');
     if (termSelect) {
-      termSelect.innerHTML = hks.map(h => `<option value="${h.MaHKNH}">${h.MaHKNH} (${h.HocKy})</option>`).join('');
-      termSelect.addEventListener('change', () => { maHKNH = termSelect.value; reloadAll(); });
+      termSelect.innerHTML = hks.map((h) => `<option value="${h.MaHKNH}">${h.MaHKNH} (${h.HocKy})</option>`).join('');
+      termSelect.addEventListener('change', () => { maHKNH = termSelect.value; loadData(); });
     }
     maHKNH = hks.length ? hks[0].MaHKNH : null;
     if (termSelect && maHKNH) termSelect.value = maHKNH;
@@ -32,85 +29,82 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadProfile() {
     try {
-      const r = await EduFeeAPI.get('/reports/student/' + me.MaSoSinhVien);
-      setText('profName', r.thongTin.HoTen);
-      setText('profId', r.thongTin.MaSoSinhVien);
-      setText('profMajor', r.thongTin.Nganh || '—');
-      setText('profClass', r.thongTin.Khoa || '—');
+      const t = (await EduFeeAPI.get('/reports/student/' + me.MaSoSinhVien)).thongTin;
+      if (lblPolicyName) lblPolicyName.textContent = t.DoiTuongUuTien || 'Không thuộc diện ưu tiên';
+      if (lblPolicyRate) lblPolicyRate.textContent = (t.TyLeMienGiam || 0) + '%';
     } catch (e) {}
   }
 
-  async function loadOfferings() {
-    if (!maHKNH) { offerings = []; return; }
-    offerings = await EduFeeAPI.get('/offerings?maHKNH=' + encodeURIComponent(maHKNH));
+  function maLopCuaMon(maMon) {
+    const o = offerings.find((x) => x.MaMonHoc === maMon);
+    return o ? o.MaMonHocMo : maMon;
   }
 
-  async function loadPhieu() {
+  async function loadData() {
     phieu = null;
-    if (!maHKNH) return;
-    const list = await EduFeeAPI.get('/enrollments?maHKNH=' + encodeURIComponent(maHKNH));
-    if (list.length) phieu = await EduFeeAPI.get('/enrollments/' + list[0].MaPhieu);
+    if (maHKNH) {
+      offerings = await EduFeeAPI.get('/offerings?maHKNH=' + encodeURIComponent(maHKNH)).catch(() => []);
+      const list = await EduFeeAPI.get('/enrollments?maHKNH=' + encodeURIComponent(maHKNH));
+      if (list.length) phieu = await EduFeeAPI.get('/enrollments/' + list[0].MaPhieu);
+    }
+    render();
   }
 
-  function daDangKy(maMon) {
-    return phieu && phieu.monHocList && phieu.monHocList.some(m => m.MaMonHoc === maMon);
-  }
+  function render() {
+    // Thông tin phiếu
+    if (invoiceId) invoiceId.textContent = phieu ? phieu.MaPhieu : '—';
+    if (invoiceDate) invoiceDate.textContent = (phieu && phieu.NgayLapPhieu) ? new Date(phieu.NgayLapPhieu).toLocaleDateString('vi-VN') : '—';
 
-  function renderAvailable() {
-    const kw = (search && search.value.trim().toLowerCase()) || '';
-    availBody.innerHTML = '';
-    const list = offerings.filter(o => {
-      const ten = o.monHoc ? o.monHoc.TenMonHoc.toLowerCase() : '';
-      return o.MaMonHoc.toLowerCase().includes(kw) || ten.includes(kw);
-    });
-    if (!list.length) { availBody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:20px;color:#718096;">Không có lớp mở.</td></tr>'; return; }
-    list.forEach(o => {
-      const ten = o.monHoc ? o.monHoc.TenMonHoc : o.MaMonHoc;
-      const full = o.SiSoHienTai >= o.SiSoToiDa;
-      const done = daDangKy(o.MaMonHoc);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${o.MaMonHoc}</td><td>${ten}</td><td>${o.MaMonHocMo}</td>
-        <td>${o.SiSoHienTai}/${o.SiSoToiDa}</td><td>${full ? 'Đầy' : 'Còn'}</td>
-        <td class="text-center">${done ? '<span style="color:#38a169;">Đã ĐK</span>'
-          : `<button class="btn-action btn-reg" data-mon="${o.MaMonHoc}" ${full ? 'disabled' : ''}><i class="ti ti-plus"></i></button>`}</td>`;
-      availBody.appendChild(tr);
-    });
-    availBody.querySelectorAll('.btn-reg').forEach(b => b.addEventListener('click', () => dangKy(b.dataset.mon)));
-  }
-
-  function renderSelected() {
-    selBody.innerHTML = '';
+    // Bảng chi tiết môn
+    tbody.innerHTML = '';
     const mons = (phieu && phieu.monHocList) || [];
-    if (cartBadge) cartBadge.textContent = mons.length;
-    if (!mons.length) { selBody.innerHTML = '<tr><td colspan="5" class="text-center" style="padding:20px;color:#718096;">Chưa chọn môn.</td></tr>'; }
-    else mons.forEach(m => {
+    if (!mons.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:20px;color:#718096;">Chưa đăng ký môn nào trong học kỳ này.</td></tr>';
+    } else mons.forEach((m, i) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${m.MaMonHoc}</td><td>${m.TenMonHoc}</td><td>${m.SoTinChi}</td><td>${m.LoaiMon}</td>
-        <td class="text-center"><button class="btn-action btn-del" data-mon="${m.MaMonHoc}"><i class="ti ti-trash"></i></button></td>`;
-      selBody.appendChild(tr);
+      tr.innerHTML = `<td>${i + 1}</td><td>${maLopCuaMon(m.MaMonHoc)}</td><td>${m.TenMonHoc}</td>
+        <td class="text-center">${m.SoTinChi}</td><td>${m.LoaiMon}</td>
+        <td class="text-right">${fmt(m.DonGiaTinChi)}</td><td class="text-right">${fmt(m.ThanhTien)}</td>`;
+      tbody.appendChild(tr);
     });
-    selBody.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', () => huy(b.dataset.mon)));
-    const tc = mons.reduce((s, m) => s + m.SoTinChi, 0);
-    if (totalCredits) totalCredits.textContent = tc;
-    if (totalTuition) totalTuition.textContent = phieu ? fmt(phieu.TongTienPhaiDong) : fmt(0);
+
+    // Tổng tiền
+    if (sumTotal) sumTotal.textContent = fmt(phieu ? phieu.TongTienDK : 0);
+    if (sumDiscount) sumDiscount.textContent = fmt(phieu ? phieu.TienMienGiam : 0);
+    if (sumPaid) sumPaid.textContent = fmt(phieu ? phieu.SoTienDaDong : 0);
+    if (sumDebt) sumDebt.textContent = fmt(phieu ? phieu.SoTienConLai : 0);
+
+    const conLai = phieu ? Number(phieu.SoTienConLai) : 0;
+    if (badge) {
+      badge.textContent = !phieu ? 'Chưa đăng ký' : conLai <= 0 ? 'Đã hoàn thành' : 'Còn nợ';
+      badge.style.color = (phieu && conLai <= 0) ? '#38a169' : '#e53e3e';
+    }
+    // Bật/tắt nút thanh toán
+    if (btnPay) {
+      const canPay = !!phieu && conLai > 0;
+      btnPay.disabled = !canPay;
+      btnPay.style.opacity = canPay ? '1' : '0.6';
+      btnPay.style.cursor = canPay ? 'pointer' : 'not-allowed';
+    }
   }
 
-  async function dangKy(maMon) {
-    try { await EduFeeAPI.post('/enrollments/courses', { MaHKNH: maHKNH, MaMonHoc: maMon }); await reloadData(); }
-    catch (e) { alert(e.message); }
-  }
-  async function huy(maMon) {
-    if (!phieu) return;
-    try { await EduFeeAPI.del('/enrollments/' + phieu.MaPhieu + '/courses/' + maMon); await reloadData(); }
-    catch (e) { alert(e.message); }
-  }
-  async function reloadData() { await loadOfferings(); await loadPhieu(); renderAvailable(); renderSelected(); }
-  async function reloadAll() { await reloadData(); }
-
-  if (search) search.addEventListener('input', renderAvailable);
-  if (btnSubmit) btnSubmit.addEventListener('click', () => alert('Các môn đã được lưu ngay khi bấm Đăng ký. Bạn có thể sang trang Học phí để đóng tiền.'));
+  if (btnPay) btnPay.addEventListener('click', async () => {
+    if (!phieu) { alert('Bạn chưa đăng ký học phần trong học kỳ này.'); return; }
+    const conLai = Number(phieu.SoTienConLai);
+    if (conLai <= 0) { alert('Học phí học kỳ này đã hoàn thành.'); return; }
+    const input = prompt(`Số tiền còn phải đóng: ${fmt(conLai)}.\nNhập số tiền muốn đóng:`, String(conLai));
+    if (input === null) return;
+    const soTien = Number(input);
+    if (!soTien || soTien <= 0) { alert('Số tiền không hợp lệ.'); return; }
+    if (soTien > conLai) { alert('Số tiền vượt quá số còn phải đóng.'); return; }
+    try {
+      await EduFeeAPI.post('/payments', { MaPhieuDK: phieu.MaPhieu, SoTienThu: soTien });
+      alert('Đóng học phí thành công!');
+      loadData();
+    } catch (e) { alert(e.message); }
+  });
 
   await initTerm();
   await loadProfile();
-  await reloadData();
+  await loadData();
 });

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFee - Lịch sử Đăng ký Học phần</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee Portal</h2>
+            </div>
+            <div class="sidebar-user-info">
+                <p class="role-badge" style="background: rgba(49, 130, 206, 0.2); color: #63b3ed;">Cổng Sinh viên</p>
+                <h3 id="sidebar-student-name">Sinh viên Loading...</h3>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="sv.html"><i class="ti ti-edit-circle"></i><span>Đăng ký học phần</span></a>
+                    </li>
+                    <li>
+                        <a href="sv_hocphi.html"><i class="ti ti-wallet"></i><span>Tra cứu Học phí</span></a>
+                    </li>
+                    <li class="active">
+                        <a href="sv_lsdk.html"><i class="ti ti-list-details"></i><span>Lịch sử đăng ký</span></a>
+                    </li>
+                    <li>
+                        <a href="sv_lsgd.html"><i class="ti ti-history"></i><span>Lịch sử giao dịch</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Lịch sử Đăng ký Học phần</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="table-toolbar" style="padding: 0; margin-bottom: 16px;">
+                    <div class="filter-group">
+                        <p style="color:#4a5568;font-size:14px;">Danh sách các phiếu đăng ký học phần của bạn qua các học kỳ. Bấm "Chi tiết" để xem các môn đã đăng ký.</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Phiếu</th>
+                                <th>Học Kỳ</th>
+                                <th>Ngày Lập</th>
+                                <th class="text-center">Số Môn</th>
+                                <th class="text-right">Tổng Tiền ĐK</th>
+                                <th class="text-right">Đã Đóng</th>
+                                <th class="text-right">Còn Lại</th>
+                                <th class="text-center">Trạng Thái</th>
+                                <th class="text-center">Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regHistoryTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="shared-footer-container"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal chi tiết phiếu đăng ký -->
+    <div id="regDetailModal" class="modal-overlay hidden">
+        <div class="modal-card" style="max-width: 720px;">
+            <div class="modal-header">
+                <h3 id="regDetailTitle">Chi tiết phiếu đăng ký</h3>
+                <button class="btn-close-modal" id="btnCloseRegDetail"><i class="ti ti-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="regDetailMeta" style="margin-bottom:14px;font-size:14px;color:#4a5568;"></div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Môn</th>
+                                <th>Tên Môn Học</th>
+                                <th class="text-center">Số TC</th>
+                                <th>Loại môn</th>
+                                <th class="text-right">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regDetailBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCloseRegDetail2">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/export-excel.js"></script>
+    <script src="../../js/sv_lsdk.js"></script>
+</body>
+</html>
