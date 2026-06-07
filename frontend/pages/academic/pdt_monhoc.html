@@ -13,9 +13,6 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/form.css">
     <link rel="stylesheet" href="../../assets/css/pdt_table.css">
-    <script src="../../js/api.js"></script>
-    <script src="../../js/auth-guard.js"></script>
-    <script src="../../js/pdt_monhoc.js"></script>
 </head>
 <body class="dashboard-page">
 
@@ -86,53 +83,36 @@
                 
                 <div class="table-toolbar">
                     <div class="filter-group">
-                        <div class="search-box">
-                            <i class="ti ti-search"></i>
-                            <input type="text" id="searchSubject" placeholder="Tìm theo mã môn hoặc tên môn học...">
-                        </div>
-                        <select id="filterType" class="form-select">
-                            <option value="">-- Tất cả loại môn --</option>
-                            <option value="Lý thuyết">Lý thuyết</option>
-                            <option value="Thực hành">Thực hành</option>
-                        </select>
+                      <div class="search-box">
+                        <i class="ti ti-search"></i>
+                        <input type="text" id="searchSubject" placeholder="Tìm theo mã môn hoặc tên môn học...">
+                      </div>
+                      <!-- JS đổ loại môn từ /api/loai-mon-hoc -->
+                      <select id="filterType" class="form-select">
+                        <option value="">-- Tất cả loại môn --</option>
+                      </select>
                     </div>
                     <button class="btn btn-primary" id="btnOpenAddModal">
-                        <i class="ti ti-book-upload"></i>
-                        <span>Thêm môn học mới</span>
+                      <i class="ti ti-book-upload"></i> <span>Thêm môn học mới</span>
                     </button>
-                </div>
-
-                <div class="table-container">
+                  </div>
+                  
+                  <div class="table-container">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 70px;">STT</th>
-                                <th style="width: 130px;">Mã Môn</th>
-                                <th>Tên Môn Học</th>
-                                <th style="width: 120px;" class="text-center">Số Tín Chỉ</th>
-                                <th style="width: 150px;">Loại Môn</th>
-                                <th>Môn Học Trước</th>
-                                <th style="width: 120px;" class="text-center">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="subjectTableBody">
-                            <tr>
-                                <td>1</td>
-                                <td><strong>IT007</strong></td>
-                                <td>Hệ điều hành</td>
-                                <td class="text-center">4</td>
-                                <td>Lý thuyết</td>
-                                <td><span class="badge-info">Không có</span></td>
-                                <td class="text-center">
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-edit" title="Sửa"><i class="ti ti-edit"></i></button>
-                                        <button class="btn-action btn-delete" title="Xóa"><i class="ti ti-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                      <thead>
+                        <tr>
+                          <th style="width:70px;">STT</th>
+                          <th>Mã môn</th>
+                          <th>Tên môn học</th>
+                          <th class="text-center">Số tiết</th>
+                          <th class="text-center">Số TC</th>
+                          <th>Loại môn</th>
+                          <th class="text-center">Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody id="subjectTableBody"></tbody>
                     </table>
-                </div>
+                  </div>
 
                 <div class="pagination-wrapper">
                     <p class="pagination-info">Hiển thị dữ liệu danh mục môn học</p>
@@ -144,71 +124,71 @@
 
     <div id="subjectModal" class="modal-overlay hidden">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3 id="modalTitle">Thêm môn học mới</h3>
-                <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          <div class="modal-header">
+            <h3 id="modalTitle">Thêm môn học mới</h3>
+            <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          </div>
+          <form id="subjectForm" novalidate>
+            <div class="modal-body">
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="subjectId">Mã Môn Học *</label>
+                  <input type="text" id="subjectId" name="subjectId" placeholder="Ví dụ: IT007" required>
+                </div>
+                <div class="form-group">
+                  <label for="subjectName">Tên Môn Học *</label>
+                  <input type="text" id="subjectName" name="subjectName" placeholder="Ví dụ: Hệ điều hành" required>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="subjectLessons">Số Tiết Học *</label>
+                  <input type="number" id="subjectLessons" name="subjectLessons" min="1" placeholder="Ví dụ: 45" required>
+                </div>
+                <div class="form-group">
+                  <label for="subjectType">Loại Môn Học *</label>
+                  <select id="subjectType" name="subjectType" required>
+                    <option value="">-- Chọn loại môn --</option>
+                  </select>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="subjectDepartment">Khoa Phụ Trách *</label>
+                  <select id="subjectDepartment" name="subjectDepartment" required>
+                    <option value="">-- Chọn khoa --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="subjectCredits">Số Tín Chỉ (tự động tính)</label>
+                  <input type="number" id="subjectCredits" name="subjectCredits" readonly
+                    style="background:#edf2f7;cursor:not-allowed;font-weight:600;color:#2b6cb0;">
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group" style="flex:1;">
+                  <label for="subjectPrerequisite">Môn Học Trước</label>
+                  <select id="subjectPrerequisite" name="subjectPrerequisite">
+                    <option value="none">-- Không có môn học trước --</option>
+                  </select>
+                </div>
+              </div>
+      
             </div>
-            <form id="subjectForm" novalidate>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="subjectId">Mã Môn Học *</label>
-                            <input type="text" id="subjectId" name="subjectId" placeholder="Ví dụ: IT007" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subjectName">Tên Môn Học *</label>
-                            <input type="text" id="subjectName" name="subjectName" placeholder="Ví dụ: Hệ điều hành" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="subjectLessons">Số Tiết Học *</label>
-                            <input type="number" id="subjectLessons" name="subjectLessons"
-                                min="15" max="300" placeholder="Ví dụ: 45" required>
-                            <small style="color: #718096; margin-top: 4px; display: block;">
-                                Dùng để tự động tính số tín chỉ theo loại môn.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label for="subjectType">Loại Môn Học *</label>
-                            <select id="subjectType" name="subjectType" required>
-                                <option value="">-- Chọn Loại Môn Học --</option>
-                                <option value="Lý thuyết">Lý thuyết</option>
-                                <option value="Thực hành">Thực hành</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Số Tín Chỉ (Tự động tính)</label>
-                            <input type="number" id="subjectCredits" name="subjectCredits"
-                                readonly
-                                style="background-color: #edf2f7; cursor: not-allowed; font-weight: 600; color: #2b6cb0;">
-                            <small style="color: #718096; margin-top: 4px; display: block;">
-                                LT: số tiết / 15 &nbsp;|&nbsp; TH: số tiết / 30
-                            </small>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="subjectPrerequisite">Môn Học Trước</label>
-                            <select id="subjectPrerequisite" name="subjectPrerequisite">
-                                <option value="none">-- Không có môn học trước --</option>
-                                </select>
-                            <small style="color: #718096; margin-top: 4px; display: block;">
-                                Sinh viên bắt buộc phải hoàn thành môn học này trước khi đăng ký môn học mới.
-                            </small>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy bỏ</button>
-                    <button type="submit" class="btn btn-primary" id="btnSaveSubject">Lưu môn học</button>
-                </div>
-            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy</button>
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </form>
         </div>
-    </div>
-
+      </div>
+    <script src="../../../js/api.js"></script>
+    <script src="../../../js/auth-guard.js"></script>
+    <script src="../../../js/pdt_monhoc.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_monhoc.js"></script>
 </body>

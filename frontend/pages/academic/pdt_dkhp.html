@@ -13,9 +13,6 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/form.css">
     <link rel="stylesheet" href="../../assets/css/pdt_table.css">
-    <script src="../../js/api.js"></script>
-    <script src="../../js/auth-guard.js"></script>
-    <script src="../../js/pdt_dkhp.js"></script>
 </head>
 <body class="dashboard-page">
 
@@ -71,10 +68,6 @@
                     <h1>Quản lý Mở lớp Đăng ký học phần</h1>
                 </div>
                 <div class="header-actions">
-                    <!-- <button class="btn-icon" aria-label="Thông báo">
-                        <i class="ti ti-bell"></i>
-                        <span class="badge-dot"></span>
-                    </button> -->
                     <button id="btnLogout" class="btn-logout">
                         <i class="ti ti-logout"></i>
                         <span>Đăng xuất</span>
@@ -86,64 +79,36 @@
                 
                 <div class="table-toolbar">
                     <div class="filter-group">
-                        <div class="search-box">
-                            <i class="ti ti-search"></i>
-                            <input type="text" id="searchClassSubject" placeholder="Tìm theo mã lớp, mã môn...">
-                        </div>
-                        <select id="filterYear" class="form-select">
-                            <option value="2025-2026">Năm học 2025-2026</option>
-                            <option value="2026-2027" selected>Năm học 2026-2027</option>
-                        </select>
-                        <select id="filterSemester" class="form-select">
-                            <option value="">-- Tất cả HK --</option>
-                            <option value="HK1">Học kỳ 1</option>
-                            <option value="HK2">Học kỳ 2</option>
-                            <option value="HK3">Học kỳ 3 (Hè)</option>
-                        </select>
+                      <div class="search-box">
+                        <i class="ti ti-search"></i>
+                        <input type="text" id="searchClassSubject" placeholder="Tìm theo mã lớp hoặc mã môn...">
+                      </div>
+                      <!-- JS đổ học kỳ từ /api/semesters -->
+                      <select id="filterSemester" class="form-select">
+                        <option value="">-- Tất cả học kỳ --</option>
+                      </select>
                     </div>
                     <button class="btn btn-primary" id="btnOpenAddModal">
-                        <i class="ti ti-square-rounded-plus"></i>
-                        <span>Mở lớp học phần mới</span>
+                      <i class="ti ti-plus"></i> <span>Mở lớp học phần</span>
                     </button>
-                </div>
-
-                <div class="table-container">
+                  </div>
+                  
+                  <div class="table-container">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 60px;">STT</th>
-                                <th style="width: 140px;">Mã Lớp</th>
-                                <th style="width: 100px;">Học Kỳ</th>
-                                <th>Tên Học Phần</th>
-                                <th style="width: 100px;" class="text-center">Số TC</th>
-                                <th style="width: 150px;" class="text-center">Số Lượng ĐK</th>
-                                <th style="width: 150px;" class="text-center">Trạng Thái Lớp</th>
-                                <th style="width: 120px;" class="text-center">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="classTableBody">
-                            <tr>
-                                <td>1</td>
-                                <td><strong>SE104.O11</strong></td>
-                                <td>HK1 (26-27)</td>
-                                <td>Nhập môn Công nghệ phần mềm</td>
-                                <td class="text-center">3</td>
-                                <td class="text-center">
-                                    <span class="badge-count"><strong>25</strong> / 50</span>
-                                </td>
-                                <td class="text-center">
-                                    <span class="status-indicator active">Đang mở ĐK</span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-edit" title="Sửa cấu hình"><i class="ti ti-edit"></i></button>
-                                        <button class="btn-action btn-delete" title="Hủy lớp"><i class="ti ti-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                      <thead>
+                        <tr>
+                          <th style="width:70px;">STT</th>
+                          <th>Mã lớp</th>
+                          <th>Học kỳ</th>
+                          <th>Tên học phần</th>
+                          <th class="text-center">Sĩ số</th>
+                          <th class="text-center">Trạng thái</th>
+                          <th class="text-center">Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody id="classTableBody"></tbody>
                     </table>
-                </div>
+                  </div>
 
                 <div class="pagination-wrapper">
                     <p class="pagination-info">Hiển thị danh sách lớp học phần mở theo điều kiện lọc</p>
@@ -155,56 +120,50 @@
 
     <div id="classModal" class="modal-overlay hidden">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3 id="modalTitle">Mở lớp học phần mới</h3>
-                <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          <div class="modal-header">
+            <h3 id="modalTitle">Mở lớp học phần mới</h3>
+            <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          </div>
+          <form id="classForm" novalidate>
+            <div class="modal-body">
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="classId">Mã Lớp *</label>
+                  <input type="text" id="classId" name="classId" placeholder="Ví dụ: SE104.O11" required>
+                </div>
+                <div class="form-group">
+                  <label for="classSemester">Học Kỳ *</label>
+                  <select id="classSemester" name="classSemester" required>
+                    <option value="">-- Chọn học kỳ --</option>
+                  </select>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="classSubjectId">Môn Học *</label>
+                  <select id="classSubjectId" name="classSubjectId" required>
+                    <option value="">-- Chọn môn học --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="classMaxStudents">Sĩ Số Tối Đa *</label>
+                  <input type="number" id="classMaxStudents" name="classMaxStudents" min="1" value="50" required>
+                </div>
+              </div>
+      
             </div>
-            <form id="classForm" novalidate>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="classYear">Năm Học *</label>
-                            <select id="classYear" name="classYear" required>
-                                <option value="2025-2026">2025-2026</option>
-                                <option value="2026-2027" selected>2026-2027</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="classSemester">Học Kỳ *</label>
-                            <select id="classSemester" name="classSemester" required>
-                                <option value="HK1">Học kỳ 1</option>
-                                <option value="HK2">Học kỳ 2</option>
-                                <option value="HK3">Học kỳ 3 (Hè)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="classSubjectId">Môn Học Mở Lớp *</label>
-                            <select id="classSubjectId" name="classSubjectId" required>
-                                </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="classId">Mã Lớp Học Phần *</label>
-                            <input type="text" id="classId" name="classId" placeholder="Ví dụ: SE104.O11" required>
-                            <small style="color: #718096; margin-top: 2px; display: block;">Quy tắc: [Mã môn].[Mã lớp]</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="classMaxStudents">Sĩ Số Tối Đa (Sinh viên) *</label>
-                            <input type="number" id="classMaxStudents" name="classMaxStudents" min="10" max="150" value="50" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy bỏ</button>
-                    <button type="submit" class="btn btn-primary" id="btnSaveClass">Xác nhận mở lớp</button>
-                </div>
-            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy</button>
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </form>
         </div>
-    </div>
-
+      </div>
+    <script src="../../../js/api.js"></script>
+    <script src="../../../js/auth-guard.js"></script>
+    <script src="../../../js/pdt_dkhp.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_dkhp.js"></script>
 </body>

@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/form.css">
     <link rel="stylesheet" href="../../assets/css/pdt_table.css">
-    <script src="../../js/api.js"></script>
-    <script src="../../js/auth-guard.js"></script>
-    <script src="../../js/pdt_sv.js"></script>
+    
     
 </head>
 <body class="dashboard-page">
@@ -87,64 +85,38 @@
                 
                 <div class="table-toolbar">
                     <div class="filter-group">
-                        <div class="search-box">
-                            <i class="ti ti-search"></i>
-                            <input type="text" id="searchStudent" placeholder="Tìm theo MSSV hoặc Họ tên...">
-                        </div>
-                        <select id="filterClass" class="form-select">
-                            <option value="">-- Tất cả Lớp --</option>
-                            <option value="CNNB2023">CNNB2023</option>
-                            <option value="KHMT2022">KHMT2022</option>
-                            <option value="KTPM2025">KTPM2025</option>
-                        </select>
+                      <div class="search-box">
+                        <i class="ti ti-search"></i>
+                        <input type="text" id="searchStudent" placeholder="Tìm theo MSSV hoặc Họ tên...">
+                      </div>
+                      <!-- Bộ lọc theo NGÀNH (JS tự đổ danh sách từ /api/nganh) -->
+                      <select id="filterClass" class="form-select">
+                        <option value="">-- Tất cả ngành --</option>
+                      </select>
                     </div>
                     <button class="btn btn-primary" id="btnOpenAddModal">
-                        <i class="ti ti-user-plus"></i>
-                        <span>Thêm sinh viên mới</span>
+                      <i class="ti ti-user-plus"></i> <span>Thêm sinh viên mới</span>
                     </button>
                 </div>
-
+                  
                 <div class="table-container">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>MSSV</th>
-                                <th>Họ và Tên</th>
-                                <th>Ngày sinh</th>
-                                <th>Giới tính</th>
-                                <th>Lớp</th>
-                                <th>Ngành học</th>
-                                <th class="text-center">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="studentTableBody">
-                            <tr>
-                                <td>1</td>
-                                <td><strong>23520001</strong></td>
-                                <td>Nguyễn Văn A</td>
-                                <td>15/04/2005</td>
-                                <td>Nam</td>
-                                <td>CNNB2023</td>
-                                <td>Công nghệ thông tin Việt-Nhật</td>
-                                <td class="text-center">
-                                    <div class="action-buttons">
-                                        <button class="btn-action btn-edit" title="Sửa thông tin"><i class="ti ti-edit"></i></button>
-                                        <button class="btn-action btn-delete" title="Xóa hồ sơ"><i class="ti ti-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>MSSV</th>
+                          <th>Họ và Tên</th>
+                          <th>Ngày sinh</th>
+                          <th>Giới tính</th>
+                          <th>SĐT</th>
+                          <th>Email</th>
+                          <th>Ngành học</th>
+                          <th>Tình trạng</th>
+                          <th class="text-center">Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody id="studentTableBody"></tbody>
                     </table>
-                </div>
-
-                <div class="pagination-wrapper">
-                    <p class="pagination-info">Hiển thị từ 1 đến 1 trên tổng số 1 sinh viên</p>
-                    <div class="pagination-buttons">
-                        <button class="btn-page" disabled><i class="ti ti-chevron-left"></i></button>
-                        <button class="btn-page active">1</button>
-                        <button class="btn-page" disabled><i class="ti ti-chevron-right"></i></button>
-                    </div>
                 </div>
                 <div id="shared-footer-container"></div>
             </main>
@@ -153,61 +125,93 @@
 
     <div id="studentModal" class="modal-overlay hidden">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3 id="modalTitle">Thêm sinh viên mới</h3>
-                <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          <div class="modal-header">
+            <h3 id="modalTitle">Thêm sinh viên mới</h3>
+            <button class="btn-close-modal" id="btnCloseModal"><i class="ti ti-x"></i></button>
+          </div>
+          <form id="studentForm" novalidate>
+            <div class="modal-body">
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="studentId">Mã số sinh viên (MSSV) *</label>
+                  <input type="text" id="studentId" name="studentId" placeholder="Ví dụ: 23520001" required>
+                </div>
+                <div class="form-group">
+                  <label for="studentName">Họ và Tên *</label>
+                  <input type="text" id="studentName" name="studentName" required>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="studentDob">Ngày sinh</label>
+                  <input type="date" id="studentDob" name="studentDob">
+                </div>
+                <div class="form-group">
+                  <label for="studentGender">Giới tính</label>
+                  <select id="studentGender" name="studentGender">
+                    <option value="">-- Chọn giới tính --</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                  </select>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="studentPhone">Số điện thoại</label>
+                  <input type="text" id="studentPhone" name="studentPhone" placeholder="09xxxxxxxx">
+                </div>
+                <div class="form-group">
+                  <label for="studentEmail">Email</label>
+                  <input type="email" id="studentEmail" name="studentEmail" placeholder="abc@example.com">
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="studentMajor">Ngành học *</label>
+                  <select id="studentMajor" name="studentMajor" required>
+                    <option value="">-- Chọn ngành --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="studentDoiTuong">Đối tượng ưu tiên</label>
+                  <select id="studentDoiTuong" name="studentDoiTuong">
+                    <option value="">-- Không ưu tiên --</option>
+                  </select>
+                </div>
+              </div>
+      
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="studentXa">Xã / Phường</label>
+                  <select id="studentXa" name="studentXa">
+                    <option value="">-- Chọn xã/phường --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="studentStatus">Tình trạng</label>
+                  <select id="studentStatus" name="studentStatus">
+                    <option value="Đang học">Đang học</option>
+                    <option value="Bảo lưu">Bảo lưu</option>
+                    <option value="Thôi học">Thôi học</option>
+                  </select>
+                </div>
+              </div>
+      
             </div>
-            <form id="studentForm" novalidate>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="studentId">Mã số sinh viên (MSSV) *</label>
-                            <input type="text" id="studentId" name="studentId" placeholder="Ví dụ: 21520001" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="studentName">Họ và Tên *</label>
-                            <input type="text" id="studentName" name="studentName" placeholder="" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="studentDob">Ngày sinh *</label>
-                            <input type="date" id="studentDob" name="studentDob" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="studentGender">Giới tính *</label>
-                            <select id="studentGender" name="studentGender" required>
-                                <option value="">-- Chọn giới tính --</option>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="studentClass">Lớp sinh hoạt *</label>
-                            <input type="text" id="studentClass" name="studentClass" placeholder="Ví dụ: KHDL2021" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="studentMajor">Ngành học *</label>
-                            <select id="studentMajor" name="studentMajor" required>
-                                <option value="">-- Chọn ngành học --</option>
-                                <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-                                <option value="Khoa học máy tính">Khoa học máy tính</option>
-                                <option value="Kỹ thuật phần mềm">Kỹ thuật phần mềm</option>
-                                <option value="Khoa học dữ liệu">Khoa học dữ liệu</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy bỏ</button>
-                    <button type="submit" class="btn btn-primary" id="btnSaveStudent">Lưu thông tin</button>
-                </div>
-            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="btnCancelModal">Hủy</button>
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </form>
         </div>
     </div>
-
+    <script src="../../../js/api.js"></script>
+    <script src="../../../js/auth-guard.js"></script>
+    <script src="../../../js/pdt_sv.js"></script>
     <script src="../../assets/js/pdt_dashboard.js"></script>
     <script src="../../assets/js/pdt_sv.js"></script>
 </body>
