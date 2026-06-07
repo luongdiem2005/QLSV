@@ -40,7 +40,7 @@ Các chức năng chính:
 ### Database
 
 - MySQL
-- Prisma ORM
+- Prisma ORM 5.22.0
 
 ### Công cụ phát triển
 
