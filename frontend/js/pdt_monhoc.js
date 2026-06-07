@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (search) search.addEventListener('input', load);
   if (filterType) filterType.addEventListener('change', load);
 
+  if (window.EduFeeExcel) EduFeeExcel.mountTableButton({ table: '.data-table', filename: 'DanhSachMonHoc', label: 'Xuất Excel' });
   await loadDanhMuc();
   await load();
 });

@@ -48,5 +48,6 @@
     catch (e) { alert(e.message); }
   });
 
+  if (window.EduFeeExcel) EduFeeExcel.mountTableButton({ table: '.data-table', filename: 'DanhSachMienGiam', label: 'Xuất Excel' });
   await load();
 });

@@ -74,6 +74,32 @@ const EduFeeExcel = (() => {
     return btn;
   }
 
-  return { export: exportData, mountButton };
+
+  /**
+   * Nút xuất nhanh từ MỘT bảng .data-table đang hiển thị (bỏ cột "Thao tác").
+   * opts: { table(selector), filename, mount?, label? }
+   */
+  function mountTableButton(opts) {
+    return mountButton({
+      id: opts.id, mount: opts.mount, label: opts.label,
+      onExport: () => {
+        const table = document.querySelector(opts.table);
+        if (!table) return { filename: opts.filename, columns: [], rows: [] };
+        const ths = Array.prototype.slice.call(table.querySelectorAll('thead th'));
+        const keep = ths.map((th, i) => th.textContent.trim().toLowerCase().indexOf('thao tác') >= 0 ? -1 : i).filter(i => i >= 0);
+        const columns = keep.map(i => ({ header: ths[i].textContent.trim(), key: 'c' + i }));
+        const rows = Array.prototype.slice.call(table.querySelectorAll('tbody tr'))
+          .filter(tr => tr.querySelectorAll('td').length === ths.length)
+          .map(tr => {
+            const tds = tr.querySelectorAll('td'); const o = {};
+            keep.forEach(i => { o['c' + i] = tds[i] ? tds[i].textContent.trim() : ''; });
+            return o;
+          });
+        return { filename: opts.filename, columns, rows };
+      },
+    });
+  }
+
+  return { export: exportData, mountButton, mountTableButton };
 })();
 window.EduFeeExcel = EduFeeExcel;
