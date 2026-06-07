@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFee - Quản lý Tỉnh / Xã</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee</h2>
+            </div>
+            <div class="sidebar-user-info">
+                <p class="role-badge">Phòng Đào tạo</p>
+                <h3 class="sidebar-username">Nguyễn Văn A</h3>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="pdt.html"><i class="ti ti-layout-dashboard"></i><span>Tổng quan</span></a>
+                    </li>
+                    <li>
+                        <a href="pdt_sv.html"><i class="ti ti-users"></i><span>Quản lý Sinh viên</span></a>
+                    </li>
+                    <li>
+                        <a href="pdt_khoa.html"><i class="ti ti-building"></i><span>Quản lý Khoa</span></a>
+                    </li>
+                    <li>
+                        <a href="pdt_nganhhoc.html"><i class="ti ti-building-community"></i><span>Quản lý Ngành học</span></a>
+                    </li>
+                    <li>
+                        <a href="pdt_monhoc.html"><i class="ti ti-book"></i><span>Danh mục Môn học</span></a>
+                    </li>
+                    <li>
+                        <a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i><span>Mở lớp Học phần</span></a>
+                    </li>
+                    <li class="active">
+                        <a href="pdt_diachi.html"><i class="ti ti-map-pin"></i><span>Tỉnh / Xã</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Quản lý Tỉnh / Xã</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="ti ti-logout"></i>
+                        <span>Đăng xuất</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="main-content">
+
+                <!-- ============ TỈNH ============ -->
+                <h2 style="margin:0 0 12px;font-size:18px;color:#2d3748;">Danh mục Tỉnh / Thành phố</h2>
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchTinh" placeholder="Tìm tỉnh/thành...">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btnAddTinh">
+                        <i class="ti ti-square-plus"></i> <span>Thêm tỉnh</span>
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:70px;">STT</th>
+                                <th style="width:150px;">Mã Tỉnh</th>
+                                <th>Tên Tỉnh / Thành phố</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tinhTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- ============ XÃ ============ -->
+                <h2 style="margin:28px 0 12px;font-size:18px;color:#2d3748;">Danh mục Xã / Phường</h2>
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchXa" placeholder="Tìm xã/phường...">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btnAddXa">
+                        <i class="ti ti-square-plus"></i> <span>Thêm xã/phường</span>
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:70px;">STT</th>
+                                <th style="width:130px;">Mã Xã</th>
+                                <th>Tên Xã / Phường</th>
+                                <th>Thuộc Tỉnh</th>
+                                <th class="text-center">Vùng sâu/xa</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="xaTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="shared-footer-container"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Tỉnh -->
+    <div id="tinhModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="tinhModalTitle">Thêm tỉnh</h3>
+                <button class="btn-close-modal" id="btnCloseTinh"><i class="ti ti-x"></i></button>
+            </div>
+            <form id="tinhForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tinhId">Mã Tỉnh *</label>
+                            <input type="text" id="tinhId" placeholder="Ví dụ: HCM" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tinhName">Tên Tỉnh / Thành phố *</label>
+                            <input type="text" id="tinhName" placeholder="Ví dụ: TP. Hồ Chí Minh" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelTinh">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Xã -->
+    <div id="xaModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="xaModalTitle">Thêm xã/phường</h3>
+                <button class="btn-close-modal" id="btnCloseXa"><i class="ti ti-x"></i></button>
+            </div>
+            <form id="xaForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="xaId">Mã Xã *</label>
+                            <input type="text" id="xaId" placeholder="Ví dụ: X001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="xaName">Tên Xã / Phường *</label>
+                            <input type="text" id="xaName" placeholder="Ví dụ: Phường Linh Trung" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="xaTinh">Thuộc Tỉnh *</label>
+                            <select id="xaTinh" required>
+                                <option value="">-- Chọn tỉnh --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="xaVungsau">Vùng sâu/xa</label>
+                            <select id="xaVungsau">
+                                <option value="false">Không</option>
+                                <option value="true">Có</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelXa">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/pdt_diachi.js"></script>
+</body>
+</html>
