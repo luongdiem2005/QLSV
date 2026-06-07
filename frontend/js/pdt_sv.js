@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const search = $('searchStudent');
   const filterNganh = $('filterClass');     // tái sử dụng làm bộ lọc ngành
 
-  let mode = 'add', editingId = null;
+  let mode = 'add', editingId = null, lastItems = [];
   let nganhList = [], doiTuongList = [], xaList = [];
 
   // ---------- Đổ dropdown danh mục ----------
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString('vi-VN') : '';
 
   function render(items) {
+    lastItems = items || [];
     tbody.innerHTML = '';
     if (!items.length) {
       tbody.innerHTML = `<tr><td colspan="10" class="text-center" style="padding:30px;color:#718096;">
@@ -92,6 +93,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     updateInfo(items.length);
     bind();
+    setupExport();
+  }
+
+  function setupExport() {
+    if (!window.EduFeeExcel) return;
+    EduFeeExcel.mountButton({
+      label: 'Xuất Excel',
+      onExport: () => ({
+        filename: 'DanhSachSinhVien',
+        columns: [
+          { header: 'MSSV', key: 'MaSoSinhVien' }, { header: 'Họ tên', key: 'HoTen' },
+          { header: 'Ngày sinh', key: 'ns' }, { header: 'Giới tính', key: 'gt' },
+          { header: 'SĐT', key: 'sdt' }, { header: 'Email', key: 'email' },
+          { header: 'Ngành', key: 'nganh' }, { header: 'Tình trạng', key: 'tt' },
+        ],
+        rows: lastItems.map(sv => ({
+          MaSoSinhVien: sv.MaSoSinhVien, HoTen: sv.HoTen,
+          ns: fmtDate(sv.NgaySinh), gt: sv.GioiTinh || '',
+          sdt: sv.SoDienThoai || '', email: sv.Email || '',
+          nganh: sv.nganh ? sv.nganh.TenNganh : '', tt: sv.TinhTrang || '',
+        })),
+      }),
+    });
   }
   function updateInfo(count) {
     const el = document.querySelector('.pagination-info');
