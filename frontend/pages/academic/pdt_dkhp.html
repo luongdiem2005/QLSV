@@ -90,16 +90,16 @@
 
             <main class="main-content">
                 
+                <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <p style="margin: 0; font-size: 14px; color: #475569;"><strong>Học kỳ hiện tại:</strong> <span id="currentSemesterLabel" style="color: #1e40af; font-weight: 600;">Đang tải...</span></p>
+                </div>
+
                 <div class="table-toolbar">
                     <div class="filter-group">
                       <div class="search-box">
                         <i class="ti ti-search"></i>
                         <input type="text" id="searchClassSubject" placeholder="Tìm theo mã lớp hoặc mã môn...">
                       </div>
-                      <!-- JS đổ học kỳ từ /api/semesters -->
-                      <select id="filterSemester" class="form-select">
-                        <option value="">-- Tất cả học kỳ --</option>
-                      </select>
                     </div>
                     <button class="btn btn-primary" id="btnOpenAddModal">
                       <i class="ti ti-plus"></i> <span>Mở lớp học phần</span>
@@ -124,7 +124,7 @@
                   </div>
 
                 <div class="pagination-wrapper">
-                    <p class="pagination-info">Hiển thị danh sách lớp học phần mở theo điều kiện lọc</p>
+                    <p class="pagination-info">Hiển thị danh sách lớp học phần mở theo học kỳ hiện tại</p>
                 </div>
                 <div id="shared-footer-container"></div>
             </main>
@@ -147,9 +147,7 @@
                 </div>
                 <div class="form-group">
                   <label for="classSemester">Học Kỳ *</label>
-                  <select id="classSemester" name="classSemester" required>
-                    <option value="">-- Chọn học kỳ --</option>
-                  </select>
+                  <input type="text" id="classSemester" name="classSemester" readonly disabled style="background-color: #f3f4f6; cursor: not-allowed;">
                 </div>
               </div>
       

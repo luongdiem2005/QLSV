@@ -1,7 +1,5 @@
 /* EduFee - MỞ MÔN / LỚP HỌC PHẦN (nối API). Thay frontend/js/pdt_dkhp.js.
- * classSemester + filterSemester -> dropdown học kỳ (value = MaHKNH).
- * classYear/filterYear: không dùng (DB gộp năm+kỳ trong MaHKNH) -> có thể ẩn.
- * classSubjectId -> dropdown môn học. classId = mã lớp (MaMonHocMo). */
+ * Hiển thị tự động học kỳ hiện tại, không có dropdown. */
 document.addEventListener('DOMContentLoaded', async () => {
   await EduFeeGuard.protect(['PDT']);
   const tbody = document.getElementById('classTableBody');
@@ -16,26 +14,84 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inId = document.getElementById('classId');
   const inMax = document.getElementById('classMaxStudents');
   const search = document.getElementById('searchClassSubject');
-  const filterSemester = document.getElementById('filterSemester');
+  const semesterLabel = document.getElementById('currentSemesterLabel');
+  
   let mode = 'add', editingId = null;
+  let currentSemester = null; // Lưu học kỳ hiện tại
+  let allCourses = []; // Lưu tất cả các môn học
 
-  async function loadDanhMuc() {
-    const [hkList, courses] = await Promise.all([
-      EduFeeAPI.get('/semesters'),
-      EduFeeAPI.get('/courses?limit=200'),
-    ]);
-    const courseItems = courses.items || courses;
-    const hkOptions = hkList.map(h => `<option value="${h.MaHKNH}">${h.MaHKNH} (${h.HocKy})</option>`).join('');
-    if (inSemester) inSemester.innerHTML = '<option value="">-- Chọn học kỳ --</option>' + hkOptions;
-    if (filterSemester) filterSemester.innerHTML = '<option value="">-- Tất cả học kỳ --</option>' + hkOptions;
-    if (inSubject) inSubject.innerHTML = '<option value="">-- Chọn môn học --</option>' +
-      courseItems.map(c => `<option value="${c.MaMonHoc}">[${c.MaMonHoc}] ${c.TenMonHoc} (${c.SoTinChi} TC)</option>`).join('');
+  // Lấy học kỳ hiện tại
+  async function getCurrentSemester() {
+    try {
+      const semesters = await EduFeeAPI.get('/semesters');
+      const now = new Date();
+      
+      for (const sem of semesters) {
+        const startDate = new Date(sem.NgayBatDau);
+        const endDate = new Date(sem.NgayKetThuc);
+        
+        if (startDate <= now && now <= endDate) {
+          return sem;
+        }
+      }
+      
+      // Nếu không có học kỳ hiện tại, trả về học kỳ gần nhất
+      return semesters.length > 0 ? semesters[0] : null;
+    } catch (e) {
+      console.error('Lỗi lấy học kỳ:', e);
+      return null;
+    }
   }
 
+  // Nạp danh mục: học kỳ và môn học
+  async function loadDanhMuc() {
+    try {
+      // Lấy học kỳ hiện tại
+      currentSemester = await getCurrentSemester();
+      
+      if (currentSemester) {
+        if (inSemester) {
+          inSemester.value = `${currentSemester.MaHKNH} - Kỳ ${currentSemester.HocKy}`;
+        }
+        if (semesterLabel) {
+          semesterLabel.textContent = `${currentSemester.MaHKNH} - Kỳ ${currentSemester.HocKy}`;
+        }
+      } else {
+        if (semesterLabel) {
+          semesterLabel.textContent = 'Chưa có học kỳ nào';
+        }
+      }
+
+      // Lấy tất cả môn học
+      const coursesData = await EduFeeAPI.get('/courses?limit=200');
+      allCourses = coursesData.items || coursesData;
+      
+      // Cập nhật dropdown môn học
+      if (inSubject) {
+        inSubject.innerHTML = '<option value="">-- Chọn môn học --</option>' +
+          allCourses.map(c => `<option value="${c.MaMonHoc}">[${c.MaMonHoc}] ${c.TenMonHoc} (${c.SoTinChi} TC)</option>`).join('');
+      }
+    } catch (e) {
+      console.error('Lỗi nạp danh mục:', e);
+      alert('Lỗi khi nạp danh mục. Vui lòng tải lại trang.');
+    }
+  }
+
+  // Render bảng danh sách lớp (chỉ hiển thị lớp của học kỳ hiện tại)
   function render(items) {
     tbody.innerHTML = '';
-    if (!items.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:24px;color:#718096;">Chưa có lớp mở.</td></tr>'; return; }
-    items.forEach((o, i) => {
+    
+    // Lọc chỉ hiển thị lớp của học kỳ hiện tại
+    const filteredItems = currentSemester 
+      ? items.filter(o => o.MaHKNH === currentSemester.MaHKNH)
+      : [];
+    
+    if (!filteredItems.length) { 
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:24px;color:#718096;">Chưa có lớp mở cho học kỳ này.</td></tr>'; 
+      return; 
+    }
+    
+    filteredItems.forEach((o, i) => {
       const ten = o.monHoc ? o.monHoc.TenMonHoc : o.MaMonHoc;
       const full = o.SiSoHienTai >= o.SiSoToiDa;
       const tr = document.createElement('tr');
@@ -50,60 +106,121 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     bind();
   }
+
+  // Nạp dữ liệu lớp
   async function load() {
+    if (!currentSemester) {
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:24px;color:#718096;">Chưa xác định được học kỳ hiện tại.</td></tr>';
+      return;
+    }
+
     const p = new URLSearchParams();
-    if (filterSemester && filterSemester.value) p.set('maHKNH', filterSemester.value);
+    p.set('maHKNH', currentSemester.MaHKNH);
     if (search && search.value.trim()) p.set('search', search.value.trim());
-    try { render(await EduFeeAPI.get('/offerings?' + p)); } catch (e) { alert(e.message); }
+    try { 
+      const offerings = await EduFeeAPI.get('/offerings?' + p);
+      render(offerings); 
+    } catch (e) { 
+      alert(e.message); 
+    }
   }
+
+  // Mở modal (chỉ chế độ add, không có edit)
   function openModal(m, id) {
-    mode = m; modal.classList.remove('hidden');
+    mode = m; 
+    modal.classList.remove('hidden');
     if (m === 'add') {
-      modalTitle.textContent = 'Mở lớp học phần'; form.reset();
-      [inId, inSemester, inSubject].forEach(el => el && el.removeAttribute('disabled'));
+      modalTitle.textContent = 'Mở lớp học phần mới'; 
+      form.reset();
+      if (inSemester) {
+        inSemester.value = currentSemester 
+          ? `${currentSemester.MaHKNH} - Kỳ ${currentSemester.HocKy}` 
+          : '';
+      }
     } else {
       modalTitle.textContent = 'Sửa sĩ số lớp';
-      // Chỉ cho sửa sĩ số tối đa; khóa các trường định danh
-      [inId, inSemester, inSubject].forEach(el => el && el.setAttribute('disabled', 'true'));
+      if (inId) inId.setAttribute('disabled', 'true');
+      if (inSubject) inSubject.setAttribute('disabled', 'true');
       fill(id);
     }
   }
+
+  // Điền dữ liệu khi edit
   async function fill(id) {
     const o = await EduFeeAPI.get('/offerings/' + id);
     editingId = id;
-    if (inId) inId.value = o.MaMonHocMo;
-    if (inSemester) inSemester.value = o.MaHKNH;
-    if (inSubject) inSubject.value = o.MaMonHoc;
+    if (inId) {
+      inId.value = o.MaMonHocMo;
+      inId.setAttribute('disabled', 'true');
+    }
+    if (inSemester) {
+      inSemester.value = o.MaHKNH;
+    }
+    if (inSubject) {
+      inSubject.value = o.MaMonHoc;
+      inSubject.setAttribute('disabled', 'true');
+    }
     if (inMax) inMax.value = o.SiSoToiDa;
   }
-  function closeModal() { modal.classList.add('hidden'); form.reset(); editingId = null; }
+
+  function closeModal() { 
+    modal.classList.add('hidden'); 
+    form.reset(); 
+    editingId = null;
+    // Bỏ disabled
+    if (inId) inId.removeAttribute('disabled');
+    if (inSubject) inSubject.removeAttribute('disabled');
+  }
+
   if (btnAdd) btnAdd.addEventListener('click', () => openModal('add'));
   if (btnClose) btnClose.addEventListener('click', closeModal);
   if (btnCancel) btnCancel.addEventListener('click', closeModal);
+
   function bind() {
     document.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => openModal('edit', b.dataset.id)));
     document.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', async () => {
       if (!confirm(`Xóa lớp mở ${b.dataset.id}?`)) return;
-      try { await EduFeeAPI.del('/offerings/' + b.dataset.id); load(); } catch (e) { alert(e.message); }
+      try { 
+        await EduFeeAPI.del('/offerings/' + b.dataset.id); 
+        load(); 
+      } catch (e) { 
+        alert(e.message); 
+      }
     }));
   }
+
   if (form) form.addEventListener('submit', async e => {
     e.preventDefault();
     try {
       if (mode === 'add') {
+        if (!currentSemester) {
+          alert('Chưa xác định được học kỳ hiện tại.');
+          return;
+        }
         const payload = {
-          MaMonHocMo: inId.value.trim(), MaHKNH: inSemester.value,
-          MaMonHoc: inSubject.value, SiSoToiDa: Number(inMax.value) || 50,
+          MaMonHocMo: inId.value.trim(), 
+          MaHKNH: currentSemester.MaHKNH,
+          MaMonHoc: inSubject.value, 
+          SiSoToiDa: Number(inMax.value) || 50,
         };
-        if (!payload.MaMonHocMo || !payload.MaHKNH || !payload.MaMonHoc) { alert('Nhập đủ mã lớp, học kỳ, môn học.'); return; }
+        if (!payload.MaMonHocMo || !payload.MaMonHoc) { 
+          alert('Nhập đủ mã lớp và môn học.'); 
+          return; 
+        }
         await EduFeeAPI.post('/offerings', payload);
       } else {
         await EduFeeAPI.put('/offerings/' + editingId, { SiSoToiDa: Number(inMax.value) });
       }
-      closeModal(); load();
-    } catch (e) { alert(e.message); }
+      closeModal(); 
+      load();
+    } catch (e) { 
+      alert(e.message); 
+    }
   });
+
   if (search) search.addEventListener('input', load);
-  if (filterSemester) filterSemester.addEventListener('change', load);
-  await loadDanhMuc(); await load();
+
+  // Khởi tạo
+  await loadDanhMuc();
+  await load();
 });
