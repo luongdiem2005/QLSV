@@ -108,22 +108,6 @@ QLSV/
 
 ---
 
-## Cơ sở dữ liệu
-
-Một số bảng chính:
-
-- Student
-- Department
-- Subject
-- Semester
-- CourseOffering
-- Enrollment
-- TuitionFee
-- Payment
-- User
-- Role
-
----
 
 ## Cài đặt dự án
 
@@ -167,7 +151,15 @@ npm run dev
 ```
 
 ---
-
+## Bảng tài khoản người dùng
+Mật khẩu chung cho các tài khoản: 123456
+| Tên truy cập | Vai trò |
+|--------|------------|
+| 23520001 | Sinh viên | 
+| pdt | Phòng đào tạo | 
+| ptc | Phòng tài chính | 
+| admin | Quản trị viên |
+---
 ## Thành viên nhóm
 
 | MSSV | Họ và tên | 
