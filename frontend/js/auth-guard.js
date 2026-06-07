@@ -39,10 +39,15 @@ const EduFeeGuard = (() => {
       return null;
     }
     const ten = user.HoTen || user.TenDangNhap;
-    ['sidebar-username', 'sidebarAdminName', 'sidebar-admin-name'].forEach((id) => {
+    ['sidebar-username', 'sidebarAdminName', 'sidebar-admin-name', 'sidebar-student-name'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.textContent = ten;
     });
+    // Nạp footer dùng chung (mọi trang nội bộ ở pages/<khu>/<file>.html)
+    const fc = document.getElementById('shared-footer-container');
+    if (fc && !fc.dataset.loaded) {
+      try { fc.innerHTML = await (await fetch('../../components/footer.html')).text(); fc.dataset.loaded = '1'; } catch (e) {}
+    }
     bindLogout(); // gắn lại phòng khi nút được render động
     return user;
   }

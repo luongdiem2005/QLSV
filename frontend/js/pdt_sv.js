@@ -30,11 +30,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inDoiTuong = $('studentDoiTuong');  // đối tượng ưu tiên (MaDoiTuong)
   const inXa = $('studentXa');              // xã (MaXa)
   const inStatus = $('studentStatus');      // tình trạng
+  const inKhoa = $('studentCohort');        // khóa (KhoaHoc)
+  const filterKhoa = $('filterKhoa');
+  const btnPrev = $('btnPrevPage'), btnNext = $('btnNextPage'), pageIndicator = $('pageIndicator');
 
   const search = $('searchStudent');
   const filterNganh = $('filterClass');     // tái sử dụng làm bộ lọc ngành
 
   let mode = 'add', editingId = null, lastItems = [];
+  let currentPage = 1, totalRecords = 0; const PAGE_SIZE = 20;
   let nganhList = [], doiTuongList = [], xaList = [];
 
   // ---------- Đổ dropdown danh mục ----------
@@ -79,17 +83,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     lastItems = items || [];
     tbody.innerHTML = '';
     if (!items.length) {
-      tbody.innerHTML = `<tr><td colspan="10" class="text-center" style="padding:30px;color:#718096;">
+      tbody.innerHTML = `<tr><td colspan="11" class="text-center" style="padding:30px;color:#718096;">
         <i class="ti ti-database-off" style="font-size:24px;display:block;margin-bottom:8px;"></i>
         Không tìm thấy sinh viên nào.</td></tr>`;
-      updateInfo(0);
+      updateInfo();
       return;
     }
     items.forEach((sv, i) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${i + 1}</td>
+        <td>${(currentPage - 1) * PAGE_SIZE + i + 1}</td>
         <td><strong>${sv.MaSoSinhVien}</strong></td>
+        <td>${sv.KhoaHoc || ''}</td>
         <td>${sv.HoTen}</td>
         <td>${fmtDate(sv.NgaySinh)}</td>
         <td>${sv.GioiTinh || ''}</td>
@@ -103,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div></td>`;
       tbody.appendChild(tr);
     });
-    updateInfo(items.length);
+    updateInfo();
     bind();
     setupExport();
   }
@@ -115,13 +120,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       onExport: () => ({
         filename: 'DanhSachSinhVien',
         columns: [
-          { header: 'MSSV', key: 'MaSoSinhVien' }, { header: 'Họ tên', key: 'HoTen' },
+          { header: 'MSSV', key: 'MaSoSinhVien' }, { header: 'Khóa', key: 'khoa' }, { header: 'Họ tên', key: 'HoTen' },
           { header: 'Ngày sinh', key: 'ns' }, { header: 'Giới tính', key: 'gt' },
           { header: 'SĐT', key: 'sdt' }, { header: 'Email', key: 'email' },
           { header: 'Ngành', key: 'nganh' }, { header: 'Tình trạng', key: 'tt' },
         ],
         rows: lastItems.map(sv => ({
-          MaSoSinhVien: sv.MaSoSinhVien, HoTen: sv.HoTen,
+          MaSoSinhVien: sv.MaSoSinhVien, khoa: sv.KhoaHoc || '', HoTen: sv.HoTen,
           ns: fmtDate(sv.NgaySinh), gt: sv.GioiTinh || '',
           sdt: sv.SoDienThoai || '', email: sv.Email || '',
           nganh: sv.nganh ? sv.nganh.TenNganh : '', tt: sv.TinhTrang || '',
@@ -129,20 +134,33 @@ document.addEventListener('DOMContentLoaded', async () => {
       }),
     });
   }
-  function updateInfo(count) {
+  function updateInfo() {
     const el = document.querySelector('.pagination-info');
-    if (el) el.textContent = `Hiển thị ${count} sinh viên`;
+    if (el) el.textContent = `Tổng ${totalRecords} sinh viên`;
+  }
+  function renderPagination() {
+    const totalPages = Math.max(1, Math.ceil(totalRecords / PAGE_SIZE));
+    if (pageIndicator) pageIndicator.textContent = `Trang ${currentPage}/${totalPages}`;
+    if (btnPrev) btnPrev.disabled = currentPage <= 1;
+    if (btnNext) btnNext.disabled = currentPage >= totalPages;
   }
 
-  // ---------- Tải dữ liệu ----------
+  // ---------- Tải dữ liệu (có phân trang) ----------
   async function load() {
     const p = new URLSearchParams();
     if (search && search.value.trim()) p.set('search', search.value.trim());
     if (filterNganh && filterNganh.value) p.set('maNganh', filterNganh.value);
-    p.set('limit', '200');
-    try { render((await EduFeeAPI.get('/students?' + p)).items); }
-    catch (e) { alert(e.message); }
+    if (filterKhoa && filterKhoa.value.trim()) p.set('khoaHoc', filterKhoa.value.trim());
+    p.set('page', String(currentPage));
+    p.set('limit', String(PAGE_SIZE));
+    try {
+      const res = await EduFeeAPI.get('/students?' + p);
+      totalRecords = res.total || 0;
+      render(res.items);
+      renderPagination();
+    } catch (e) { alert(e.message); }
   }
+  function reloadFromFirstPage() { currentPage = 1; load(); }
 
   // ---------- Modal ----------
   function openModal(m, mssv) {
@@ -172,6 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (inDoiTuong) inDoiTuong.value = sv.MaDoiTuong || '';
       if (inXa) inXa.value = sv.MaXa || '';
       if (inStatus) inStatus.value = sv.TinhTrang || 'Đang học';
+      if (inKhoa) inKhoa.value = sv.KhoaHoc || '';
     } catch (e) { alert(e.message); }
   }
   function closeModal() { modal.classList.add('hidden'); form.reset(); editingId = null; }
@@ -200,6 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       GioiTinh: inGender ? inGender.value || null : null,
       SoDienThoai: inPhone ? inPhone.value.trim() || null : null,
       Email: inEmail ? inEmail.value.trim() || null : null,
+      KhoaHoc: inKhoa ? inKhoa.value.trim() || null : null,
       MaNganh: inMajor ? inMajor.value : null,
       MaDoiTuong: inDoiTuong ? inDoiTuong.value || null : null,
       MaXa: inXa ? inXa.value || null : null,
@@ -223,8 +243,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) { alert(e.message); }
   });
 
-  if (search) search.addEventListener('input', load);
-  if (filterNganh) filterNganh.addEventListener('change', load);
+  if (search) search.addEventListener('input', reloadFromFirstPage);
+  if (filterNganh) filterNganh.addEventListener('change', reloadFromFirstPage);
+  if (filterKhoa) filterKhoa.addEventListener('input', reloadFromFirstPage);
+  if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) { currentPage--; load(); } });
+  if (btnNext) btnNext.addEventListener('click', () => { currentPage++; load(); });
 
   await loadDanhMuc();
   await load();

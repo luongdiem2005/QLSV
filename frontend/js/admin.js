@@ -69,6 +69,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     catch (e) { alert(e.message); }
   });
 
+  const btnCreate = document.getElementById('btnCreateAccount');
+  if (btnCreate) btnCreate.addEventListener('click', async () => {
+    const g = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    const body = { TenDangNhap: g('acTenDangNhap'), MatKhau: g('acMatKhau'), HoTen: g('acHoTen'), VaiTro: g('acVaiTro') };
+    if (!body.TenDangNhap || !body.MatKhau) { alert('Nhập tên đăng nhập và mật khẩu.'); return; }
+    if (body.MatKhau.length < 6) { alert('Mật khẩu tối thiểu 6 ký tự.'); return; }
+    if (body.VaiTro === 'SV') {
+      body.MaSoSinhVien = g('acMSSV');
+      if (!body.MaSoSinhVien) { alert('Tài khoản SV cần MSSV.'); return; }
+    }
+    try {
+      await EduFeeAPI.post('/admin/accounts', body);
+      log(`Tạo tài khoản ${body.TenDangNhap} (${body.VaiTro})`);
+      ['acTenDangNhap','acMatKhau','acHoTen','acMSSV'].forEach((id) => { const el = document.getElementById(id); if (el) el.value = ''; });
+      load();
+    } catch (e) { alert(e.message); }
+  });
+
   await load();
   log('Đã tải danh sách tài khoản.');
 });

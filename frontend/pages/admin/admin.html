@@ -169,6 +169,17 @@
                                 <h2 style="font-size: 15px; color: #2d3748; font-weight: 600;">Danh sách phân quyền Tài khoản nội bộ (RBAC Ledger)</h2>
                             </div>
                         </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px;background:#f7fafc;padding:12px;border-radius:8px;">
+                            <input id="acTenDangNhap" placeholder="Tên đăng nhập" class="form-select" style="width:160px;">
+                            <input id="acMatKhau" type="password" placeholder="Mật khẩu (≥6 ký tự)" class="form-select" style="width:170px;">
+                            <input id="acHoTen" placeholder="Họ và tên" class="form-select" style="width:180px;">
+                            <select id="acVaiTro" class="form-select" style="width:120px;">
+                                <option value="PDT">PDT</option><option value="PTC">PTC</option>
+                                <option value="ADMIN">ADMIN</option><option value="SV">SV</option>
+                            </select>
+                            <input id="acMSSV" placeholder="MSSV (nếu vai trò SV)" class="form-select" style="width:170px;">
+                            <button id="btnCreateAccount" class="btn btn-primary"><i class="ti ti-user-plus"></i> Tạo tài khoản</button>
+                        </div>
 
                         <div class="table-container" style="margin-top: 0;">
                             <table class="data-table">

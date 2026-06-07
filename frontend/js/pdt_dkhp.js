@@ -93,10 +93,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     filteredItems.forEach((o, i) => {
       const ten = o.monHoc ? o.monHoc.TenMonHoc : o.MaMonHoc;
+      const loai = o.monHoc && o.monHoc.loaiMonHoc ? o.monHoc.loaiMonHoc.TenLoaiMonHoc : '';
       const full = o.SiSoHienTai >= o.SiSoToiDa;
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${i + 1}</td><td><strong>${o.MaMonHocMo}</strong></td><td>${o.MaHKNH}</td>
-        <td>${ten}</td><td style="${full ? 'color:#e53e3e;font-weight:600;' : ''}">${o.SiSoHienTai}/${o.SiSoToiDa}</td>
+      tr.innerHTML = `<td>${i + 1}</td><td><strong>${o.MaMonHocMo}</strong></td>
+        <td>${ten}</td><td>${loai}</td><td class="text-center" style="${full ? 'color:#e53e3e;font-weight:600;' : ''}">${o.SiSoHienTai}/${o.SiSoToiDa}</td>
         <td>${full ? 'Đã đầy' : 'Còn chỗ'}</td>
         <td class="text-center"><div class="action-buttons">
           <button class="btn-action btn-edit" data-id="${o.MaMonHocMo}"><i class="ti ti-edit"></i></button>

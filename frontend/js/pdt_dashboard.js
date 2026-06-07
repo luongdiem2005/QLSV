@@ -60,11 +60,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       const currentSem = await getCurrentSemester();
       const semesterDisplay = document.getElementById('currentSemesterDisplay');
       
-      if (currentSem && semesterDisplay) {
-        semesterDisplay.textContent = `${currentSem.MaHKNH} - Kỳ ${currentSem.HocKy}`;
-      } else if (semesterDisplay) {
-        semesterDisplay.textContent = 'Chưa có học kỳ nào';
+      const hkEl = document.getElementById('hocKyOut');
+      const nhEl = document.getElementById('namHocOut');
+      if (semesterDisplay && currentSem) semesterDisplay.textContent = `${currentSem.MaHKNH} - Kỳ ${currentSem.HocKy}`;
+      if (currentSem) {
+        // MaHKNH dạng "2026-HK1" -> Năm học = phần đầu, Học kỳ = HocKy
+        const namHoc = String(currentSem.MaHKNH).split('-')[0] || '';
+        if (hkEl) hkEl.textContent = currentSem.HocKy || '';
+        if (nhEl) nhEl.textContent = namHoc;
+      } else {
+        if (hkEl) hkEl.textContent = '—';
+        if (nhEl) nhEl.textContent = '—';
       }
+      // KPI: môn đang mở + tỷ lệ hoàn thành ĐKHP của học kỳ hiện tại
+      if (currentSem) await loadKpiForTerm(currentSem.MaHKNH);
     } catch (e) {
       console.error('Lỗi hiển thị học kỳ:', e);
     }
@@ -128,6 +137,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Lỗi vẽ biểu đồ:', e);
       }
     }
+  }
+
+  async function loadKpiForTerm(maHKNH) {
+    try {
+      const offerings = await EduFeeAPI.get('/offerings?maHKNH=' + encodeURIComponent(maHKNH));
+      const openEl = document.getElementById('openCoursesCount');
+      if (openEl) openEl.textContent = formatNumber(offerings.length);
+    } catch (e) {}
+    try {
+      const phieu = await EduFeeAPI.get('/enrollments?maHKNH=' + encodeURIComponent(maHKNH));
+      const compEl = document.getElementById('completionRate');
+      if (compEl) {
+        if (!phieu.length) { compEl.textContent = '0%'; return; }
+        const done = phieu.filter((p) => Number(p.SoTienConLai) <= 0).length;
+        compEl.textContent = Math.round((done / phieu.length) * 100) + '%';
+      }
+    } catch (e) {}
   }
 
   // Gọi tất cả hàm

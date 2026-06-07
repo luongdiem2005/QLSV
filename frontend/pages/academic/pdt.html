@@ -92,7 +92,7 @@
 
             <main class="main-content">
                 <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                    <p style="margin: 0; font-size: 14px; color: #475569;"><strong>Học kỳ hiện tại:</strong> <span id="currentSemesterDisplay" style="color: #1e40af; font-weight: 600;">Đang tải...</span></p>
+                    <p style="margin: 0; font-size: 14px; color: #475569;"><strong>Học kỳ:</strong> <span id="hocKyOut" style="color:#1e40af;font-weight:600;">—</span> &nbsp;&nbsp; <strong>Năm học:</strong> <span id="namHocOut" style="color:#1e40af;font-weight:600;">—</span></p>
                 </div>
 
                 <section class="metrics-grid">
@@ -112,7 +112,7 @@
                         </div>
                         <div class="metric-info">
                             <p class="metric-label">Môn học đang mở</p>
-                            <h2 class="metric-value">45</h2>
+                            <h2 class="metric-value" id="openCoursesCount">--</h2>
                         </div>
                     </div>
 
@@ -122,7 +122,7 @@
                         </div>
                         <div class="metric-info">
                             <p class="metric-label">Đã hoàn thành ĐKHP</p>
-                            <h2 class="metric-value">85%</h2>
+                            <h2 class="metric-value" id="completionRate">--</h2>
                         </div>
                     </div>
                 </section>
