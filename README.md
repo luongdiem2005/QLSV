@@ -13,7 +13,17 @@ Các chức năng chính:
 - Thống kê và báo cáo
 
 ---
+## Thành viên nhóm
 
+| MSSV | Họ và tên | 
+|--------|------------|
+| 23520079 | Trần Thị Kim Anh | 
+| 23520285 | Lương Kiều Diễm | 
+| 23520430 | Lê Thị Ngọc Hân | 
+| 23520415 | Trần Thanh Hà |
+| 23520585 | Lại Thị Thu Hương |
+---
+git
 ## Công nghệ sử dụng
 
 ### Frontend
@@ -159,16 +169,6 @@ Mật khẩu chung cho các tài khoản: 123456
 | pdt | Phòng đào tạo | 
 | ptc | Phòng tài chính | 
 | admin | Quản trị viên |
----
-## Thành viên nhóm
-
-| MSSV | Họ và tên | 
-|--------|------------|
-| 23520079 | Trần Thị Kim Anh | 
-| 23520285 | Lương Kiều Diễm | 
-| 23520430 | Lê Thị Ngọc Hân | 
-| 23520415 | Trần Thanh Hà |
-| 23520585 | Lại Thị Thu Hương |
 ---
 
 ## Kết quả đạt được
