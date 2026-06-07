@@ -42,6 +42,7 @@ model ct_phieudk {
 
 model doituonguutien {
   MaDoiTuong   String     @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenDoiTuong  String     @unique(map: "DOITUONGUUTIEN_TenDoiTuong_key") @db.VarChar(100)
   TyLeMienGiam Decimal    @db.Decimal(5, 2)
   GhiChu       String?    @db.VarChar(255)
@@ -60,6 +61,7 @@ model hockynamhoc {
 
 model khoa {
   MaKhoa       String   @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenKhoa      String   @unique(map: "KHOA_TenKhoa_key") @db.VarChar(150)
   VanPhongKhoa String?  @db.VarChar(150)
   GhiChu       String?  @db.VarChar(255)
@@ -69,6 +71,7 @@ model khoa {
 
 model loaimonhoc {
   MaLoaiMonHoc    String   @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenLoaiMonHoc   String   @unique(map: "LOAIMONHOC_TenLoaiMonHoc_key") @db.VarChar(50)
   SoTietMotTinChi Int
   SoTienMotTinChi Decimal  @db.Decimal(12, 2)
@@ -77,6 +80,7 @@ model loaimonhoc {
 
 model monhoc {
   MaMonHoc                                            String           @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenMonHoc                                           String           @unique(map: "MONHOC_TenMonHoc_key") @db.VarChar(150)
   MaKhoa                                              String           @db.VarChar(10)
   MaLoaiMonHoc                                        String           @db.VarChar(10)
@@ -95,6 +99,7 @@ model monhoc {
 
 model monhocmo {
   MaMonHocMo  String      @id @db.VarChar(15)
+  DaXoa          Boolean         @default(false)
   MaHKNH      String      @db.VarChar(15)
   MaMonHoc    String      @db.VarChar(10)
   SiSoToiDa   Int         @default(50)
@@ -102,12 +107,12 @@ model monhocmo {
   hockynamhoc hockynamhoc @relation(fields: [MaHKNH], references: [MaHKNH], map: "MONHOCMO_MaHKNH_fkey")
   monhoc      monhoc      @relation(fields: [MaMonHoc], references: [MaMonHoc], map: "MONHOCMO_MaMonHoc_fkey")
 
-  @@unique([MaHKNH, MaMonHoc], map: "MONHOCMO_MaHKNH_MaMonHoc_key")
   @@index([MaMonHoc], map: "MONHOCMO_MaMonHoc_fkey")
 }
 
 model nganh {
   MaNganh        String           @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenNganh       String           @unique(map: "NGANH_TenNganh_key") @db.VarChar(150)
   MaKhoa         String           @db.VarChar(10)
   GhiChu         String?          @db.VarChar(255)
@@ -125,9 +130,6 @@ model nguoidung {
   HoTen        String?          @db.VarChar(100)
   MaSoSinhVien String?          @unique(map: "NGUOIDUNG_MaSoSinhVien_key") @db.VarChar(15)
   TrangThai    Boolean          @default(true)
-  Email        String?          @db.VarChar(255)
-  ResetOTP     String?          @db.VarChar(6)
-  OtpExpiry    DateTime?        @db.DateTime(0)
   sinhvien     sinhvien?        @relation(fields: [MaSoSinhVien], references: [MaSoSinhVien], map: "NGUOIDUNG_MaSoSinhVien_fkey")
 }
 
@@ -162,7 +164,9 @@ model phieuthuhocphi {
 
 model sinhvien {
   MaSoSinhVien   String          @id @db.VarChar(15)
+  DaXoa          Boolean         @default(false)
   HoTen          String          @db.VarChar(100)
+  KhoaHoc        String?         @db.VarChar(10)
   NgaySinh       DateTime?
   GioiTinh       String?         @db.VarChar(10)
   SoDienThoai    String?         @db.VarChar(15)
@@ -189,12 +193,14 @@ model thamso {
 
 model tinh {
   MaTinh  String @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   TenTinh String @unique(map: "TINH_TenTinh_key") @db.VarChar(100)
   xa      xa[]
 }
 
 model xa {
   MaXa          String     @id @db.VarChar(10)
+  DaXoa          Boolean         @default(false)
   MaTinh        String     @db.VarChar(10)
   TenXa         String     @db.VarChar(100)
   VungSauVungXa Boolean    @default(false)

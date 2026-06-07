@@ -28,6 +28,19 @@ async function main() {
   await prisma.tINH.upsert({ where: { MaTinh: 'HCM' }, update: {}, create: { MaTinh: 'HCM', TenTinh: 'TP. Hồ Chí Minh' } });
   await prisma.xA.upsert({ where: { MaXa: 'X001' }, update: {}, create: { MaXa: 'X001', MaTinh: 'HCM', TenXa: 'Phường Linh Trung' } });
   await prisma.dOITUONGUUTIEN.upsert({ where: { MaDoiTuong: 'KHONG' }, update: {}, create: { MaDoiTuong: 'KHONG', TenDoiTuong: 'Không ưu tiên', TyLeMienGiam: 0 } });
+  const dsDoiTuong = [
+    { MaDoiTuong: 'CONLIETSI',  TenDoiTuong: 'Con liệt sĩ',                 TyLeMienGiam: 100 },
+    { MaDoiTuong: 'CONTHUONGBINH', TenDoiTuong: 'Con thương binh',          TyLeMienGiam: 70 },
+    { MaDoiTuong: 'DANTOCTHIEUSO', TenDoiTuong: 'Dân tộc thiểu số',         TyLeMienGiam: 50 },
+    { MaDoiTuong: 'VUNGSAU',    TenDoiTuong: 'Vùng sâu, vùng xa',           TyLeMienGiam: 30 },
+    { MaDoiTuong: 'HONGHEO',    TenDoiTuong: 'Hộ nghèo',                    TyLeMienGiam: 50 },
+    { MaDoiTuong: 'HOCANNGHEO', TenDoiTuong: 'Hộ cận nghèo',                TyLeMienGiam: 30 },
+    { MaDoiTuong: 'MOCOI',      TenDoiTuong: 'Mồ côi cả cha lẫn mẹ',        TyLeMienGiam: 100 },
+    { MaDoiTuong: 'KHUYETTAT',  TenDoiTuong: 'Khuyết tật',                  TyLeMienGiam: 50 },
+  ];
+  for (const dt of dsDoiTuong) {
+    await prisma.dOITUONGUUTIEN.upsert({ where: { MaDoiTuong: dt.MaDoiTuong }, update: {}, create: dt });
+  }
   await prisma.kHOA.upsert({ where: { MaKhoa: 'CNPM' }, update: {}, create: { MaKhoa: 'CNPM', TenKhoa: 'Công nghệ Phần mềm' } });
   await prisma.nGANH.upsert({ where: { MaNganh: 'KTPM' }, update: {}, create: { MaNganh: 'KTPM', TenNganh: 'Kỹ thuật Phần mềm', MaKhoa: 'CNPM' } });
 
