@@ -163,7 +163,9 @@ model NGUOIDUNG {
   HoTen        String? @db.VarChar(100)
   MaSoSinhVien String? @unique @db.VarChar(15)
   TrangThai    Boolean @default(true)
-
+  Email        String? @unique @db.VarChar(100) // Chỉ ADMIN, PDT, PTC cần điền ô này
+  ResetOTP     String? @db.VarChar(6)
+  OtpExpiry    DateTime?
   sinhVien SINHVIEN? @relation(fields: [MaSoSinhVien], references: [MaSoSinhVien])
 }
 
