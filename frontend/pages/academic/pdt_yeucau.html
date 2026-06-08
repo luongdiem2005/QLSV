@@ -3,27 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduFee - Xét duyệt Miễn giảm / Gia hạn</title>
+    <title>EduFee - Quản lý Hồ sơ Sinh viên</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/form.css">
     <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+    
+    
 </head>
 <body class="dashboard-page">
+
     <div class="app-layout">
         <aside class="sidebar">
-            <div class="sidebar-brand"><i class="ti ti-school"></i><h2>EduFee Portal</h2></div>
+            <div class="sidebar-brand">
+                <i class="ti ti-school"></i>
+                <h2>EduFee</h2>
+            </div>
             <div class="sidebar-user-info">
-                <p class="role-badge">Phòng Đào tạo / Tài chính</p>
-                <h3 id="sidebar-username">Loading...</h3>
+                <p class="role-badge">Phòng Đào tạo</p>
+                <h3 class="sidebar-username">Phòng Đào Tạo</h3>
             </div>
             <nav class="sidebar-menu">
                 <ul>
-                    <li><a href="pdt.html"><i class="ti ti-layout-dashboard"></i><span>Tổng quan</span></a></li>
-                    <li><a href="pdt_sv.html"><i class="ti ti-users"></i><span>Quản lý Sinh viên</span></a></li>
-                    <li><a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i><span>Mở lớp Học phần</span></a></li>
+                    <li>
+                        <a href="pdt.html">
+                            <i class="ti ti-layout-dashboard"></i>
+                            <span>Tổng quan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_sv.html">
+                            <i class="ti ti-users"></i>
+                            <span>Quản lý Sinh viên</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_khoa.html">
+                            <i class="ti ti-building"></i>
+                            <span>Quản lý Khoa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_nganhhoc.html">
+                            <i class="ti ti-building-community"></i>
+                            <span>Quản lý Ngành học</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_monhoc.html">
+                            <i class="ti ti-book"></i>
+                            <span>Danh mục Môn học</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_dkhp.html">
+                            <i class="ti ti-clipboard-list"></i>
+                            <span>Mở lớp Học phần</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pdt_diachi.html">
+                            <i class="ti ti-map-pin"></i>
+                            <span>Tỉnh / Xã</span>
+                        </a>
+                    </li>
                     <li class="active"><a href="pdt_yeucau.html"><i class="ti ti-file-check"></i><span>Xét duyệt đơn</span></a></li>
                 </ul>
             </nav>
