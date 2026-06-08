@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     p.set('limit', '200');
     try { render((await EduFeeAPI.get('/courses?' + p)).items); } catch (e) { alert(e.message); }
   }
-
+  
   function openModal(m, id) {
     mode = m; modal.classList.remove('hidden');
     loadPrereqOptions(id);

@@ -128,8 +128,13 @@
                     </table>
                   </div>
 
-                <div class="pagination-wrapper">
-                    <p class="pagination-info">Hiển thị dữ liệu danh mục môn học</p>
+                  <div class="pagination-bar" style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
+                    <span class="pagination-info" style="color:#718096;font-size:14px;"></span>
+                    <div class="pagination-controls">
+                        <button id="btnPrevPage" class="btn btn-secondary">‹ Trước</button>
+                        <span id="pageIndicator" style="margin:0 12px;font-weight:600;"></span>
+                        <button id="btnNextPage" class="btn btn-secondary">Sau ›</button>
+                    </div>
                 </div>
                 <div id="shared-footer-container"></div>
             </main>
