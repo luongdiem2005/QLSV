@@ -16,11 +16,11 @@ exports.create = async ({ MaPhieuDK, SoTienThu }) => {
 
   return prisma.$transaction(async (tx) => {
     // 1. Phiếu đăng ký phải tồn tại
-    const phieu = await tx.pHIEUDANGKY.findUnique({ where: { MaPhieu: MaPhieuDK } });
+    const phieu = await tx.phieudangky.findUnique({ where: { MaPhieu: MaPhieuDK } });
     if (!phieu) throw new ApiError(404, `Phiếu đăng ký "${MaPhieuDK}" không tồn tại.`, 'PHIEUDK_NOT_FOUND');
 
     // 2. Trừ tiền ATOMIC: chỉ cập nhật khi SoTienConLai >= soTien
-    const ketQua = await tx.pHIEUDANGKY.updateMany({
+    const ketQua = await tx.phieudangky.updateMany({
       where: { MaPhieu: MaPhieuDK, SoTienConLai: { gte: soTien } },
       data: {
         SoTienDaDong: { increment: soTien },
@@ -32,7 +32,7 @@ exports.create = async ({ MaPhieuDK, SoTienThu }) => {
     }
 
     // 3. Tạo phiếu thu
-    return tx.pHIEUTHUHOCPHI.create({
+    return tx.phieuthuhocphi.create({
       data: { MaPhieuThu: sinhMaPhieuThu(), MaPhieuDK, SoTienThu: soTien },
     });
   });
@@ -52,14 +52,14 @@ exports.list = async ({ maPhieuDK, maSoSinhVien, maHKNH }, currentUser) => {
   if (maHKNH) phieuFilter.MaHKNH = maHKNH;
   if (Object.keys(phieuFilter).length) where.phieuDangKy = phieuFilter;
 
-  return prisma.pHIEUTHUHOCPHI.findMany({
+  return prisma.phieuthuhocphi.findMany({
     where,
     include: {
       phieuDangKy: {
         select: {
           MaPhieu: true, MaSoSinhVien: true, MaHKNH: true,
           TongTienDK: true, TienMienGiam: true, TongTienPhaiDong: true,
-          sinhVien: { select: { HoTen: true } },
+          sinhvien: { select: { HoTen: true } },
         },
       },
     },
@@ -68,13 +68,13 @@ exports.list = async ({ maPhieuDK, maSoSinhVien, maHKNH }, currentUser) => {
 };
 
 exports.getOne = async (maPhieuThu, currentUser) => {
-  const pt = await prisma.pHIEUTHUHOCPHI.findUnique({
+  const pt = await prisma.phieuthuhocphi.findUnique({
     where: { MaPhieuThu: maPhieuThu },
     include: {
       phieuDangKy: {
         include: {
-          sinhVien: { select: { MaSoSinhVien: true, HoTen: true } },
-          hocKyNamHoc: { select: { MaHKNH: true, HocKy: true } },
+          sinhvien: { select: { MaSoSinhVien: true, HoTen: true } },
+          hockynamhoc: { select: { MaHKNH: true, HocKy: true } },
         },
       },
     },
@@ -87,14 +87,14 @@ exports.getOne = async (maPhieuThu, currentUser) => {
 };
 
 exports.remove = async (maPhieuThu) => {
-  const pt = await prisma.pHIEUTHUHOCPHI.findUnique({ where: { MaPhieuThu: maPhieuThu } });
+  const pt = await prisma.phieuthuhocphi.findUnique({ where: { MaPhieuThu: maPhieuThu } });
   if (!pt) throw new ApiError(404, 'Không tìm thấy phiếu thu.', 'NOT_FOUND');
   const soTien = Number(pt.SoTienThu);
 
   return prisma.$transaction(async (tx) => {
-    await tx.pHIEUTHUHOCPHI.delete({ where: { MaPhieuThu: maPhieuThu } });
+    await tx.phieuthuhocphi.delete({ where: { MaPhieuThu: maPhieuThu } });
     // Hoàn lại số dư cho phiếu đăng ký
-    await tx.pHIEUDANGKY.update({
+    await tx.phieudangky.update({
       where: { MaPhieu: pt.MaPhieuDK },
       data: {
         SoTienDaDong: { decrement: soTien },

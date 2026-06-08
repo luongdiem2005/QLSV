@@ -10,19 +10,19 @@ function tinhTinChi(soTiet, soTietMotTinChi) {
 
 // Đính thêm trường SoTinChi (tính được) vào object môn học
 function ganTinChi(mon) {
-  return { ...mon, SoTinChi: tinhTinChi(mon.SoTiet, mon.loaiMonHoc?.SoTietMotTinChi) };
+  return { ...mon, SoTinChi: tinhTinChi(mon.SoTiet, mon.loaimonhoc?.SoTietMotTinChi) };
 }
 
 const includeQuanHe = {
   khoa: { select: { MaKhoa: true, TenKhoa: true } },
-  loaiMonHoc: true,
+  loaimonhoc: true,
 };
 
 // Kiểm tra khoa & loại môn tồn tại
 async function kiemTraKhoaNgoai({ MaKhoa, MaLoaiMonHoc }) {
-  const khoa = await prisma.kHOA.findUnique({ where: { MaKhoa } });
+  const khoa = await prisma.khoa.findUnique({ where: { MaKhoa } });
   if (!khoa) throw new ApiError(404, `Khoa "${MaKhoa}" không tồn tại.`, 'KHOA_NOT_FOUND');
-  const loai = await prisma.lOAIMONHOC.findUnique({ where: { MaLoaiMonHoc } });
+  const loai = await prisma.loaimonhoc.findUnique({ where: { MaLoaiMonHoc } });
   if (!loai) throw new ApiError(404, `Loại môn "${MaLoaiMonHoc}" không tồn tại.`, 'LOAI_NOT_FOUND');
 }
 
@@ -32,7 +32,7 @@ async function kiemTraMonTruoc(maMonHoc, danhSachTruoc) {
     if (maTruoc === maMonHoc) {
       throw new ApiError(400, 'Một môn không thể là môn tiên quyết của chính nó.', 'SELF_PREREQ');
     }
-    const ton = await prisma.mONHOC.findUnique({ where: { MaMonHoc: maTruoc } });
+    const ton = await prisma.monhoc.findUnique({ where: { MaMonHoc: maTruoc } });
     if (!ton) throw new ApiError(404, `Môn tiên quyết "${maTruoc}" không tồn tại.`, 'PREREQ_NOT_FOUND');
   }
 }
@@ -73,21 +73,21 @@ exports.list = async ({ search, maKhoa, maLoai, page = 1, limit = 20 }) => {
 
   const skip = (Number(page) - 1) * Number(limit);
   const [rows, total] = await Promise.all([
-    prisma.mONHOC.findMany({
+    prisma.monhoc.findMany({
       where, include: includeQuanHe, skip, take: Number(limit), orderBy: { MaMonHoc: 'asc' },
     }),
-    prisma.mONHOC.count({ where }),
+    prisma.monhoc.count({ where }),
   ]);
 
   return { items: rows.map(ganTinChi), total, page: Number(page), limit: Number(limit) };
 };
 
 exports.getOne = async (maMon) => {
-  const mon = await prisma.mONHOC.findUnique({
+  const mon = await prisma.monhoc.findUnique({
     where: { MaMonHoc: maMon },
     include: {
       ...includeQuanHe,
-      monHocTruocList: { select: { MaMonHocTruoc: true } },
+      monhocTruocList: { select: { MaMonHocTruoc: true } },
     },
   });
   if (!mon) throw new ApiError(404, 'Không tìm thấy môn học.', 'NOT_FOUND');
@@ -95,16 +95,16 @@ exports.getOne = async (maMon) => {
 };
 
 exports.create = async (data) => {
-  const daCo = await prisma.mONHOC.findUnique({ where: { MaMonHoc: data.MaMonHoc } });
+  const daCo = await prisma.monhoc.findUnique({ where: { MaMonHoc: data.MaMonHoc } });
   if (daCo) throw new ApiError(409, `Mã môn "${data.MaMonHoc}" đã tồn tại.`, 'DUPLICATE_MA');
 
   await kiemTraKhoaNgoai(data);
-  const danhSachTruoc = data.monHocTruoc || [];
+  const danhSachTruoc = data.monhocTruoc || [];
   await kiemTraMonTruoc(data.MaMonHoc, danhSachTruoc);
 
   // Tạo môn + chèn các bản ghi môn tiên quyết trong CÙNG transaction
   const mon = await prisma.$transaction(async (tx) => {
-    await tx.mONHOC.create({
+    await tx.monhoc.create({
       data: {
         MaMonHoc: data.MaMonHoc,
         TenMonHoc: data.TenMonHoc,
@@ -118,24 +118,24 @@ exports.create = async (data) => {
         data: danhSachTruoc.map((maTruoc) => ({ MaMonHoc: data.MaMonHoc, MaMonHocTruoc: maTruoc })),
       });
     }
-    return tx.mONHOC.findUnique({ where: { MaMonHoc: data.MaMonHoc }, include: includeQuanHe });
+    return tx.monhoc.findUnique({ where: { MaMonHoc: data.MaMonHoc }, include: includeQuanHe });
   });
 
   return ganTinChi(mon);
 };
 
 exports.update = async (maMon, data) => {
-  const mon = await prisma.mONHOC.findUnique({ where: { MaMonHoc: maMon } });
+  const mon = await prisma.monhoc.findUnique({ where: { MaMonHoc: maMon } });
   if (!mon) throw new ApiError(404, 'Không tìm thấy môn học.', 'NOT_FOUND');
 
   await kiemTraKhoaNgoai(data);
-  const danhSachTruoc = data.monHocTruoc || [];
+  const danhSachTruoc = data.monhocTruoc || [];
   await kiemTraMonTruoc(maMon, danhSachTruoc);
   await kiemTraVongTienQuyet(maMon, danhSachTruoc);
 
   // Cập nhật thông tin + thay TOÀN BỘ danh sách môn tiên quyết (xóa cũ, chèn mới)
   const ketQua = await prisma.$transaction(async (tx) => {
-    await tx.mONHOC.update({
+    await tx.monhoc.update({
       where: { MaMonHoc: maMon },
       data: {
         TenMonHoc: data.TenMonHoc,
@@ -150,17 +150,17 @@ exports.update = async (maMon, data) => {
         data: danhSachTruoc.map((maTruoc) => ({ MaMonHoc: maMon, MaMonHocTruoc: maTruoc })),
       });
     }
-    return tx.mONHOC.findUnique({ where: { MaMonHoc: maMon }, include: includeQuanHe });
+    return tx.monhoc.findUnique({ where: { MaMonHoc: maMon }, include: includeQuanHe });
   });
 
   return ganTinChi(ketQua);
 };
 
 exports.remove = async (maMon) => {
-  const mon = await prisma.mONHOC.findUnique({
+  const mon = await prisma.monhoc.findUnique({
     where: { MaMonHoc: maMon },
     include: {
-      monHocMoList: { select: { MaMonHocMo: true } },
+      monhocMoList: { select: { MaMonHocMo: true } },
       ctPhieuDKList: { select: { MaPhieuDK: true } },
       laMonTruocCuaList: { select: { MaMonHoc: true } },
       chuongTrinhList: { select: { MaNganh: true } },
@@ -168,7 +168,7 @@ exports.remove = async (maMon) => {
   });
   if (!mon) throw new ApiError(404, 'Không tìm thấy môn học.', 'NOT_FOUND');
 
-  if (mon.monHocMoList.length) throw new ApiError(409, 'Không thể xóa: môn đã được mở trong học kỳ.', 'IN_USE');
+  if (mon.monhocMoList.length) throw new ApiError(409, 'Không thể xóa: môn đã được mở trong học kỳ.', 'IN_USE');
   if (mon.ctPhieuDKList.length) throw new ApiError(409, 'Không thể xóa: môn đã có trong phiếu đăng ký.', 'IN_USE');
   if (mon.laMonTruocCuaList.length) throw new ApiError(409, 'Không thể xóa: môn đang là tiên quyết của môn khác.', 'IN_USE');
   if (mon.chuongTrinhList.length) throw new ApiError(409, 'Không thể xóa: môn thuộc chương trình học của ngành.', 'IN_USE');
@@ -176,7 +176,7 @@ exports.remove = async (maMon) => {
   // Xóa các bản ghi tiên quyết của chính môn này rồi xóa môn (transaction)
   await prisma.$transaction(async (tx) => {
     await tx.cT_MONHOCTRUOC.deleteMany({ where: { MaMonHoc: maMon } });
-    await tx.mONHOC.delete({ where: { MaMonHoc: maMon } });
+    await tx.monhoc.delete({ where: { MaMonHoc: maMon } });
   });
 
   return { message: 'Đã xóa môn học.' };

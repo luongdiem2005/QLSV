@@ -9,7 +9,7 @@
   async function load() {
     const res = await EduFeeAPI.get('/students?limit=500');
     const all = res.items || res;
-    rows = all.filter((sv) => sv.MaDoiTuong && sv.doiTuong);
+    rows = all.filter((sv) => sv.MaDoiTuong && sv.doituonguutien);
     setText('cntAll', rows.length);
     setText('cntApproved', rows.length);
     setText('cntPending', 0);
@@ -22,7 +22,7 @@
     if (!rows.length) {
       tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding:20px;color:#718096;">Chưa có sinh viên nào thuộc diện miễn giảm.</td></tr>';
     } else rows.forEach((sv) => {
-      const dt = sv.doiTuong || {};
+      const dt = sv.doituonguutien || {};
       const tr = document.createElement('tr');
       tr.innerHTML = `<td><strong>${sv.MaSoSinhVien}</strong></td><td>${sv.HoTen}</td>
         <td>${sv.nganh ? sv.nganh.TenNganh : '—'}</td>

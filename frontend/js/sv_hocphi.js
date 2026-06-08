@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Bảng chi tiết môn
     tbody.innerHTML = '';
-    const mons = (phieu && phieu.monHocList) || [];
+    const mons = (phieu && phieu.monhocList) || [];
     if (!mons.length) {
       tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:20px;color:#718096;">Chưa đăng ký môn nào trong học kỳ này.</td></tr>';
     } else mons.forEach((m, i) => {

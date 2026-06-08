@@ -5,21 +5,21 @@ const prisma = require('../../config/prisma');
 const ApiError = require('../../utils/ApiError');
 
 const includeQuanHe = {
-  monHoc: {
+  monhoc: {
     select: {
       MaMonHoc: true,
       TenMonHoc: true,
       SoTiet: true,
-      loaiMonHoc: { select: { MaLoaiMonHoc: true, TenLoaiMonHoc: true, SoTietMotTinChi: true, SoTienMotTinChi: true } },
+      loaimonhoc: { select: { MaLoaiMonHoc: true, TenLoaiMonHoc: true, SoTietMotTinChi: true, SoTienMotTinChi: true } },
     },
   },
-  hocKyNamHoc: { select: { MaHKNH: true, HocKy: true } },
+  hockynamhoc: { select: { MaHKNH: true, HocKy: true } },
 };
 
 async function kiemTraKhoaNgoai({ MaHKNH, MaMonHoc }) {
-  const hk = await prisma.hOCKYNAMHOC.findUnique({ where: { MaHKNH } });
+  const hk = await prisma.hockynamhoc.findUnique({ where: { MaHKNH } });
   if (!hk) throw new ApiError(404, `Học kỳ "${MaHKNH}" không tồn tại.`, 'HKNH_NOT_FOUND');
-  const mon = await prisma.mONHOC.findUnique({ where: { MaMonHoc } });
+  const mon = await prisma.monhoc.findUnique({ where: { MaMonHoc } });
   if (!mon) throw new ApiError(404, `Môn học "${MaMonHoc}" không tồn tại.`, 'MONHOC_NOT_FOUND');
 }
 
@@ -32,28 +32,28 @@ exports.list = async ({ maHKNH, search }) => {
       { MaMonHoc: { contains: search } },
     ];
   }
-  return prisma.mONHOCMO.findMany({ where, include: includeQuanHe, orderBy: { MaMonHocMo: 'asc' } });
+  return prisma.monhocmo.findMany({ where, include: includeQuanHe, orderBy: { MaMonHocMo: 'asc' } });
 };
 
 exports.getOne = async (id) => {
-  const o = await prisma.mONHOCMO.findUnique({ where: { MaMonHocMo: id }, include: includeQuanHe });
+  const o = await prisma.monhocmo.findUnique({ where: { MaMonHocMo: id }, include: includeQuanHe });
   if (!o) throw new ApiError(404, 'Không tìm thấy môn mở.', 'NOT_FOUND');
   return o;
 };
 
 exports.create = async (data) => {
-  const daCo = await prisma.mONHOCMO.findUnique({ where: { MaMonHocMo: data.MaMonHocMo } });
+  const daCo = await prisma.monhocmo.findUnique({ where: { MaMonHocMo: data.MaMonHocMo } });
   if (daCo) throw new ApiError(409, `Mã môn mở "${data.MaMonHocMo}" đã tồn tại.`, 'DUPLICATE');
 
   await kiemTraKhoaNgoai(data);
 
   // Chống mở TRÙNG một môn trong cùng học kỳ (unique [MaHKNH, MaMonHoc])
-  const trung = await prisma.mONHOCMO.findUnique({
+  const trung = await prisma.monhocmo.findUnique({
     where: { MaHKNH_MaMonHoc: { MaHKNH: data.MaHKNH, MaMonHoc: data.MaMonHoc } },
   });
   if (trung) throw new ApiError(409, 'Môn này đã được mở trong học kỳ đó.', 'ALREADY_OPENED');
 
-  return prisma.mONHOCMO.create({
+  return prisma.monhocmo.create({
     data: {
       MaMonHocMo: data.MaMonHocMo,
       MaHKNH: data.MaHKNH,
@@ -66,7 +66,7 @@ exports.create = async (data) => {
 };
 
 exports.update = async (id, data) => {
-  const o = await prisma.mONHOCMO.findUnique({ where: { MaMonHocMo: id } });
+  const o = await prisma.monhocmo.findUnique({ where: { MaMonHocMo: id } });
   if (!o) throw new ApiError(404, 'Không tìm thấy môn mở.', 'NOT_FOUND');
 
   // Sau khi đã tạo, chỉ cho đổi SiSoToiDa (đổi môn/học kỳ sẽ phá dữ liệu đăng ký)
@@ -78,7 +78,7 @@ exports.update = async (id, data) => {
     throw new ApiError(409, `Không thể đặt sĩ số tối đa (${siSoMoi}) nhỏ hơn sĩ số hiện tại (${o.SiSoHienTai}).`, 'INVALID_CAPACITY');
   }
 
-  return prisma.mONHOCMO.update({
+  return prisma.monhocmo.update({
     where: { MaMonHocMo: id },
     data: { SiSoToiDa: siSoMoi },
     include: includeQuanHe,
@@ -86,11 +86,11 @@ exports.update = async (id, data) => {
 };
 
 exports.remove = async (id) => {
-  const o = await prisma.mONHOCMO.findUnique({ where: { MaMonHocMo: id } });
+  const o = await prisma.monhocmo.findUnique({ where: { MaMonHocMo: id } });
   if (!o) throw new ApiError(404, 'Không tìm thấy môn mở.', 'NOT_FOUND');
   if (o.SiSoHienTai > 0) {
     throw new ApiError(409, 'Không thể xóa: đã có sinh viên đăng ký môn mở này.', 'HAS_ENROLLMENT');
   }
-  await prisma.mONHOCMO.delete({ where: { MaMonHocMo: id } });
+  await prisma.monhocmo.delete({ where: { MaMonHocMo: id } });
   return { message: 'Đã xóa môn mở.' };
 };

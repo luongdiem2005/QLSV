@@ -24,7 +24,7 @@ function locBoMatKhau(user) {
 }
 
 exports.login = async (TenDangNhap, MatKhau) => {
-  const user = await prisma.nGUOIDUNG.findUnique({ where: { TenDangNhap } });
+  const user = await prisma.nguoidung.findUnique({ where: { TenDangNhap } });
 
   // Dùng CHUNG một thông báo cho cả "không có user" lẫn "sai mật khẩu"
   // để không lộ tài khoản nào tồn tại.
@@ -45,7 +45,7 @@ exports.login = async (TenDangNhap, MatKhau) => {
 };
 
 exports.getMe = async (TenDangNhap) => {
-  const user = await prisma.nGUOIDUNG.findUnique({ where: { TenDangNhap } });
+  const user = await prisma.nguoidung.findUnique({ where: { TenDangNhap } });
   if (!user) {
     throw new ApiError(401, 'Tài khoản không còn tồn tại.', 'USER_NOT_FOUND');
   }
@@ -53,7 +53,7 @@ exports.getMe = async (TenDangNhap) => {
 };
 
 exports.changePassword = async (TenDangNhap, MatKhauCu, MatKhauMoi) => {
-  const user = await prisma.nGUOIDUNG.findUnique({ where: { TenDangNhap } });
+  const user = await prisma.nguoidung.findUnique({ where: { TenDangNhap } });
   if (!user) {
     throw new ApiError(401, 'Tài khoản không tồn tại.', 'USER_NOT_FOUND');
   }
@@ -64,7 +64,7 @@ exports.changePassword = async (TenDangNhap, MatKhauCu, MatKhauMoi) => {
   }
 
   const hashMoi = await bcrypt.hash(MatKhauMoi, 10);
-  await prisma.nGUOIDUNG.update({
+  await prisma.nguoidung.update({
     where: { TenDangNhap },
     data: { MatKhau: hashMoi },
   });

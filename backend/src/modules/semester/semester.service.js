@@ -10,20 +10,20 @@ exports.list = async ({ search }) => {
       { HocKy: { contains: search } },
     ];
   }
-  return prisma.hOCKYNAMHOC.findMany({ where, orderBy: { NgayBatDau: 'desc' } });
+  return prisma.hockynamhoc.findMany({ where, orderBy: { NgayBatDau: 'desc' } });
 };
 
 exports.getOne = async (maHKNH) => {
-  const hk = await prisma.hOCKYNAMHOC.findUnique({ where: { MaHKNH: maHKNH } });
+  const hk = await prisma.hockynamhoc.findUnique({ where: { MaHKNH: maHKNH } });
   if (!hk) throw new ApiError(404, 'Không tìm thấy học kỳ năm học.', 'NOT_FOUND');
   return hk;
 };
 
 exports.create = async (data) => {
-  const daCo = await prisma.hOCKYNAMHOC.findUnique({ where: { MaHKNH: data.MaHKNH } });
+  const daCo = await prisma.hockynamhoc.findUnique({ where: { MaHKNH: data.MaHKNH } });
   if (daCo) throw new ApiError(409, `Mã học kỳ "${data.MaHKNH}" đã tồn tại.`, 'DUPLICATE');
 
-  return prisma.hOCKYNAMHOC.create({
+  return prisma.hockynamhoc.create({
     data: {
       MaHKNH: data.MaHKNH,
       HocKy: data.HocKy,
@@ -35,10 +35,10 @@ exports.create = async (data) => {
 };
 
 exports.update = async (maHKNH, data) => {
-  const hk = await prisma.hOCKYNAMHOC.findUnique({ where: { MaHKNH: maHKNH } });
+  const hk = await prisma.hockynamhoc.findUnique({ where: { MaHKNH: maHKNH } });
   if (!hk) throw new ApiError(404, 'Không tìm thấy học kỳ năm học.', 'NOT_FOUND');
 
-  return prisma.hOCKYNAMHOC.update({
+  return prisma.hockynamhoc.update({
     where: { MaHKNH: maHKNH },
     data: {
       HocKy: data.HocKy,
@@ -50,17 +50,17 @@ exports.update = async (maHKNH, data) => {
 };
 
 exports.remove = async (maHKNH) => {
-  const hk = await prisma.hOCKYNAMHOC.findUnique({
+  const hk = await prisma.hockynamhoc.findUnique({
     where: { MaHKNH: maHKNH },
     include: {
-      monHocMoList: { select: { MaMonHocMo: true } },
+      monhocMoList: { select: { MaMonHocMo: true } },
       phieuDangKyList: { select: { MaPhieu: true } },
     },
   });
   if (!hk) throw new ApiError(404, 'Không tìm thấy học kỳ năm học.', 'NOT_FOUND');
-  if (hk.monHocMoList.length) throw new ApiError(409, 'Không thể xóa: học kỳ đã mở môn.', 'IN_USE');
+  if (hk.monhocMoList.length) throw new ApiError(409, 'Không thể xóa: học kỳ đã mở môn.', 'IN_USE');
   if (hk.phieuDangKyList.length) throw new ApiError(409, 'Không thể xóa: học kỳ đã có phiếu đăng ký.', 'IN_USE');
 
-  await prisma.hOCKYNAMHOC.delete({ where: { MaHKNH: maHKNH } });
+  await prisma.hockynamhoc.delete({ where: { MaHKNH: maHKNH } });
   return { message: 'Đã xóa học kỳ năm học.' };
 };

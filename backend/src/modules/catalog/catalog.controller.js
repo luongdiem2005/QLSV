@@ -16,8 +16,8 @@ function taoController(svc) {
 module.exports = {
   khoa: taoController(service.khoa),
   nganh: taoController(service.nganh),
-  loaiMonHoc: taoController(service.loaiMonHoc),
+  loaimonhoc: taoController(service.loaimonhoc),
   tinh: taoController(service.tinh),
   xa: taoController(service.xa),
-  doiTuong: taoController(service.doiTuong),
+  doituonguutien: taoController(service.doituonguutien),
 };

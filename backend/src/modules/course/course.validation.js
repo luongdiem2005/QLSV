@@ -25,8 +25,8 @@ function validateMonHoc(body, laTaoMoi) {
   if (body.SoTiet === undefined || body.SoTiet === null || !Number.isInteger(Number(body.SoTiet)) || Number(body.SoTiet) <= 0) {
     loi.push('SoTiet phải là số nguyên lớn hơn 0.');
   }
-  if (body.monHocTruoc && !Array.isArray(body.monHocTruoc)) {
-    loi.push('monHocTruoc phải là một mảng mã môn học.');
+  if (body.monhocTruoc && !Array.isArray(body.monhocTruoc)) {
+    loi.push('monhocTruoc phải là một mảng mã môn học.');
   }
 
   if (loi.length > 0) {

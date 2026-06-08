@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!modal) return;
     try {
       const pt = await EduFeeAPI.get('/payments/' + id);
-      const sv = pt.phieuDangKy.sinhVien || {};
+      const sv = pt.phieuDangKy.sinhvien || {};
       setText('rcpStudentId', sv.MaSoSinhVien || '');
       setText('rcpStudentName', sv.HoTen || '');
-      setText('rcpClassName', pt.phieuDangKy.hocKyNamHoc ? pt.phieuDangKy.hocKyNamHoc.HocKy : '');
+      setText('rcpClassName', pt.phieuDangKy.hockynamhoc ? pt.phieuDangKy.hockynamhoc.HocKy : '');
       setText('rcpTxnId', pt.MaPhieuThu);
       setText('rcpDate', new Date(pt.NgayLapPhieu).toLocaleString('vi-VN'));
       setText('rcpTerm', pt.phieuDangKy.MaHKNH);

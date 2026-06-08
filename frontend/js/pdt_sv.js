@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let mode = 'add', editingId = null, lastItems = [];
   let currentPage = 1, totalRecords = 0; const PAGE_SIZE = 20;
-  let nganhList = [], doiTuongList = [], xaList = [];
+  let nganhList = [], doituonguutienList = [], xaList = [];
 
   // ---------- Đổ dropdown danh mục ----------
   async function loadDanhMuc() {
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Không tải được danh sách Ngành: ' + e.message);
     }
     // Hai mục này không bắt buộc -> lỗi thì bỏ qua.
-    [doiTuongList, xaList] = await Promise.all([
+    [doituonguutienList, xaList] = await Promise.all([
       EduFeeAPI.get('/doi-tuong-uu-tien').catch(() => []),
       EduFeeAPI.get('/xa').catch(() => []),
     ]);
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (filterNganh) filterNganh.innerHTML = '<option value="">-- Tất cả ngành --</option>' + optNganh;
 
     if (inDoiTuong) inDoiTuong.innerHTML = '<option value="">-- Không ưu tiên --</option>' +
-      doiTuongList.map(d => `<option value="${d.MaDoiTuong}">${d.TenDoiTuong} (${Number(d.TyLeMienGiam)}%)</option>`).join('');
+      doituonguutienList.map(d => `<option value="${d.MaDoiTuong}">${d.TenDoiTuong} (${Number(d.TyLeMienGiam)}%)</option>`).join('');
 
     if (inXa) inXa.innerHTML = '<option value="">-- Chọn --</option>' +
       xaList.map(x => `<option value="${x.MaXa}">${x.TenXa}${x.tinh ? ' - ' + x.tinh.TenTinh : ''}</option>`).join('');

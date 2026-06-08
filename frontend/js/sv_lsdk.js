@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const trangThai = conLai <= 0
         ? '<span style="color:#38a169;">Đã đóng đủ</span>'
         : '<span style="color:#e53e3e;">Còn nợ</span>';
-      (p.monHocList || []).forEach((m) => rows.push({ ...m, MaHKNH: p.MaHKNH, trangThai }));
+      (p.monhocList || []).forEach((m) => rows.push({ ...m, MaHKNH: p.MaHKNH, trangThai }));
     });
     if (!rows.length) {
       tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding:24px;color:#718096;">Bạn chưa đăng ký môn học nào.</td></tr>';

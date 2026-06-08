@@ -14,7 +14,7 @@ exports.create = async (mssv, body) => {
   const loai = String(body.Loai || '').toUpperCase();
   if (!LOAI.includes(loai)) throw new ApiError(400, 'Loại đơn phải là MIENGIAM hoặc GIAHAN.', 'VALIDATION');
   if (!body.LyDo || !String(body.LyDo).trim()) throw new ApiError(400, 'Vui lòng nhập lý do.', 'VALIDATION');
-  const sv = await prisma.sINHVIEN.findUnique({ where: { MaSoSinhVien: mssv } });
+  const sv = await prisma.sinhvien.findUnique({ where: { MaSoSinhVien: mssv } });
   if (!sv) throw new ApiError(404, 'Không tìm thấy hồ sơ sinh viên.', 'NOT_FOUND');
   return prisma.dONYEUCAU.create({
     data: { MaDon: genMaDon(), MaSoSinhVien: mssv, Loai: loai, LyDo: String(body.LyDo).trim(), TrangThai: 'CHO_DUYET' },

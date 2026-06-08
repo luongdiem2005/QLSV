@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     filteredItems.forEach((o, i) => {
-      const ten = o.monHoc ? o.monHoc.TenMonHoc : o.MaMonHoc;
-      const loai = o.monHoc && o.monHoc.loaiMonHoc ? o.monHoc.loaiMonHoc.TenLoaiMonHoc : '';
+      const ten = o.monhoc ? o.monhoc.TenMonHoc : o.MaMonHoc;
+      const loai = o.monhoc && o.monhoc.loaimonhoc ? o.monhoc.loaimonhoc.TenLoaiMonHoc : '';
       const full = o.SiSoHienTai >= o.SiSoToiDa;
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${i + 1}</td><td><strong>${o.MaMonHocMo}</strong></td>

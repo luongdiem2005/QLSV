@@ -19,33 +19,33 @@ function sinhMaPhieu() {
 
 // Đọc tham số hệ thống (trả giá trị mặc định nếu chưa cấu hình)
 async function layThamSo(tx, ten, macDinh) {
-  const ts = await tx.tHAMSO.findUnique({ where: { TenThamSo: ten } });
+  const ts = await tx.thamso.findUnique({ where: { TenThamSo: ten } });
   return ts ? ts.GiaTri : macDinh;
 }
 
 // Tính lại toàn bộ tiền cho 1 phiếu. GỌI BÊN TRONG transaction.
 async function tinhLaiTien(tx, maPhieu) {
-  const phieu = await tx.pHIEUDANGKY.findUnique({
+  const phieu = await tx.phieudangky.findUnique({
     where: { MaPhieu: maPhieu },
     include: {
-      sinhVien: { include: { doiTuong: true } },
-      ctPhieuDKList: { include: { monHoc: { include: { loaiMonHoc: true } } } },
+      sinhvien: { include: { doituonguutien: true } },
+      ctPhieuDKList: { include: { monhoc: { include: { loaimonhoc: true } } } },
     },
   });
 
   let tongTienDK = 0;
   for (const ct of phieu.ctPhieuDKList) {
-    const loai = ct.monHoc.loaiMonHoc;
-    const soTinChi = tinhTinChi(ct.monHoc.SoTiet, loai.SoTietMotTinChi);
+    const loai = ct.monhoc.loaimonhoc;
+    const soTinChi = tinhTinChi(ct.monhoc.SoTiet, loai.SoTietMotTinChi);
     tongTienDK += soTinChi * Number(loai.SoTienMotTinChi);
   }
 
-  const tyLe = phieu.sinhVien.doiTuong ? Number(phieu.sinhVien.doiTuong.TyLeMienGiam) : 0;
+  const tyLe = phieu.sinhvien.doituonguutien ? Number(phieu.sinhvien.doituonguutien.TyLeMienGiam) : 0;
   const tienMienGiam = Math.round((tongTienDK * tyLe) / 100);
   const tongTienPhaiDong = tongTienDK - tienMienGiam;
   const soTienConLai = tongTienPhaiDong - Number(phieu.SoTienDaDong);
 
-  return tx.pHIEUDANGKY.update({
+  return tx.phieudangky.update({
     where: { MaPhieu: maPhieu },
     data: {
       TongTienDK: tongTienDK,
@@ -67,11 +67,11 @@ exports.list = async ({ maHKNH, maSoSinhVien }, currentUser) => {
     where.MaSoSinhVien = maSoSinhVien;
   }
 
-  return prisma.pHIEUDANGKY.findMany({
+  return prisma.phieudangky.findMany({
     where,
     include: {
-      sinhVien: { select: { MaSoSinhVien: true, HoTen: true } },
-      hocKyNamHoc: { select: { MaHKNH: true, HocKy: true } },
+      sinhvien: { select: { MaSoSinhVien: true, HoTen: true } },
+      hockynamhoc: { select: { MaHKNH: true, HocKy: true } },
       _count: { select: { ctPhieuDKList: true } },
     },
     orderBy: { NgayLapPhieu: 'desc' },
@@ -79,12 +79,12 @@ exports.list = async ({ maHKNH, maSoSinhVien }, currentUser) => {
 };
 
 exports.getOne = async (maPhieu, currentUser) => {
-  const phieu = await prisma.pHIEUDANGKY.findUnique({
+  const phieu = await prisma.phieudangky.findUnique({
     where: { MaPhieu: maPhieu },
     include: {
-      sinhVien: { include: { doiTuong: true } },
-      hocKyNamHoc: true,
-      ctPhieuDKList: { include: { monHoc: { include: { loaiMonHoc: true } } } },
+      sinhvien: { include: { doituonguutien: true } },
+      hockynamhoc: true,
+      ctPhieuDKList: { include: { monhoc: { include: { loaimonhoc: true } } } },
       phieuThuList: { orderBy: { NgayLapPhieu: 'asc' } },
     },
   });
@@ -94,14 +94,14 @@ exports.getOne = async (maPhieu, currentUser) => {
   }
 
   // Đính số tín chỉ + đơn giá + thành tiền mỗi môn cho frontend hiển thị
-  const monHocList = phieu.ctPhieuDKList.map((ct) => {
-    const soTinChi = tinhTinChi(ct.monHoc.SoTiet, ct.monHoc.loaiMonHoc.SoTietMotTinChi);
-    const donGia = Number(ct.monHoc.loaiMonHoc.SoTienMotTinChi);
+  const monhocList = phieu.ctPhieuDKList.map((ct) => {
+    const soTinChi = tinhTinChi(ct.monhoc.SoTiet, ct.monhoc.loaimonhoc.SoTietMotTinChi);
+    const donGia = Number(ct.monhoc.loaimonhoc.SoTienMotTinChi);
     return {
-      MaMonHoc: ct.monHoc.MaMonHoc,
-      TenMonHoc: ct.monHoc.TenMonHoc,
-      SoTiet: ct.monHoc.SoTiet,
-      LoaiMon: ct.monHoc.loaiMonHoc.TenLoaiMonHoc,
+      MaMonHoc: ct.monhoc.MaMonHoc,
+      TenMonHoc: ct.monhoc.TenMonHoc,
+      SoTiet: ct.monhoc.SoTiet,
+      LoaiMon: ct.monhoc.loaimonhoc.TenLoaiMonHoc,
       SoTinChi: soTinChi,
       DonGiaTinChi: donGia,
       ThanhTien: soTinChi * donGia,
@@ -109,28 +109,28 @@ exports.getOne = async (maPhieu, currentUser) => {
   });
 
   const { ctPhieuDKList, ...rest } = phieu;
-  return { ...rest, monHocList };
+  return { ...rest, monhocList };
 };
 
 // --------------------------- GHI ---------------------------
 
 exports.dangKyMon = async ({ MaSoSinhVien, MaHKNH, MaMonHoc }) => {
   // Kiểm tra tồn tại (đọc trước, ngoài transaction)
-  const sv = await prisma.sINHVIEN.findUnique({ where: { MaSoSinhVien } });
+  const sv = await prisma.sinhvien.findUnique({ where: { MaSoSinhVien } });
   if (!sv) throw new ApiError(404, `Sinh viên "${MaSoSinhVien}" không tồn tại.`, 'SV_NOT_FOUND');
 
-  const monMo = await prisma.mONHOCMO.findUnique({
+  const monMo = await prisma.monhocmo.findUnique({
     where: { MaHKNH_MaMonHoc: { MaHKNH, MaMonHoc } },
   });
   if (!monMo) throw new ApiError(409, 'Môn học chưa được mở trong học kỳ này.', 'NOT_OFFERED');
 
   return prisma.$transaction(async (tx) => {
     // 1. Tìm hoặc tạo phiếu của SV trong học kỳ này
-    let phieu = await tx.pHIEUDANGKY.findUnique({
+    let phieu = await tx.phieudangky.findUnique({
       where: { MaSoSinhVien_MaHKNH: { MaSoSinhVien, MaHKNH } },
     });
     if (!phieu) {
-      phieu = await tx.pHIEUDANGKY.create({
+      phieu = await tx.phieudangky.create({
         data: { MaPhieu: sinhMaPhieu(), MaSoSinhVien, MaHKNH },
       });
     }
@@ -142,7 +142,7 @@ exports.dangKyMon = async ({ MaSoSinhVien, MaHKNH, MaMonHoc }) => {
     if (daDangKy) throw new ApiError(409, 'Sinh viên đã đăng ký môn này rồi.', 'ALREADY_REGISTERED');
 
     // 3. Kiểm tra sĩ số (đọc lại TRONG transaction cho chính xác)
-    const monMoTx = await tx.mONHOCMO.findUnique({
+    const monMoTx = await tx.monhocmo.findUnique({
       where: { MaHKNH_MaMonHoc: { MaHKNH, MaMonHoc } },
     });
     if (monMoTx.SiSoHienTai >= monMoTx.SiSoToiDa) {
@@ -172,7 +172,7 @@ exports.dangKyMon = async ({ MaSoSinhVien, MaHKNH, MaMonHoc }) => {
 
     // 5. Thêm chi tiết + tăng sĩ số
     await tx.cT_PHIEUDK.create({ data: { MaPhieuDK: phieu.MaPhieu, MaMonHoc } });
-    await tx.mONHOCMO.update({
+    await tx.monhocmo.update({
       where: { MaHKNH_MaMonHoc: { MaHKNH, MaMonHoc } },
       data: { SiSoHienTai: { increment: 1 } },
     });
@@ -180,15 +180,15 @@ exports.dangKyMon = async ({ MaSoSinhVien, MaHKNH, MaMonHoc }) => {
     // 6. Tính lại tiền
     await tinhLaiTien(tx, phieu.MaPhieu);
 
-    return tx.pHIEUDANGKY.findUnique({
+    return tx.phieudangky.findUnique({
       where: { MaPhieu: phieu.MaPhieu },
-      include: { ctPhieuDKList: { include: { monHoc: true } } },
+      include: { ctPhieuDKList: { include: { monhoc: true } } },
     });
   });
 };
 
 exports.huyMon = async ({ MaPhieu, MaMonHoc }, currentUser) => {
-  const phieu = await prisma.pHIEUDANGKY.findUnique({ where: { MaPhieu } });
+  const phieu = await prisma.phieudangky.findUnique({ where: { MaPhieu } });
   if (!phieu) throw new ApiError(404, 'Không tìm thấy phiếu đăng ký.', 'NOT_FOUND');
 
   if (currentUser.VaiTro === 'SV' && phieu.MaSoSinhVien !== currentUser.MaSoSinhVien) {
@@ -209,20 +209,20 @@ exports.huyMon = async ({ MaPhieu, MaMonHoc }, currentUser) => {
     await tx.cT_PHIEUDK.delete({
       where: { MaPhieuDK_MaMonHoc: { MaPhieuDK: MaPhieu, MaMonHoc } },
     });
-    await tx.mONHOCMO.update({
+    await tx.monhocmo.update({
       where: { MaHKNH_MaMonHoc: { MaHKNH: phieu.MaHKNH, MaMonHoc } },
       data: { SiSoHienTai: { decrement: 1 } },
     });
     await tinhLaiTien(tx, MaPhieu);
-    return tx.pHIEUDANGKY.findUnique({
+    return tx.phieudangky.findUnique({
       where: { MaPhieu },
-      include: { ctPhieuDKList: { include: { monHoc: true } } },
+      include: { ctPhieuDKList: { include: { monhoc: true } } },
     });
   });
 };
 
 exports.huyPhieu = async (maPhieu) => {
-  const phieu = await prisma.pHIEUDANGKY.findUnique({
+  const phieu = await prisma.phieudangky.findUnique({
     where: { MaPhieu: maPhieu },
     include: { ctPhieuDKList: true },
   });
@@ -234,18 +234,18 @@ exports.huyPhieu = async (maPhieu) => {
   await prisma.$transaction(async (tx) => {
     for (const ct of phieu.ctPhieuDKList) {
       // giảm sĩ số nếu môn mở còn tồn tại
-      const monMo = await tx.mONHOCMO.findUnique({
+      const monMo = await tx.monhocmo.findUnique({
         where: { MaHKNH_MaMonHoc: { MaHKNH: phieu.MaHKNH, MaMonHoc: ct.MaMonHoc } },
       });
       if (monMo) {
-        await tx.mONHOCMO.update({
+        await tx.monhocmo.update({
           where: { MaHKNH_MaMonHoc: { MaHKNH: phieu.MaHKNH, MaMonHoc: ct.MaMonHoc } },
           data: { SiSoHienTai: { decrement: 1 } },
         });
       }
     }
     await tx.cT_PHIEUDK.deleteMany({ where: { MaPhieuDK: maPhieu } });
-    await tx.pHIEUDANGKY.delete({ where: { MaPhieu: maPhieu } });
+    await tx.phieudangky.delete({ where: { MaPhieu: maPhieu } });
   });
 
   return { message: 'Đã hủy toàn bộ phiếu đăng ký.' };

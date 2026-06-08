@@ -69,44 +69,44 @@ function dinhNghiaCrud(cfg) {
 
 // --------------------------- KHOA ---------------------------
 const khoa = dinhNghiaCrud({
-  delegate: prisma.kHOA, idField: 'MaKhoa', tenHienThi: 'khoa',
+  delegate: prisma.khoa, idField: 'MaKhoa', tenHienThi: 'khoa',
   searchFields: ['MaKhoa', 'TenKhoa'],
   validate: v.validateKhoa,
   mapData: (b) => ({ MaKhoa: b.MaKhoa, TenKhoa: b.TenKhoa, VanPhongKhoa: b.VanPhongKhoa || null, GhiChu: b.GhiChu || null }),
   chanXoa: async (id) => {
-    const k = await prisma.kHOA.findUnique({
+    const k = await prisma.khoa.findUnique({
       where: { MaKhoa: id },
-      include: { nganhList: { select: { MaNganh: true } }, monHocList: { select: { MaMonHoc: true } } },
+      include: { nganhList: { select: { MaNganh: true } }, monhocList: { select: { MaMonHoc: true } } },
     });
     if (k.nganhList.length) throw new ApiError(409, 'Không thể xóa: khoa còn ngành học.', 'IN_USE');
-    if (k.monHocList.length) throw new ApiError(409, 'Không thể xóa: khoa còn môn học.', 'IN_USE');
+    if (k.monhocList.length) throw new ApiError(409, 'Không thể xóa: khoa còn môn học.', 'IN_USE');
   },
 });
 
 // --------------------------- NGANH ---------------------------
 const nganh = dinhNghiaCrud({
-  delegate: prisma.nGANH, idField: 'MaNganh', tenHienThi: 'ngành học',
+  delegate: prisma.nganh, idField: 'MaNganh', tenHienThi: 'ngành học',
   searchFields: ['MaNganh', 'TenNganh'],
   include: { khoa: { select: { MaKhoa: true, TenKhoa: true } } },
   validate: v.validateNganh,
   kiemTraFK: async (b) => {
-    const k = await prisma.kHOA.findUnique({ where: { MaKhoa: b.MaKhoa } });
+    const k = await prisma.khoa.findUnique({ where: { MaKhoa: b.MaKhoa } });
     if (!k) throw new ApiError(404, `Khoa "${b.MaKhoa}" không tồn tại.`, 'KHOA_NOT_FOUND');
   },
   mapData: (b) => ({ MaNganh: b.MaNganh, TenNganh: b.TenNganh, MaKhoa: b.MaKhoa, GhiChu: b.GhiChu || null }),
   chanXoa: async (id) => {
-    const n = await prisma.nGANH.findUnique({
+    const n = await prisma.nganh.findUnique({
       where: { MaNganh: id },
-      include: { sinhVienList: { select: { MaSoSinhVien: true } }, chuongTrinhList: { select: { MaMonHoc: true } } },
+      include: { sinhvienList: { select: { MaSoSinhVien: true } }, chuongTrinhList: { select: { MaMonHoc: true } } },
     });
-    if (n.sinhVienList.length) throw new ApiError(409, 'Không thể xóa: ngành còn sinh viên.', 'IN_USE');
+    if (n.sinhvienList.length) throw new ApiError(409, 'Không thể xóa: ngành còn sinh viên.', 'IN_USE');
     if (n.chuongTrinhList.length) throw new ApiError(409, 'Không thể xóa: ngành còn chương trình học.', 'IN_USE');
   },
 });
 
 // --------------------------- LOAIMONHOC ---------------------------
-const loaiMonHoc = dinhNghiaCrud({
-  delegate: prisma.lOAIMONHOC, idField: 'MaLoaiMonHoc', tenHienThi: 'loại môn học',
+const loaimonhoc = dinhNghiaCrud({
+  delegate: prisma.loaimonhoc, idField: 'MaLoaiMonHoc', tenHienThi: 'loại môn học',
   searchFields: ['MaLoaiMonHoc', 'TenLoaiMonHoc'],
   validate: v.validateLoaiMonHoc,
   mapData: (b) => ({
@@ -116,31 +116,31 @@ const loaiMonHoc = dinhNghiaCrud({
     SoTienMotTinChi: Number(b.SoTienMotTinChi),
   }),
   chanXoa: async (id) => {
-    const l = await prisma.lOAIMONHOC.findUnique({ where: { MaLoaiMonHoc: id }, include: { monHocList: { select: { MaMonHoc: true } } } });
-    if (l.monHocList.length) throw new ApiError(409, 'Không thể xóa: còn môn học dùng loại này.', 'IN_USE');
+    const l = await prisma.loaimonhoc.findUnique({ where: { MaLoaiMonHoc: id }, include: { monhocList: { select: { MaMonHoc: true } } } });
+    if (l.monhocList.length) throw new ApiError(409, 'Không thể xóa: còn môn học dùng loại này.', 'IN_USE');
   },
 });
 
 // --------------------------- TINH ---------------------------
 const tinh = dinhNghiaCrud({
-  delegate: prisma.tINH, idField: 'MaTinh', tenHienThi: 'tỉnh',
+  delegate: prisma.tinh, idField: 'MaTinh', tenHienThi: 'tỉnh',
   searchFields: ['MaTinh', 'TenTinh'],
   validate: v.validateTinh,
   mapData: (b) => ({ MaTinh: b.MaTinh, TenTinh: b.TenTinh }),
   chanXoa: async (id) => {
-    const t = await prisma.tINH.findUnique({ where: { MaTinh: id }, include: { xaList: { select: { MaXa: true } } } });
+    const t = await prisma.tinh.findUnique({ where: { MaTinh: id }, include: { xaList: { select: { MaXa: true } } } });
     if (t.xaList.length) throw new ApiError(409, 'Không thể xóa: tỉnh còn xã/phường.', 'IN_USE');
   },
 });
 
 // --------------------------- XA ---------------------------
 const xa = dinhNghiaCrud({
-  delegate: prisma.xA, idField: 'MaXa', tenHienThi: 'xã/phường',
+  delegate: prisma.xa, idField: 'MaXa', tenHienThi: 'xã/phường',
   searchFields: ['MaXa', 'TenXa'],
   include: { tinh: { select: { MaTinh: true, TenTinh: true } } },
   validate: v.validateXa,
   kiemTraFK: async (b) => {
-    const t = await prisma.tINH.findUnique({ where: { MaTinh: b.MaTinh } });
+    const t = await prisma.tinh.findUnique({ where: { MaTinh: b.MaTinh } });
     if (!t) throw new ApiError(404, `Tỉnh "${b.MaTinh}" không tồn tại.`, 'TINH_NOT_FOUND');
   },
   mapData: (b) => ({
@@ -151,14 +151,14 @@ const xa = dinhNghiaCrud({
     GhiChu: b.GhiChu || null,
   }),
   chanXoa: async (id) => {
-    const x = await prisma.xA.findUnique({ where: { MaXa: id }, include: { sinhVienList: { select: { MaSoSinhVien: true } } } });
-    if (x.sinhVienList.length) throw new ApiError(409, 'Không thể xóa: xã còn sinh viên.', 'IN_USE');
+    const x = await prisma.xa.findUnique({ where: { MaXa: id }, include: { sinhvienList: { select: { MaSoSinhVien: true } } } });
+    if (x.sinhvienList.length) throw new ApiError(409, 'Không thể xóa: xã còn sinh viên.', 'IN_USE');
   },
 });
 
 // --------------------------- DOITUONGUUTIEN ---------------------------
-const doiTuong = dinhNghiaCrud({
-  delegate: prisma.dOITUONGUUTIEN, idField: 'MaDoiTuong', tenHienThi: 'đối tượng ưu tiên',
+const doituonguutien = dinhNghiaCrud({
+  delegate: prisma.doituonguutien, idField: 'MaDoiTuong', tenHienThi: 'đối tượng ưu tiên',
   searchFields: ['MaDoiTuong', 'TenDoiTuong'],
   validate: v.validateDoiTuong,
   mapData: (b) => ({
@@ -168,9 +168,9 @@ const doiTuong = dinhNghiaCrud({
     GhiChu: b.GhiChu || null,
   }),
   chanXoa: async (id) => {
-    const d = await prisma.dOITUONGUUTIEN.findUnique({ where: { MaDoiTuong: id }, include: { sinhVienList: { select: { MaSoSinhVien: true } } } });
-    if (d.sinhVienList.length) throw new ApiError(409, 'Không thể xóa: còn sinh viên thuộc đối tượng này.', 'IN_USE');
+    const d = await prisma.doituonguutien.findUnique({ where: { MaDoiTuong: id }, include: { sinhvienList: { select: { MaSoSinhVien: true } } } });
+    if (d.sinhvienList.length) throw new ApiError(409, 'Không thể xóa: còn sinh viên thuộc đối tượng này.', 'IN_USE');
   },
 });
 
-module.exports = { khoa, nganh, loaiMonHoc, tinh, xa, doiTuong };
+module.exports = { khoa, nganh, loaimonhoc, tinh, xa, doituonguutien };

@@ -21,9 +21,9 @@ function dangKy(path, c, writeRoles = WRITE) {
 
 dangKy('khoa', ctrl.khoa);
 dangKy('nganh', ctrl.nganh);
-dangKy('loai-mon-hoc', ctrl.loaiMonHoc, WRITE_PTC); // Cho PTC ghi
+dangKy('loai-mon-hoc', ctrl.loaimonhoc, WRITE_PTC); // Cho PTC ghi
 dangKy('tinh', ctrl.tinh);
 dangKy('xa', ctrl.xa);
-dangKy('doi-tuong-uu-tien', ctrl.doiTuong, WRITE_PTC); // Cho PTC ghi
+dangKy('doi-tuong-uu-tien', ctrl.doituonguutien, WRITE_PTC); // Cho PTC ghi
 
 module.exports = router;

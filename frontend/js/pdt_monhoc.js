@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     items.forEach((m, i) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${i + 1}</td><td><strong>${m.MaMonHoc}</strong></td><td>${m.TenMonHoc}</td>
-        <td>${m.SoTiet}</td><td>${m.SoTinChi}</td><td>${m.loaiMonHoc ? m.loaiMonHoc.TenLoaiMonHoc : ''}</td>
+        <td>${m.SoTiet}</td><td>${m.SoTinChi}</td><td>${m.loaimonhoc ? m.loaimonhoc.TenLoaiMonHoc : ''}</td>
         <td class="text-center"><div class="action-buttons">
           <button class="btn-action btn-edit" data-id="${m.MaMonHoc}"><i class="ti ti-edit"></i></button>
           <button class="btn-action btn-delete" data-id="${m.MaMonHoc}"><i class="ti ti-trash"></i></button>
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     inId.value = m.MaMonHoc; inName.value = m.TenMonHoc; inLessons.value = m.SoTiet;
     if (inType) inType.value = m.MaLoaiMonHoc;
     if (inDept) inDept.value = m.MaKhoa;
-    if (inPrereq) inPrereq.value = (m.monHocTruocList && m.monHocTruocList[0]) ? m.monHocTruocList[0].MaMonHocTruoc : 'none';
+    if (inPrereq) inPrereq.value = (m.monhocTruocList && m.monhocTruocList[0]) ? m.monhocTruocList[0].MaMonHocTruoc : 'none';
     autoCredits();
   }
   function closeModal() { modal.classList.add('hidden'); form.reset(); editingId = null; }
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const payload = {
       MaMonHoc: inId.value.trim(), TenMonHoc: inName.value.trim(),
       MaKhoa: inDept ? inDept.value : '', MaLoaiMonHoc: inType ? inType.value : '',
-      SoTiet: Number(inLessons.value), monHocTruoc: prereq,
+      SoTiet: Number(inLessons.value), monhocTruoc: prereq,
     };
     if (!payload.TenMonHoc || !payload.MaKhoa || !payload.MaLoaiMonHoc || !payload.SoTiet || (mode === 'add' && !payload.MaMonHoc)) {
       alert('Nhập đủ Mã, Tên, Khoa, Loại môn, Số tiết.'); return;

@@ -47,19 +47,19 @@
     if (list.length) phieu = await EduFeeAPI.get('/enrollments/' + list[0].MaPhieu);
   }
   function daDangKy(maMon) {
-    return phieu && phieu.monHocList && phieu.monHocList.some((m) => m.MaMonHoc === maMon);
+    return phieu && phieu.monhocList && phieu.monhocList.some((m) => m.MaMonHoc === maMon);
   }
   function thongTinLop(o) {
-    const lmh = o.monHoc ? o.monHoc.loaiMonHoc : null;
-    const stc = o.monHoc ? tinChi(o.monHoc.SoTiet, lmh.SoTietMotTinChi) : 0;
+    const lmh = o.monhoc ? o.monhoc.loaimonhoc : null;
+    const stc = o.monhoc ? tinChi(o.monhoc.SoTiet, lmh.SoTietMotTinChi) : 0;
     const donGia = lmh ? Number(lmh.SoTienMotTinChi) : 0;
-    return { ten: o.monHoc ? o.monHoc.TenMonHoc : o.MaMonHoc, loai: lmh ? lmh.TenLoaiMonHoc : '', stc, tamTinh: stc * donGia };
+    return { ten: o.monhoc ? o.monhoc.TenMonHoc : o.MaMonHoc, loai: lmh ? lmh.TenLoaiMonHoc : '', stc, tamTinh: stc * donGia };
   }
 
   function render() {
     const kw = (search && search.value.trim().toLowerCase()) || '';
     const list = offerings.filter((o) => {
-      const ten = o.monHoc ? o.monHoc.TenMonHoc.toLowerCase() : '';
+      const ten = o.monhoc ? o.monhoc.TenMonHoc.toLowerCase() : '';
       return o.MaMonHocMo.toLowerCase().includes(kw) || o.MaMonHoc.toLowerCase().includes(kw) || ten.includes(kw);
     });
     body.innerHTML = '';
@@ -84,13 +84,13 @@
     body.querySelectorAll('.btn-del').forEach((b) => b.addEventListener('click', () => huy(b.dataset.mon)));
 
     // Tổng dựa trên các môn ĐÃ đăng ký
-    const mons = (phieu && phieu.monHocList) || [];
+    const mons = (phieu && phieu.monhocList) || [];
     const tc = mons.reduce((s, m) => s + m.SoTinChi, 0);
     if (totalCredits) totalCredits.textContent = tc;
     if (totalTuition) totalTuition.textContent = phieu ? fmt(phieu.TongTienPhaiDong) : fmt(0);
     if (rateDisplay) {
       const loais = {};
-      offerings.forEach((o) => { const l = o.monHoc && o.monHoc.loaiMonHoc; if (l) loais[l.TenLoaiMonHoc] = Number(l.SoTienMotTinChi); });
+      offerings.forEach((o) => { const l = o.monhoc && o.monhoc.loaimonhoc; if (l) loais[l.TenLoaiMonHoc] = Number(l.SoTienMotTinChi); });
       const parts = Object.keys(loais).map((k) => `${k}: ${fmt(loais[k])}/TC`);
       rateDisplay.textContent = parts.length ? ('Đơn giá — ' + parts.join(' · ')) : '';
     }

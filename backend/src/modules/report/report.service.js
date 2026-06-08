@@ -13,17 +13,17 @@ exports.traCuuSinhVien = async (mssv, currentUser) => {
     throw new ApiError(403, 'Bạn chỉ được tra cứu hồ sơ của mình.', 'FORBIDDEN');
   }
 
-  const sv = await prisma.sINHVIEN.findUnique({
+  const sv = await prisma.sinhvien.findUnique({
     where: { MaSoSinhVien: mssv },
     include: {
       nganh: { include: { khoa: true } },
       xa: { include: { tinh: true } },
-      doiTuong: true,
+      doituonguutien: true,
       phieuDangKyList: {
         orderBy: { NgayLapPhieu: 'desc' },
         include: {
-          hocKyNamHoc: true,
-          ctPhieuDKList: { include: { monHoc: { include: { loaiMonHoc: true } } } },
+          hockynamhoc: true,
+          ctPhieuDKList: { include: { monhoc: { include: { loaimonhoc: true } } } },
           phieuThuList: { orderBy: { NgayLapPhieu: 'asc' } },
         },
       },
@@ -34,19 +34,19 @@ exports.traCuuSinhVien = async (mssv, currentUser) => {
   // Định dạng lại cho gọn, kèm số tín chỉ từng môn
   const phieuList = sv.phieuDangKyList.map((p) => ({
     MaPhieu: p.MaPhieu,
-    HocKy: p.hocKyNamHoc.HocKy,
+    HocKy: p.hockynamhoc.HocKy,
     MaHKNH: p.MaHKNH,
     TongTienDK: p.TongTienDK,
     TienMienGiam: p.TienMienGiam,
     TongTienPhaiDong: p.TongTienPhaiDong,
     SoTienDaDong: p.SoTienDaDong,
     SoTienConLai: p.SoTienConLai,
-    monHocList: p.ctPhieuDKList.map((ct) => ({
-      MaMonHoc: ct.monHoc.MaMonHoc,
-      TenMonHoc: ct.monHoc.TenMonHoc,
-      LoaiMon: ct.monHoc.loaiMonHoc.TenLoaiMonHoc,
-      SoTiet: ct.monHoc.SoTiet,
-      SoTinChi: tinhTinChi(ct.monHoc.SoTiet, ct.monHoc.loaiMonHoc.SoTietMotTinChi),
+    monhocList: p.ctPhieuDKList.map((ct) => ({
+      MaMonHoc: ct.monhoc.MaMonHoc,
+      TenMonHoc: ct.monhoc.TenMonHoc,
+      LoaiMon: ct.monhoc.loaimonhoc.TenLoaiMonHoc,
+      SoTiet: ct.monhoc.SoTiet,
+      SoTinChi: tinhTinChi(ct.monhoc.SoTiet, ct.monhoc.loaimonhoc.SoTietMotTinChi),
     })),
     lichSuThanhToan: p.phieuThuList.map((t) => ({
       MaPhieuThu: t.MaPhieuThu,
@@ -68,8 +68,8 @@ exports.traCuuSinhVien = async (mssv, currentUser) => {
       Khoa: sv.nganh && sv.nganh.khoa ? sv.nganh.khoa.TenKhoa : null,
       Xa: sv.xa ? sv.xa.TenXa : null,
       Tinh: sv.xa && sv.xa.tinh ? sv.xa.tinh.TenTinh : null,
-      DoiTuongUuTien: sv.doiTuong ? sv.doiTuong.TenDoiTuong : null,
-      TyLeMienGiam: sv.doiTuong ? sv.doiTuong.TyLeMienGiam : 0,
+      DoiTuongUuTien: sv.doituonguutien ? sv.doituonguutien.TenDoiTuong : null,
+      TyLeMienGiam: sv.doituonguutien ? sv.doituonguutien.TyLeMienGiam : 0,
     },
     lichSuDangKy: phieuList,
   };
@@ -79,15 +79,15 @@ exports.traCuuSinhVien = async (mssv, currentUser) => {
 exports.svChuaHoanThanhHP = async (maHKNH) => {
   if (!maHKNH) throw new ApiError(400, 'Thiếu tham số maHKNH (học kỳ năm học).', 'VALIDATION');
 
-  const rows = await prisma.pHIEUDANGKY.findMany({
+  const rows = await prisma.phieudangky.findMany({
     where: { MaHKNH: maHKNH, SoTienConLai: { gt: 0 } },
-    include: { sinhVien: { select: { MaSoSinhVien: true, HoTen: true } } },
+    include: { sinhvien: { select: { MaSoSinhVien: true, HoTen: true } } },
     orderBy: { SoTienConLai: 'desc' },
   });
 
   const danhSach = rows.map((r) => ({
     MaSoSinhVien: r.MaSoSinhVien,
-    HoTen: r.sinhVien.HoTen,
+    HoTen: r.sinhvien.HoTen,
     TongTienPhaiDong: r.TongTienPhaiDong,
     SoTienDaDong: r.SoTienDaDong,
     SoTienConLai: r.SoTienConLai,
