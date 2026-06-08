@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (inId) inId.removeAttribute('disabled');
     } else {
       modalTitle.textContent = 'Cập nhật khoa';
-      if (inId) inId.setAttribute('disabled', 'true');
+      if (inId) { inId.removeAttribute('disabled'); inId.title = 'Có thể đổi mã — các bản ghi liên kết sẽ tự cập nhật'; }
       fill(id);
     }
   }

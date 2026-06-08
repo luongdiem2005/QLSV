@@ -71,6 +71,7 @@
                             <span>Tỉnh / Xã</span>
                         </a>
                     </li>
+                    <li><a href="pdt_yeucau.html"><i class="ti ti-file-check"></i><span>Xét duyệt đơn</span></a></li>
                 </ul>
             </nav>
         </aside>
@@ -128,13 +129,8 @@
                     </table>
                   </div>
 
-                  <div class="pagination-bar" style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
-                    <span class="pagination-info" style="color:#718096;font-size:14px;"></span>
-                    <div class="pagination-controls">
-                        <button id="btnPrevPage" class="btn btn-secondary">‹ Trước</button>
-                        <span id="pageIndicator" style="margin:0 12px;font-weight:600;"></span>
-                        <button id="btnNextPage" class="btn btn-secondary">Sau ›</button>
-                    </div>
+                <div class="pagination-wrapper">
+                    <p class="pagination-info">Hiển thị dữ liệu danh mục môn học</p>
                 </div>
                 <div id="shared-footer-container"></div>
             </main>
@@ -153,18 +149,18 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="subjectId">Mã Môn Học *</label>
-                  <input type="text" id="subjectId" name="subjectId" placeholder="Ví dụ: IT007" required>
+                  <input type="text" id="subjectId" name="subjectId" placeholder="" required>
                 </div>
                 <div class="form-group">
                   <label for="subjectName">Tên Môn Học *</label>
-                  <input type="text" id="subjectName" name="subjectName" placeholder="Ví dụ: Hệ điều hành" required>
+                  <input type="text" id="subjectName" name="subjectName" placeholder="" required>
                 </div>
               </div>
       
               <div class="form-row">
                 <div class="form-group">
                   <label for="subjectLessons">Số Tiết Học *</label>
-                  <input type="number" id="subjectLessons" name="subjectLessons" min="1" placeholder="Ví dụ: 45" required>
+                  <input type="number" id="subjectLessons" name="subjectLessons" min="1" placeholder="" required>
                 </div>
                 <div class="form-group">
                   <label for="subjectType">Loại Môn Học *</label>

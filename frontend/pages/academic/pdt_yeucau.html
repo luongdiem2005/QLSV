@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFee - Xét duyệt Miễn giảm / Gia hạn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+</head>
+<body class="dashboard-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand"><i class="ti ti-school"></i><h2>EduFee Portal</h2></div>
+            <div class="sidebar-user-info">
+                <p class="role-badge">Phòng Đào tạo / Tài chính</p>
+                <h3 id="sidebar-username">Loading...</h3>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li><a href="pdt.html"><i class="ti ti-layout-dashboard"></i><span>Tổng quan</span></a></li>
+                    <li><a href="pdt_sv.html"><i class="ti ti-users"></i><span>Quản lý Sinh viên</span></a></li>
+                    <li><a href="pdt_dkhp.html"><i class="ti ti-clipboard-list"></i><span>Mở lớp Học phần</span></a></li>
+                    <li class="active"><a href="pdt_yeucau.html"><i class="ti ti-file-check"></i><span>Xét duyệt đơn</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title"><h1>Xét duyệt Đơn Miễn giảm / Gia hạn Học phí</h1></div>
+                <div class="header-actions">
+                    <button id="btnLogout" class="btn-logout"><i class="ti ti-logout"></i><span>Đăng xuất</span></button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="table-toolbar" style="padding:0;margin-bottom:14px;">
+                    <div class="filter-group">
+                        <select id="filterStatus" class="form-select" style="width:200px;">
+                            <option value="">-- Tất cả trạng thái --</option>
+                            <option value="CHO_DUYET">Chờ duyệt</option>
+                            <option value="DA_DUYET">Đã duyệt</option>
+                            <option value="TU_CHOI">Từ chối</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mã Đơn</th>
+                                <th>MSSV</th>
+                                <th>Họ và tên</th>
+                                <th>Loại</th>
+                                <th>Lý do</th>
+                                <th>Ngày tạo</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reqAdminTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="shared-footer-container"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/pdt_yeucau.js"></script>
+</body>
+</html>

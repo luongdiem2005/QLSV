@@ -13,6 +13,7 @@ const catalogRoutes = require('./modules/catalog/catalog.routes');
 const paymentRoutes = require('./modules/payment/payment.routes');
 const reportRoutes = require('./modules/report/report.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
+const requestRoutes = require('./modules/request/request.routes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/requests', requestRoutes);
 // Catalog mount tại /api -> tạo /api/khoa, /api/nganh, /api/loai-mon-hoc, /api/tinh, /api/xa, /api/doi-tuong-uu-tien
 app.use('/api', catalogRoutes);
 

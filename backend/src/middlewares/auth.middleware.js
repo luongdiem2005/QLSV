@@ -27,11 +27,6 @@ function authenticate(req, res, next) {
   }
 }
 
-/**
- * authorize(...vaiTroChoPhep): chỉ cho phép các vai trò trong danh sách.
- * Ví dụ: authorize('PDT')  hoặc  authorize('PDT', 'PTC')
- * Phải đặt SAU authenticate trong chuỗi middleware.
- */
 function authorize(...vaiTroChoPhep) {
   return (req, res, next) => {
     if (!req.user) {

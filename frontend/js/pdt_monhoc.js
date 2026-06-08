@@ -77,12 +77,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     p.set('limit', '200');
     try { render((await EduFeeAPI.get('/courses?' + p)).items); } catch (e) { alert(e.message); }
   }
-  
+
   function openModal(m, id) {
     mode = m; modal.classList.remove('hidden');
     loadPrereqOptions(id);
     if (m === 'add') { modalTitle.textContent = 'Thêm môn học'; form.reset(); inId.removeAttribute('disabled'); autoCredits(); }
-    else { modalTitle.textContent = 'Sửa môn học'; inId.setAttribute('disabled', 'true'); fill(id); }
+    else { modalTitle.textContent = 'Sửa môn học'; inId.removeAttribute('disabled'); fill(id); }
   }
   async function fill(id) {
     const m = await EduFeeAPI.get('/courses/' + id);

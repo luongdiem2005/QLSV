@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (inId) inId.removeAttribute('disabled');
     } else {
       modalTitle.textContent = 'Cập nhật thông tin sinh viên';
-      if (inId) inId.setAttribute('disabled', 'true');
+      if (inId) { inId.removeAttribute('disabled'); inId.title = 'Có thể đổi MSSV — phiếu/tài khoản liên kết sẽ tự cập nhật'; }
       fill(mssv);
     }
   }
@@ -234,7 +234,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await EduFeeAPI.post('/students', payload);
         alert('Thêm sinh viên thành công!');
       } else {
-        delete payload.MaSoSinhVien;
         await EduFeeAPI.put('/students/' + editingId, payload);
         alert('Cập nhật thành công!');
       }

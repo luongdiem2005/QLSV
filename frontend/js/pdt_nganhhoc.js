@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function openModal(m, id) {
     mode = m; modal.classList.remove('hidden');
     if (m === 'add') { modalTitle.textContent = 'Thêm ngành'; form.reset(); inId.removeAttribute('disabled'); }
-    else { modalTitle.textContent = 'Sửa ngành'; inId.setAttribute('disabled', 'true'); fill(id); }
+    else { modalTitle.textContent = 'Sửa ngành'; inId.removeAttribute('disabled'); fill(id); }
   }
   async function fill(id) {
     const n = await EduFeeAPI.get('/nganh/' + id);

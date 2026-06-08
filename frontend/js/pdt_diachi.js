@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tinhMode = m; tinhModal.classList.remove('hidden');
     if (m === 'add') { tinhTitle.textContent = 'Thêm tỉnh'; tinhForm.reset(); inTinhId.removeAttribute('disabled'); }
     else {
-      tinhTitle.textContent = 'Sửa tỉnh'; inTinhId.setAttribute('disabled', 'true');
+      tinhTitle.textContent = 'Sửa tỉnh'; inTinhId.removeAttribute('disabled');
       const t = tinhList.find(x => x.MaTinh === id); tinhEditing = id;
       inTinhId.value = t.MaTinh; inTinhName.value = t.TenTinh;
     }
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     xaMode = m; xaModal.classList.remove('hidden');
     if (m === 'add') { xaTitle.textContent = 'Thêm xã/phường'; xaForm.reset(); inXaId.removeAttribute('disabled'); }
     else {
-      xaTitle.textContent = 'Sửa xã/phường'; inXaId.setAttribute('disabled', 'true');
+      xaTitle.textContent = 'Sửa xã/phường'; inXaId.removeAttribute('disabled');
       const x = xaList.find(v => v.MaXa === id); xaEditing = id;
       inXaId.value = x.MaXa; inXaName.value = x.TenXa; inXaTinh.value = x.MaTinh;
       inXaVungsau.value = x.VungSauVungXa ? 'true' : 'false';

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     } else {
       modalTitle.textContent = 'Sửa sĩ số lớp';
-      if (inId) inId.setAttribute('disabled', 'true');
+      if (inId) inId.removeAttribute('disabled');
       if (inSubject) inSubject.setAttribute('disabled', 'true');
       fill(id);
     }
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     editingId = id;
     if (inId) {
       inId.value = o.MaMonHocMo;
-      inId.setAttribute('disabled', 'true');
+      inId.removeAttribute('disabled');
     }
     if (inSemester) {
       inSemester.value = o.MaHKNH;

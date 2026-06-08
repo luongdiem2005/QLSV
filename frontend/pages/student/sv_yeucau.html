@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFee - Xin Miễn giảm / Gia hạn Học phí</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../assets/css/pdt_table.css">
+</head>
+<body class="dashboard-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand"><i class="ti ti-school"></i><h2>EduFee Portal</h2></div>
+            <div class="sidebar-user-info">
+                <p class="role-badge" style="background: rgba(49, 130, 206, 0.2); color: #63b3ed;">Cổng Sinh viên</p>
+                <h3 id="sidebar-student-name">Sinh viên Loading...</h3>
+            </div>
+            <nav class="sidebar-menu"><ul>
+                    <li><a href="sv.html"><i class="ti ti-edit-circle"></i><span>Đăng ký học phần</span></a></li>
+                    <li><a href="sv_hocphi.html"><i class="ti ti-wallet"></i><span>Tra cứu Học phí</span></a></li>
+                    <li><a href="sv_lsdk.html"><i class="ti ti-list-details"></i><span>Lịch sử đăng ký</span></a></li>
+                    <li><a href="sv_lsgd.html"><i class="ti ti-history"></i><span>Lịch sử giao dịch</span></a></li>
+                    <li class="active"><a href="sv_yeucau.html"><i class="ti ti-file-text"></i><span>Xin miễn giảm/Gia hạn</span></a></li>
+                </ul></nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="main-header">
+                <div class="header-title"><h1>Xin Miễn giảm / Gia hạn Học phí</h1></div>
+                <div class="header-actions">
+                    <button id="btnLogout" class="btn-logout"><i class="ti ti-logout"></i><span>Đăng xuất</span></button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Form gửi đơn -->
+                <div class="table-container" style="padding:18px;margin-bottom:18px;">
+                    <h2 style="font-size:16px;color:#2d3748;font-weight:600;margin:0 0 14px;">Tạo đơn yêu cầu mới</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reqType">Loại đơn *</label>
+                            <select id="reqType" name="reqType">
+                                <option value="MIENGIAM">Xin miễn giảm học phí</option>
+                                <option value="GIAHAN">Xin gia hạn đóng học phí</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex:1;">
+                            <label for="reqReason">Lý do *</label>
+                            <textarea id="reqReason" name="reqReason" rows="3" placeholder="Trình bày hoàn cảnh / lý do xin miễn giảm hoặc gia hạn..." style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit;"></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btnSubmitRequest"><i class="ti ti-send"></i> Gửi đơn</button>
+                </div>
+
+                <!-- Danh sách đơn của tôi -->
+                <h2 style="font-size:16px;color:#2d3748;font-weight:600;margin:0 0 12px;">Đơn của tôi</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mã Đơn</th>
+                                <th>Loại</th>
+                                <th>Lý do</th>
+                                <th>Ngày tạo</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th>Ghi chú xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reqTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="shared-footer-container"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/sv_yeucau.js"></script>
+</body>
+</html>
